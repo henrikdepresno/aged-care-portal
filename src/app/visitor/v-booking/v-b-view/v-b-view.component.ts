@@ -165,10 +165,10 @@ export class V_B_ViewComponent implements OnInit {
       title: "Delete?",
       text: "Are you sure to delete this booking?",
       icon: "warning",
-      dangerMode: true,
+      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
       buttons: {
         cancel: "Cancel",
-        ok: "YES"
+        ok: "Yes"
       }
     } as any)
       .then((willDelete) => {
