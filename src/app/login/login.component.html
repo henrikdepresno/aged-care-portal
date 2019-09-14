@@ -1,0 +1,41 @@
+<main>
+    <section id="login-nav">
+        <div class="container-fluid d-sm-none">
+            <div class="row">
+                <a id="span-login-v" class="span-login col-6" (click)="spanLogin('v')" [routerLink]="['login-v']">
+                    <span>Visitor</span>
+                </a>
+                <a id="span-login-c" class="span-login col-6" (click)="spanLogin('c')" [routerLink]="['login-c']">
+                    <span>Contractor</span>
+                </a>
+            </div>
+            <div class="row">
+                <a id="span-login-s" class="span-login col-6" (click)="spanLogin('s')" [routerLink]="['login-s']">
+                    <span>Staff</span>
+                </a>
+                <a id="span-login-a" class="span-login col-6" (click)="spanLogin('a')" [routerLink]="['login-a']">
+                    <span>Admin</span>
+                </a>
+            </div>
+        </div>
+        <div class="container-fluid d-none d-sm-block">
+            <div class="row">
+                <a id="span-login-v" class="span-login col-3" (click)="spanLogin('v')" [routerLink]="['login-v']">
+                    <span>Visitor</span>
+                </a>
+                <a id="span-login-c" class="span-login col-3" (click)="spanLogin('c')" [routerLink]="['login-c']">
+                    <span>Contractor</span>
+                </a>
+                <a id="span-login-s" class="span-login col-3" (click)="spanLogin('s')" [routerLink]="['login-s']">
+                    <span>Staff</span>
+                </a>
+                <a id="span-login-a" class="span-login col-3" (click)="spanLogin('a')" [routerLink]="['login-a']">
+                    <span>Admin</span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section id="login-form">
+        <router-outlet></router-outlet>
+    </section>
+</main>

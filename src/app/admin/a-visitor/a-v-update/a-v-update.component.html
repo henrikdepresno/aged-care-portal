@@ -1,0 +1,84 @@
+<form id="user-info">
+    <div class="form-group">
+        <span id="circle-user-icon"><img src="/assets/img/user-icon.png"></span>
+    </div>
+    <div class="form-group">
+        <strong>ID:</strong>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="visitorID" value="A123B" readonly>
+    </div>
+</form>
+
+<h2>Update visitor details</h2>
+
+<table id="flag-list" class="item-list">
+    <tr class="item">
+        <th class="th-text" colspan="3">
+            <p>Flags</p>
+        </th>
+    </tr>
+    <tr id="item-head" class="item">
+        <th class="th-text cell-date">
+            <p>Date</p>
+        </th>
+        <th class="th-text cell-author">
+            <p>Staff</p>
+        </th>
+        <th class="th-text cell-btn"></th>
+    </tr>
+    <tr id="item-1" class="item">
+        <td class="td-text cell-date">
+            <p id="date-1"></p>
+        </td>
+        <td class="td-text cell-staff">
+            <p id="staff-1"></p>
+        </td>
+        <td class="td-btn cell-btn">
+            <span id="view-1">View</span>
+        </td>
+    </tr>
+    <tr id="item-2" class="item">
+        <td class="td-text cell-date">
+            <p id="date-2"></p>
+        </td>
+        <td class="td-text cell-staff">
+            <p id="staff-2"></p>
+        </td>
+        <td class="td-btn cell-btn">
+            <span id="view-2">View</span>
+        </td>
+    </tr>
+    <tr id="item-3" class="item">
+        <td class="td-text cell-date">
+            <p id="date-3"></p>
+        </td>
+        <td class="td-text cell-staff">
+            <p id="staff-3"></p>
+        </td>
+        <td class="td-btn cell-btn">
+            <span id="view-3">View</span>
+        </td>
+    </tr>
+</table>
+
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+    </div>
+    <div class="form-group">
+        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <span>Save!</span>
+    </div>
+    <div class="form-group go-back">
+        <span [routerLink]="['../visitor-view']">Go back</span>
+    </div>
+</form>

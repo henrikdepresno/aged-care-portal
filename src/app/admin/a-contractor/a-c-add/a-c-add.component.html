@@ -1,0 +1,28 @@
+<h2>Fill in contractor details</h2>
+
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+    </div>
+    <div class="form-group">
+        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputCompanyName" placeholder="Company Name">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputField" placeholder="Field">
+    </div>
+    <div class="form-group">
+        <span (click)="addContractor()">Add contractor!</span>
+    </div>
+    <div class="form-group go-back">
+        <span [routerLink]="['../contractor-view']">Go back</span>
+    </div>
+</form>

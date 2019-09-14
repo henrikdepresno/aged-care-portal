@@ -1,0 +1,53 @@
+$lg-width: 1200px;
+
+@mixin lg-width-min {
+    @media (min-width: #{$lg-width}) {
+        @content;
+    }
+}
+
+section#login-nav {
+    div.container-fluid.d-none.d-sm-block {
+        @include lg-width-min {
+            margin-top: 20px;
+            width: $lg-width;
+        }
+    }
+
+    a.span-login {
+        background-color: #FFFFFF;
+        border: solid 1.5px #313B45;
+        padding: 8px;
+        font-size: 14px;
+        letter-spacing: 2px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #313B45;
+        text-align: center;
+    }
+
+    a.span-login:hover {
+        text-decoration: none;
+    }
+
+    a#span-login-v.span-login.col-6 {
+        border-radius: 20px 0 0 0;
+    }
+    a#span-login-c.span-login.col-6 {
+        border-radius: 0 20px 0 0;
+    }
+    a#span-login-a.span-login.col-6 {
+        border-radius: 0 0 20px 0;
+    }
+    a#span-login-s.span-login.col-6 {
+        border-radius: 0 0 0 20px; 
+    }
+    a#span-login-v.span-login.col-3 {
+        border-radius: 20px 0 0 20px;
+    }
+    a#span-login-a.span-login.col-3 {
+        border-radius: 0 20px 20px 0;
+    }
+
+
+}

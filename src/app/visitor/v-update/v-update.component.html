@@ -1,0 +1,31 @@
+<form id="user-info">
+    <div class="form-group">
+        <span id="circle-user-icon"><img src="/assets/img/user-icon.png"></span>
+    </div>
+    <div class="form-group">
+        <strong>Your ID:</strong>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="visitorID" value="A123B" readonly>
+    </div>
+</form>
+
+<h2>Update your contact details</h2>
+
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+    </div>
+    <div class="form-group">
+        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <p>Please contact admin to<br>update any other details</p>
+    </div>
+    <div class="form-group">
+        <span>Save!</span>
+    </div>
+    <div class="form-group go-back">
+        <span [routerLink]="['../booking-view']">Go back</span>
+    </div>
+</form>

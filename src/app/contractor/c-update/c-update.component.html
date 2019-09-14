@@ -1,0 +1,27 @@
+<div id="qr-container">
+    <canvas id="qrcode"></canvas>
+    <div class="div-btn div-btn-danger"><span (click)="toggleQRCode(false)">Close</span></div>
+</div>
+
+<form id="user-info">
+    <span id="circle-user-icon"><img src="/assets/img/user-icon.png"></span>
+    <div class="div-btn div-btn-qr"><span (click)="toggleQRCode(true)">QR Code</span></div>
+    <div class="div-btn div-btn-danger"><span [routerLink]="['../../login/login-c']">Log out</span></div>
+</form>
+
+<h2>Please fill in your details</h2>
+
+<form>
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
+    </div>
+    <div class="form-group">
+        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <p>Please contact admin to<br>update any other details</p>
+    </div>
+    <div class="form-group">
+        <span>Save!</span>
+    </div>
+</form>

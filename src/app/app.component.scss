@@ -1,0 +1,64 @@
+$xs-width: 768px;
+$lg-width: 1200px;
+
+@mixin xs-width-max {
+    @media (max-width: #{$xs-width}) {
+        @content;
+    }
+}
+
+@mixin lg-width-max {
+    @media (max-width: #{$lg-width}) {
+        @content;
+    }
+}
+
+header {
+    background-color: #39444F;
+    padding: 60px;
+    text-align: center;
+    position: relative;
+
+    @include xs-width-max {
+        margin-bottom: 30px;
+        padding: 20px;
+    }
+
+    h1#brand-name {
+        font-size: 2.5em;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        padding-left: 0.3em;
+        cursor: pointer;
+        user-select: none;
+
+        @include xs-width-max {
+            font-size: 2em;
+            letter-spacing: 0.2em;
+            padding-left: 0.2em;
+        }
+    }
+
+    span#circle-logo {
+        position: absolute;
+        margin: 30px 60px 30px 0;
+        padding: 10px;
+        top: 0;
+        right: 0;
+        display: block;
+        height: fit-content;
+        width: fit-content;
+        background-color: #FFFFFF;
+        border-radius: 50%;
+
+        @include lg-width-max {
+            display: none;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+}
