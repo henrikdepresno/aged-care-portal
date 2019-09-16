@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { Router } from '@angular/router';
 import { StaffService } from '../../staff.service';
 import { WeeklySchedules } from '../../../classes-output';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-s-r-schedule',
@@ -206,6 +207,44 @@ export class S_R_ScheduleComponent implements OnInit {
       '-moz-box-shadow': '0px -5px 0px 0px #7B8188 inset',
       'box-shadow': '0px -5px 0px 0px #7B8188 inset',
     });
+  }
+
+  makeChanges(){
+    swal({
+      title: "Make changes?",
+      text: "Are you sure you want to make changes to the weekly schedule?",
+      icon: "warning",
+      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      buttons: {
+        cancel: "Cancel",
+        ok: "Yes"
+      }
+    } as any)
+      .then((willUpdate) => {
+        if (willUpdate) { //if they click yes, update the schedule
+
+          //update the schedule in the firebase collection here 
+        
+          swal("Schedule updated!", {
+            icon: "success",
+          });
+        }
+      });
+  }
+
+  addNewBooking() {
+     //add to firebase collection here
+    
+     swal({
+      title: "Success!",
+      text: "Booking added succesfully",
+      icon: "success",
+      buttons: {
+        ok: "OK"
+      }
+    } as any)
+
+    this.router.navigate(['/staff','resident-view']); //return to booking screen
   }
 
 }

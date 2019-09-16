@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { Router } from '@angular/router';
 import { VisitorService } from '../../visitor.service';
 import { WeeklySchedules } from '../../../classes-output';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-v-b-add',
@@ -146,6 +147,22 @@ export class V_B_AddComponent implements OnInit {
         }
       }
     }
+  }
+
+  addBooking() {
+    
+    //add to firebase collection here
+    
+    swal({
+      title: "Success!",
+      text: "Booking added succesfully",
+      icon: "success",
+      buttons: {
+        ok: "OK"
+      }
+    } as any)
+
+    this.router.navigate(['/visitor','booking-view']); //return to booking screen
   }
 
 }

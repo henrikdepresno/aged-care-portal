@@ -6,6 +6,7 @@
 <form id="user-info">
     <span id="circle-user-icon"><img src="/assets/img/user-icon.png"></span>
     <div class="div-btn div-btn-qr"><span (click)="toggleQRCode(true)">QR Code</span></div>
+    <!-- change "update to "account". When i do it, it messes up the avatar image-->
     <div class="div-btn div-btn-primary"><span [routerLink]="['../update']">Update</span></div>
     <div class="div-btn div-btn-danger"><span [routerLink]="['../../login/login-v']">Log out</span></div>
 </form>
@@ -34,10 +35,10 @@
             </tr>
             <tr id="item-1-btn" class="item tr-btn">
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span (click)="clickDelete()">Delete</span>
                 </td>
             </tr>
             <tr id="item-2-text" class="item tr-text">
@@ -47,7 +48,7 @@
             </tr>
             <tr id="item-2-btn" class="item tr-btn">
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -60,7 +61,7 @@
             </tr>
             <tr id="item-3-btn" class="item tr-btn">
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -73,7 +74,7 @@
             </tr>
             <tr id="item-4-btn" class="item tr-btn">
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -86,7 +87,7 @@
             </tr>
             <tr id="item-5-btn" class="item tr-btn">
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -99,7 +100,7 @@
             </tr>
             <tr id="item-6-btn" class="item tr-btn">
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -112,7 +113,7 @@
             </tr>
             <tr id="item-7-btn" class="item tr-btn">
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -125,7 +126,7 @@
             </tr>
             <tr id="item-8-btn" class="item tr-btn">
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -139,7 +140,7 @@
                     <p id="resident-name-1"></p>
                 </td>
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -150,7 +151,7 @@
                     <p id="resident-name-2"></p>
                 </td>
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -161,7 +162,7 @@
                     <p id="resident-name-3"></p>
                 </td>
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -172,7 +173,7 @@
                     <p id="resident-name-4"></p>
                 </td>
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -183,7 +184,7 @@
                     <p id="resident-name-5"></p>
                 </td>
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -194,7 +195,7 @@
                     <p id="resident-name-6"></p>
                 </td>
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -205,7 +206,7 @@
                     <p id="resident-name-7"></p>
                 </td>
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>
@@ -216,7 +217,7 @@
                     <p id="resident-name-8"></p>
                 </td>
                 <td class="td-btn td-btn-primary">
-                    <span>Book</span>
+                    <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
                     <span>Delete</span>

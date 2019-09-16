@@ -8,7 +8,7 @@
         <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
     </div>
     <div class="form-group">
-        <span [routerLink]="['../resident-view']">Add resident!</span>
+        <span (click)="addResident()">Add resident!</span>
     </div>
     <div class="form-group go-back">
         <span [routerLink]="['../resident-view']">Go back</span>

@@ -4,6 +4,7 @@ import $ from 'jquery';
 import { VisitorService } from '../../visitor.service';
 import { ResidentView } from '../../../classes-output';
 import QRCode from 'qrcode';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-v-r-view',
@@ -120,6 +121,14 @@ export class V_R_ViewComponent implements OnInit {
       $('tr#item-'+ i +'-btn > td.td-btn-primary > span').click(() => {
         this.clickBook();
       });
+
+      $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
+        this.clickDelete();
+      });
+      
+      $('tr#item-'+ i +'-btn > td.td-btn-danger > span').click(() => {
+        this.clickDelete();
+      });
     }
   }
 
@@ -143,6 +152,30 @@ export class V_R_ViewComponent implements OnInit {
       });
       $('body').removeClass('stop-scrolling');
     }
+  }
+
+  clickDelete() {
+
+    swal({
+      title: "Delete?",
+      text: "Are you sure you want to delete this resident?",
+      icon: "warning",
+      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      buttons: {
+        cancel: "Cancel",
+        ok: "Yes"
+      }
+    } as any)
+      .then((willDelete) => {
+        if (willDelete) {
+
+          //remove resident from firebase collection here
+          
+          swal("Resident deleted!", {
+            icon: "success",
+          });
+        }
+      });
   }
 
 }

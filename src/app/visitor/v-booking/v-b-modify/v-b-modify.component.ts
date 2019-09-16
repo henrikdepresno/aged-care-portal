@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { Router } from '@angular/router';
 import { VisitorService } from '../../visitor.service';
 import { WeeklySchedules } from '../../../classes-output';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-v-b-modify',
@@ -135,6 +136,33 @@ export class V_B_ModifyComponent implements OnInit {
         }
       }
     }
+  }
+
+  updateBooking(){
+    swal({
+      title: "Update?",
+      text: "Are you sure you want to update this booking?",
+      icon: "warning",
+      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      buttons: {
+        cancel: "Cancel",
+        ok: "Yes"
+      }
+    } as any)
+      .then((willUpdate) => {
+        if (willUpdate) { //if they click yes, update the booking
+
+          //return to booking view
+          this.router.navigate(['/visitor','booking-view']);
+
+          //update the booking in the firebase collection here 
+        
+
+          swal("Booking updated!", {
+            icon: "success",
+          });
+        }
+      });
   }
 
 }

@@ -163,7 +163,7 @@ export class V_B_ViewComponent implements OnInit {
   clickDelete() {
     swal({
       title: "Delete?",
-      text: "Are you sure to delete this booking?",
+      text: "Are you sure you want to delete this booking?",
       icon: "warning",
       dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
       buttons: {
