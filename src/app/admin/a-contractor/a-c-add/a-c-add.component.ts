@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import $ from 'jquery';
 import { AdminService } from '../../admin.service';
 import { capitalize } from 'src/app/functions';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-a-c-add',
@@ -27,6 +28,7 @@ export class A_C_AddComponent implements OnInit {
   }
 
   addContractor() {
+
     const cFirstName = capitalize($('#inputFirstName').val());
     const cLastName = capitalize($('#inputLastName').val());
     const email = $('#inputEmail').val();
@@ -36,10 +38,34 @@ export class A_C_AddComponent implements OnInit {
     if(cFirstName != "" && cLastName != "" && email != "" && phone != "" && companyName != "" && field != ""){
       if(phone.match(/^\d+$/)){
         this.adminService.addContractor(cFirstName, cLastName, email, phone, companyName, field);
+      
+        swal({
+          title: "Success!",
+          text: "Contractor added",
+          icon: "success",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+
+        //return to contractor view?
       }
     }
+
+   
+
     else {
-      console.log("SOME FIELDS ARE EMPTY")
+
+      swal({
+        title: "Error!",
+        text: "Some fields are empty!",
+        icon: "error",
+        buttons: {
+          ok: "OK"
+        }
+      } as any)
+      
+      //console.log("SOME FIELDS ARE EMPTY")
     }
   }
 

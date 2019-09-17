@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import { AdminService } from '../../admin.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-a-v-update',
@@ -29,6 +30,20 @@ export class A_V_UpdateComponent implements OnInit {
       $('p#staff-' + i).text(flag.staff.sFirstName + " " + flag.staff.sLastName);
       $('span#view-' + i).show();
     }
+  }
+
+  updateDetails(){
+        
+    //update firebase
+
+    swal({
+      title: "Success!",
+      text: "Details updated",
+      icon: "success",
+      buttons: {
+        ok: "OK"
+      }
+    } as any)
   }
 
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import $ from 'jquery';
 import { ContractorService } from '../contractor.service';
 import QRCode from 'qrcode';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-c-update',
@@ -39,5 +40,29 @@ export class C_UpdateComponent implements OnInit {
       $('body').removeClass('stop-scrolling');
     }
   }
+
+  updateDetails(){
+        
+    //if fields are not filled in
+        swal({
+          title: "Error!",
+          text: "All fields are not filled in!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+      
+      // else, add resident to firebase collection
+  
+      swal({
+        title: "Success!",
+        text: "Details updated",
+        icon: "success",
+        buttons: {
+          ok: "OK"
+        }
+      } as any)
+    }
 
 }

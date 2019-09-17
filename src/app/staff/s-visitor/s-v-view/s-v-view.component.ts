@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import $ from 'jquery';
 import { StaffService } from '../../staff.service';
 import { VisitorView } from '../../../classes-output';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-s-v-view',
@@ -118,7 +119,39 @@ export class S_V_ViewComponent implements OnInit {
         $('tr#item-'+ i +' > td.td-btn-img img').show();
         $('tr#item-'+ i +'-btn > td.td-btn-img img').show();
       }
+
+      $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
+        this.clickFlag();
+      });
+      $('tr#item-'+ i +'-btn > td.td-btn-danger > span').click(() => {
+        this.clickFlag();
+      });
     }
+  }
+
+  clickFlag(){
+    swal({
+      title: "Flag visitor",
+      text: "Please fill in the reason below:",
+      content: "input",
+      icon: "info",
+      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      buttons: {
+        cancel: "Cancel",
+        ok: "Submit"
+      }
+      
+    } as any)
+    .then((willSubmit) => {
+      if (willSubmit) {
+
+        //add the flag in the firebase for the selected visitor
+        
+        swal("Flag submitted", {
+          icon: "success",
+        });
+      }
+    });
   }
 
 }

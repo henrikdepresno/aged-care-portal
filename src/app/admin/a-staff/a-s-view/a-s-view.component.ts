@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import $ from 'jquery';
 import { AdminService } from '../../admin.service';
 import { StaffView } from '../../../classes-output';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-a-s-view',
@@ -120,11 +121,41 @@ export class A_S_ViewComponent implements OnInit {
       $('tr#item-'+ i +'-btn > td.td-btn-primary > span').click(() => {
         this.clickUpdate();
       });
+
+      $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
+        this.clickDelete();
+      });
+      $('tr#item-'+ i +'-btn > td.td-btn-danger > span').click(() => {
+        this.clickDelete();
+      });
     }
   }
 
   clickUpdate() {
     this.router.navigate(['/admin', 'staff-update']);
+  }
+
+  clickDelete(){
+    swal({
+      title: "Delete?",
+      text: "Are you sure you want to delete this staff?",
+      icon: "warning",
+      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      buttons: {
+        cancel: "Cancel",
+        ok: "Yes"
+      }
+    } as any)
+      .then((willDelete) => {
+        if (willDelete) {
+
+          //remove contractor from firebase collection here
+          
+          swal("Staff deleted!", {
+            icon: "success",
+          });
+        }
+      });
   }
 
 }

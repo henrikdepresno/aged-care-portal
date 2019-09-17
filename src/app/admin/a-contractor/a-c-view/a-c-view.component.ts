@@ -4,7 +4,7 @@ import $ from 'jquery';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { ContractorView } from '../../../classes-output';
-
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-a-c-view',
@@ -162,6 +162,27 @@ export class A_C_ViewComponent implements OnInit {
   }
 
   clickDelete(id: string) {
+
+    swal({
+      title: "Delete?",
+      text: "Are you sure you want to delete this contractor?",
+      icon: "warning",
+      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      buttons: {
+        cancel: "Cancel",
+        ok: "Yes"
+      }
+    } as any)
+      .then((willDelete) => {
+        if (willDelete) {
+
+          //remove contractor from firebase collection here
+          
+          swal("Contractor deleted!", {
+            icon: "success",
+          });
+        }
+      });
 
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-a-c-update',
@@ -15,5 +16,19 @@ export class A_C_UpdateComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/admin', 'contractor-update']);
   }
+
+  updateDetails(){
+        
+      //update firebase
+
+      swal({
+        title: "Success!",
+        text: "Details updated",
+        icon: "success",
+        buttons: {
+          ok: "OK"
+        }
+      } as any)
+    }
 
 }
