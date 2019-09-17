@@ -30,7 +30,7 @@
         <input type="text" class="form-control" id="inputResidentLastName" placeholder="Resident Last Name">
     </div>
     <div class="form-group">
-        <span [routerLink]="['../register-success']">Register!</span>
+        <span (click)="register()">Register!</span>
     </div>
     <div class="form-group go-back">
         <span [routerLink]="['../login/login-v']">Go back</span>
