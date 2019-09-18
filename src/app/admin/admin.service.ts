@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Resident, Contractor } from '../classes-input';
 import { StaffView, VisitorView, Feedback, Flag } from '../classes-output';
 import { randomUniqueID } from '../functions';
@@ -35,10 +35,26 @@ export class AdminService {
     this.afs.collection('id-list').get().toPromise().then(idSnapshot => {
       const newID = randomUniqueID(idSnapshot);
       this.contractorsCollection = this.afs.collection('contractors');
-      this.contractorsCollection.doc(newID).set(new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field));
+      const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field)
+      this.contractorsCollection.doc(newID).set(Object.assign({}, contractor));
       this.authService.addUser(newID, email, 'contractor');
       this.router.navigate(['/admin', 'contractor-view']);
     })
+  }
+
+  private updateIdSource = new BehaviorSubject<string>("");
+  updateId = this.updateIdSource.asObservable();
+
+  passUpdateId(id: string) {
+    this.updateIdSource.next(id);
+  }
+
+  updateContractor(id: string, cFirstName: string, cLastName: string, phone: string, companyName: string, field: string) {
+    if(cFirstName != "") this.afs.collection('contractors').doc(id).update({cFirstName: cFirstName});
+    if(cLastName != "") this.afs.collection('contractors').doc(id).update({cLastName: cLastName});
+    if(phone != "") this.afs.collection('contractors').doc(id).update({phone: phone});
+    if(companyName != "") this.afs.collection('contractors').doc(id).update({companyName: companyName});
+    if(field != "") this.afs.collection('contractors').doc(id).update({field: field});
   }
 
   deleteContractor(id: string) {

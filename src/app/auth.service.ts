@@ -122,9 +122,11 @@ export class AuthService {
         if(snapshot.docs.length != 0){
           this.afs.collection('deleted-users').doc(email).delete();
           const users: AngularFirestoreCollection<User> = this.afs.collection('users');
-          users.doc(id).set(new User(id, email, userType));
+          const user = new User(id, email, userType)
+          users.doc(id).set(Object.assign({}, user));
           const idList: AngularFirestoreCollection<IDList> = this.afs.collection('id-list');
-          idList.doc(id).set(new IDList(id));
+          const newId = new IDList(id)
+          idList.doc(id).set(Object.assign({}, newId));
 
           this.afAuth.auth.sendPasswordResetEmail(email);
         }
@@ -133,9 +135,11 @@ export class AuthService {
           
           this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
             const users: AngularFirestoreCollection<User> = this.afs.collection('users');
-            users.doc(id).set(new User(id, email, userType));
+            const user = new User(id, email, userType)
+            users.doc(id).set(Object.assign({}, user));
             const idList: AngularFirestoreCollection<IDList> = this.afs.collection('id-list');
-            idList.doc(id).set(new IDList(id));
+            const newId = new IDList(id)
+            idList.doc(id).set(Object.assign({}, newId));
 
             //TODO: Send an email with the id and new password
             console.log(password)
@@ -147,7 +151,8 @@ export class AuthService {
   deleteUser(id: string) {
     this.afs.collection('users', ref => ref.where('id', '==', id)).get().toPromise()
       .then(snapshot => { snapshot.forEach(doc => { 
-        this.afs.collection('deleted-users').doc(doc.data().email).set(new DeletedUser(doc.data().email));
+        const deletedUser = new DeletedUser(doc.data().email)
+        this.afs.collection('deleted-users').doc(doc.data().email).set(Object.assign({}, deletedUser));
         this.afs.collection('users').doc(id).delete();
         this.afs.collection('id-list').doc(id).delete();
       })});

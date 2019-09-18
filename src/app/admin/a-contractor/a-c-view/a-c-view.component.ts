@@ -142,10 +142,10 @@ export class A_C_ViewComponent implements OnInit {
       $('tr#item-'+ i +'-btn > td.td-btn').show();
 
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {
-        this.clickUpdate();
+        this.clickUpdate(contractor.id);
       });
       $('tr#item-'+ i +'-btn > td.td-btn-primary > span').click(() => {
-        this.clickUpdate();
+        this.clickUpdate(contractor.id);
       });
 
       $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
@@ -157,7 +157,8 @@ export class A_C_ViewComponent implements OnInit {
     }
   }
 
-  clickUpdate() {
+  clickUpdate(id: string) {
+    this.adminService.passUpdateId(id);
     this.router.navigate(['/admin', 'contractor-update']);
   }
 
@@ -173,7 +174,7 @@ export class A_C_ViewComponent implements OnInit {
       }
     } as any)
     .then((willDelete) => {
-      if (willDelete) {
+      if(willDelete) {
         this.adminService.deleteContractor(id);
         swal("Contractor deleted!", {
           icon: "success",

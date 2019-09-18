@@ -54,7 +54,7 @@ export class A_C_AddComponent implements OnInit {
         }
       }
       else {
-        this.swalError("The provided phone number is not valid!")
+        this.swalError("The provided phone number can only be digits!")
       }
     }
     else {
