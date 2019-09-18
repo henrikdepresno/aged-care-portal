@@ -43,8 +43,7 @@ export class AdminService {
   }
 
   deleteContractor(id: string) {
-    this.contractorDoc = this.afs.doc('contractors/' + id);
-    this.contractorDoc.delete();
+    this.afs.collection('contractors').doc(id).delete();
     this.authService.deleteUser(id);
   }
 

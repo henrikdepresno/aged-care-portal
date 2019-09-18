@@ -29,7 +29,14 @@ export class A_V_UpdateComponent implements OnInit {
       $('p#date-' + i).text(dateStr);
       $('p#staff-' + i).text(flag.staff.sFirstName + " " + flag.staff.sLastName);
       $('span#view-' + i).show();
+      $('span#view-' + i).click(() => {
+        this.viewFlag();
+      });
     }
+  }
+
+  viewFlag() {
+    
   }
 
   updateDetails(){

@@ -7,7 +7,6 @@ export class IDList {
 export class User {
   constructor(
     public id?: string,
-    public uid?: string,
     public email?: string,
     public userType?: string
   ) { }
