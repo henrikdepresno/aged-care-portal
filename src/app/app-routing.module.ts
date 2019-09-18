@@ -98,7 +98,7 @@ const routes: Routes = [
       { path: 'update', component: V_UpdateComponent }
     ]
   },
-  //{ path: '404', component: NotFoundComponent },
+  { path: '404', component: NotFoundComponent },
   //{ path: '**', redirectTo: '404' }
 ];
 

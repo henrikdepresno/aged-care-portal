@@ -24,7 +24,7 @@ export class AuthService {
           .then(snapshot => {
             snapshot.forEach(doc => { 
               const afAuthUserType: string = doc.data().userType;
-              const routerUserType: string = this.router.url.substr(8, afAuthUserType.length);
+              const routerUserType: string = this.router.url.substr(1, afAuthUserType.length);
               if(afAuthUserType != routerUserType){
                 this.router.navigate(['/404']);
               }
