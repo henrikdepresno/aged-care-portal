@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import { AdminService } from '../../admin.service';
-import { capitalize } from 'src/app/functions';
+import { capitalize, isNumeric, isEmail } from 'src/app/functions';
 import swal from 'sweetalert';
 
 @Component({
@@ -28,45 +28,49 @@ export class A_C_AddComponent implements OnInit {
   }
 
   addContractor() {
-
     const cFirstName = capitalize($('#inputFirstName').val());
     const cLastName = capitalize($('#inputLastName').val());
     const email = $('#inputEmail').val();
     const phone = $('#inputPhone').val();
     const companyName = $('#inputCompanyName').val();
     const field = capitalize($('#inputField').val());
-    if(cFirstName != "" && cLastName != "" && email != "" && phone != "" && companyName != "" && field != ""){
-      if(phone.match(/^\d+$/)){
-        this.adminService.addContractor(cFirstName, cLastName, email, phone, companyName, field);
-      
-        swal({
-          title: "Success!",
-          text: "Contractor added",
-          icon: "success",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
-
-        //return to contractor view?
+    if(cFirstName != "" && cLastName != "" && email != "" && phone != "" && companyName != "" && field != "") {
+      if(isNumeric(phone)) {
+        if(isEmail(email)) {
+          swal({
+            title: "Success!",
+            text: "Contractor added",
+            icon: "success",
+            buttons: {
+              ok: "OK"
+            }
+          } as any)
+          .then(() => {
+            this.adminService.addContractor(cFirstName, cLastName, email, phone, companyName, field);
+          });
+        }
+        else {
+          this.swalError("The provided email is not valid!")
+        }
+      }
+      else {
+        this.swalError("The provided phone number is not valid!")
       }
     }
-
-   
-
     else {
-
-      swal({
-        title: "Error!",
-        text: "Some fields are empty!",
-        icon: "error",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
-      
-      //console.log("SOME FIELDS ARE EMPTY")
+      this.swalError("Some fields are left empty!")
     }
+  }
+
+  private swalError(errorText: string) {
+    swal({
+      title: "Error!",
+      text: errorText,
+      icon: "error",
+      buttons: {
+        ok: "OK"
+      }
+    } as any)
   }
 
 }

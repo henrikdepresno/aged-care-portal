@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
 import { randomUniqueID, randomPassword } from './functions';
-import { User, IDList } from './classes-input';
+import { User, IDList, DeletedUser } from './classes-input';
 
 @Injectable({
   providedIn: 'root'
@@ -117,39 +117,40 @@ export class AuthService {
   }
 
   addUser(id: string, email: string, userType: string) {
-    /* if(Check in the deleted-users collection){
-      const users: AngularFirestoreCollection<User> = this.afs.collection('users');
-      users.doc(id).set(new User(id, email, userType));
-      const idList: AngularFirestoreCollection<IDList> = this.afs.collection('id-list');
-      idList.doc(id).set(new IDList(id));
+    this.afs.collection('deleted-users', ref => ref.where('email', '==', email)).get().toPromise()
+      .then(snapshot => {
+        if(snapshot.docs.length != 0){
+          this.afs.collection('deleted-users').doc(email).delete();
+          const users: AngularFirestoreCollection<User> = this.afs.collection('users');
+          users.doc(id).set(new User(id, email, userType));
+          const idList: AngularFirestoreCollection<IDList> = this.afs.collection('id-list');
+          idList.doc(id).set(new IDList(id));
 
-      this.afAuth.auth.sendPasswordResetEmail(email);
-    } else {
-      const password = randomPassword();
-      
-      this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
-        const users: AngularFirestoreCollection<User> = this.afs.collection('users');
-        users.doc(id).set(new User(id, email, userType));
-        const idList: AngularFirestoreCollection<IDList> = this.afs.collection('id-list');
-        idList.doc(id).set(new IDList(id));
+          this.afAuth.auth.sendPasswordResetEmail(email);
+        }
+        else {
+          const password = randomPassword();
+          
+          this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
+            const users: AngularFirestoreCollection<User> = this.afs.collection('users');
+            users.doc(id).set(new User(id, email, userType));
+            const idList: AngularFirestoreCollection<IDList> = this.afs.collection('id-list');
+            idList.doc(id).set(new IDList(id));
 
-        //Send an email with the id and new password
-      });
-      console.log(password)
-    } */
+            //TODO: Send an email with the id and new password
+            console.log(password)
+          });
+        }
+      })
   }
 
   deleteUser(id: string) {
     this.afs.collection('users', ref => ref.where('id', '==', id)).get().toPromise()
-      .then(snapshot => {
-        if(snapshot.docs.length == 0) {
-          //error
-        }
-        else {
-          this.afs.collection('users').doc(id).delete();
-          this.afs.collection('id-list').doc(id).delete();
-        }
-      })
+      .then(snapshot => { snapshot.forEach(doc => { 
+        this.afs.collection('deleted-users').doc(doc.data().email).set(new DeletedUser(doc.data().email));
+        this.afs.collection('users').doc(id).delete();
+        this.afs.collection('id-list').doc(id).delete();
+      })});
   }
 
 }

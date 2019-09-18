@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import $ from 'jquery';
 import swal from 'sweetalert';
 
 @Component({
@@ -15,20 +16,28 @@ export class A_C_UpdateComponent implements OnInit {
 
   ngOnInit() {
     this.router.navigate(['/admin', 'contractor-update']);
+
+    this.loadComponent();
   }
 
-  updateDetails(){
-        
-      //update firebase
+  loadComponent() {
+    //load the input fields
+  }
 
-      swal({
-        title: "Success!",
-        text: "Details updated",
-        icon: "success",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
-    }
+  updateContractor(){
+    //update firebase
+
+    swal({
+      title: "Success!",
+      text: "Details updated!",
+      icon: "success",
+      buttons: {
+        ok: "OK"
+      }
+    } as any)
+    .then(() => {
+
+    })
+  }
 
 }

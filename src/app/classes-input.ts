@@ -4,6 +4,12 @@ export class IDList {
   ) { }
 }
 
+export class DeletedUser {
+  constructor(
+    public email?: string
+  ) { }
+}
+
 export class User {
   constructor(
     public id?: string,

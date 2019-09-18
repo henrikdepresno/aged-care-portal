@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -25,7 +25,6 @@ export class AdminService {
 
   contractorsCollection: AngularFirestoreCollection<Contractor>;
   contractors: Observable<Contractor[]>;
-  contractorDoc: AngularFirestoreDocument<Contractor>;
 
   getContractors() {
     this.contractors = this.afs.collection('contractors').valueChanges();
