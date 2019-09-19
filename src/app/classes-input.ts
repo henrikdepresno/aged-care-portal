@@ -39,3 +39,35 @@ export class Resident {
     public email?: string
   ) { }
 }
+
+export class Visitor {
+  constructor(
+    public id?: string,
+    public vFirstName?: string,
+    public email?: string,
+    public phone?: string,
+    public residentIds?: string[],
+    public bookingIds?: string[],
+    public flags?: Flag[],
+    public inFacility?: boolean,
+    public justCheckOut?: boolean
+  ) { }
+}
+
+export class Booking {
+  constructor(
+    public id?: string,
+    public resident?: Resident,
+    public date?: string,
+    public timeSlots?: number[],
+    public isCancelled?: boolean
+  ) { }
+}
+
+export class Flag {
+  constructor(
+    public date?: string,
+    public staff?: string,
+    public reason?: string
+  ) { }
+}

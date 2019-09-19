@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http'
 import bootstrap from 'bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -45,7 +46,6 @@ import { V_B_ViewComponent } from './visitor/v-booking/v-b-view/v-b-view.compone
 import { V_R_AddComponent } from './visitor/v-resident/v-r-add/v-r-add.component';
 import { V_R_ViewComponent } from './visitor/v-resident/v-r-view/v-r-view.component';
 import { V_RegisterComponent } from './visitor/v-register/v-register.component';
-import { V_RegisterSuccessComponent } from './visitor/v-register/v-register-success/v-register-success.component';
 import { V_UpdateComponent } from './visitor/v-update/v-update.component';
 
 import { AuthService } from './auth.service';
@@ -92,7 +92,6 @@ import { AdminService } from './admin/admin.service';
     V_R_AddComponent,
     V_R_ViewComponent,
     V_RegisterComponent,
-    V_RegisterSuccessComponent,
     V_UpdateComponent,
 
   ],
@@ -101,7 +100,8 @@ import { AdminService } from './admin/admin.service';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase, 'aged-care-portal'),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    HttpClientModule
   ],
   providers: [
     AuthService,

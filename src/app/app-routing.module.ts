@@ -35,7 +35,6 @@ import { V_B_ViewComponent } from './visitor/v-booking/v-b-view/v-b-view.compone
 import { V_R_AddComponent } from './visitor/v-resident/v-r-add/v-r-add.component';
 import { V_R_ViewComponent } from './visitor/v-resident/v-r-view/v-r-view.component';
 import { V_RegisterComponent } from './visitor/v-register/v-register.component';
-import { V_RegisterSuccessComponent } from './visitor/v-register/v-register-success/v-register-success.component';
 import { V_UpdateComponent } from './visitor/v-update/v-update.component';
 
 const routes: Routes = [
@@ -85,7 +84,6 @@ const routes: Routes = [
     ]
   },
   { path: 'register', component: V_RegisterComponent },
-  { path: 'register-success', component: V_RegisterSuccessComponent },
   {
     path: 'visitor',
     children: [
