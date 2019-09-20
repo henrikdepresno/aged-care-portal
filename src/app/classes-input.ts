@@ -4,12 +4,6 @@ export class IDList {
   ) { }
 }
 
-export class DeletedUser {
-  constructor(
-    public email?: string
-  ) { }
-}
-
 export class User {
   constructor(
     public id?: string,
@@ -44,6 +38,7 @@ export class Visitor {
   constructor(
     public id?: string,
     public vFirstName?: string,
+    public vLastName?: string,
     public email?: string,
     public phone?: string,
     public residentIds?: string[],

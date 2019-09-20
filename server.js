@@ -57,7 +57,7 @@ async function sendEmail(data, callback) {
 
   // context of the email
   const mailOptions = {
-    from: `"Onshoring ACP", "onshoringportal@gmail.com"`,
+    from: `"Onshoring ACP" <onshoringportal@gmail.com>`,
     to: data.email,
     subject: data.subject,
     text: data.text

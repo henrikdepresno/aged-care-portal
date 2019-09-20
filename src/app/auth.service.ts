@@ -4,8 +4,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import swal from 'sweetalert';
+import { EmailService } from './email.service';
 import { randomUniqueID, randomPassword } from './functions';
-import { User, IDList, DeletedUser, Visitor } from './classes-input';
+import { User, IDList, Visitor } from './classes-input';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private emailService: EmailService
   ) { }
 
   checkUserType() {
@@ -109,14 +111,14 @@ export class AuthService {
         if(snapshot.docs.length != 0) {
           this.afs.collection('id-list').get().toPromise().then(idSnapshot => {
             const newID = randomUniqueID(idSnapshot);
-            const visitor = new Visitor(newID, vFirstName, email, phone, [snapshot.docs[0].id], [], [], false, false);
+            const visitor = new Visitor(newID, vFirstName, vLastName, email, phone, [snapshot.docs[0].id], [], [], false, false);
             this.afs.collection('visitors').doc(newID).set(Object.assign({}, visitor));
             this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
-              const user = new User(newID, email, "visitor");
+              const user = new User(newID, email, 'visitor');
               this.afs.collection('users').doc(newID).set(Object.assign({}, user));
               const newId = new IDList(newID);
               this.afs.collection('id-list').doc(newID).set(Object.assign({}, newId));
-  
+              this.emailService.emailNewAccount(email, newID, vFirstName, 'visitor');
               swal({
                 title: "Account created!",
                 text: "Your new ID has been sent to your email!",
@@ -128,7 +130,6 @@ export class AuthService {
               .then(() => {
                 this.router.navigate(['/login', 'login-v'])
               });
-              //TODO: Send an email with the id
             });
           })
         }
@@ -145,50 +146,28 @@ export class AuthService {
       })
   }
 
-  addUser(id: string, email: string, userType: string) {
-    this.afs.collection('deleted-users', ref => ref.where('email', '==', email)).get().toPromise()
-      .then(snapshot => {
-        if(snapshot.docs.length != 0){
-          this.afs.collection('deleted-users').doc(email).delete();
-          const user = new User(id, email, userType);
-          this.afs.collection('users').doc(id).set(Object.assign({}, user));
-          const newId = new IDList(id);
-          this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
+  addUser(id: string, email: string, userType: string, firstName: string) {
+    const password = randomPassword();
+    
+    this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
+      const user = new User(id, email, userType);
+      this.afs.collection('users').doc(id).set(Object.assign({}, user));
+      const newId = new IDList(id);
+      this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
 
-          this.afAuth.auth.sendPasswordResetEmail(email);
-        }
-        else {
-          const password = randomPassword();
-          
-          this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
-            const user = new User(id, email, userType);
-            this.afs.collection('users').doc(id).set(Object.assign({}, user));
-            const newId = new IDList(id);
-            this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
-
-            //TODO: Send an email with the id and new password
-            console.log(password)
-          });
-        }
-      })
+      this.emailService.emailNewAccount(email, id, firstName, userType, password);
+    })
   }
 
   deleteUser(id: string) {
     this.afs.collection('users', ref => ref.where('id', '==', id)).get().toPromise()
       .then(snapshot => { snapshot.forEach(doc => { 
-        const deletedUser = new DeletedUser(doc.data().email)
-        this.afs.collection('deleted-users').doc(doc.data().email).set(Object.assign({}, deletedUser));
+        const data = {
+          email: doc.data().email
+        }
+        this.http.post("http://localhost:3000/delete-auth-user-fb", data).subscribe();
         this.afs.collection('users').doc(id).delete();
         this.afs.collection('id-list').doc(id).delete();
       })});
   }
-
-  testDelete(email: string){
-    let data = {
-      email: email
-    }
-    this.http.post("http://localhost:3000/delete-auth-user-fb", data).subscribe();
-  }
-
 }
-

@@ -37,7 +37,7 @@ export class AdminService {
       this.contractorsCollection = this.afs.collection('contractors');
       const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field)
       this.contractorsCollection.doc(newID).set(Object.assign({}, contractor));
-      this.authService.addUser(newID, email, 'contractor');
+      this.authService.addUser(newID, email, 'contractor', cFirstName);
       this.router.navigate(['/admin', 'contractor-view']);
     })
   }

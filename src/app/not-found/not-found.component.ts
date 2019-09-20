@@ -19,7 +19,7 @@ export class NotFoundComponent implements OnInit {
   }
   
   clickHome() {
-    this.authService.testDelete("bazingaomegalul@gmail.com");
+    this.authService.navigateToHome(false);
   }
 
 }
