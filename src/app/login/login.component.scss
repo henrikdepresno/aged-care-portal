@@ -9,7 +9,7 @@ $lg-width: 1200px;
 section#login-nav {
     div.container-fluid.d-none.d-sm-block {
         @include lg-width-min {
-            margin-top: 20px;
+            margin-top: 80px;
             width: $lg-width;
         }
     }

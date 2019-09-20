@@ -1,11 +1,12 @@
 <form>
     <div class="form-group">
         <!-- Changed placeholder to enter email -->
-        <input type="text" class="form-control" id="inputVisitorID" placeholder="Enter Email">
+        <input type="text" class="form-control" id="inputVisitorID" placeholder="Enter ID">
     </div>
     <div class="form-group">
         <input type="password" class="form-control" id="inputVisitorPassword" placeholder="Enter Password">
     </div>
+    <div id="forgot"><a [routerLink]="['../../reset-password']">Forgot Password?</a></div>
     <div class="form-group">
         <span class="btn btn-primary" (click)="loginVisitor()">Log In</span>
     </div>

@@ -8,6 +8,7 @@ import { A_LoginComponent } from './login/a-login/a-login.component';
 import { C_LoginComponent } from './login/c-login/c-login.component';
 import { S_LoginComponent } from './login/s-login/s-login.component';
 import { V_LoginComponent } from './login/v-login/v-login.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 import { A_C_AddComponent } from './admin/a-contractor/a-c-add/a-c-add.component';
 import { A_C_UpdateComponent } from './admin/a-contractor/a-c-update/a-c-update.component';
@@ -48,6 +49,7 @@ const routes: Routes = [
       { path: 'login-v', component: V_LoginComponent }
     ]
   },
+  { path: 'reset-password', component: ResetPasswordComponent },
   {
     path: 'admin',
     children: [
