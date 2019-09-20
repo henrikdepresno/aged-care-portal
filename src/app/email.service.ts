@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import swal from 'sweetalert';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,8 @@ export class EmailService {
 
   constructor(
     private http: HttpClient,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private router: Router
   ) { }
 
   emailNewAccount(email: string, id: string, firstName: string, userType: string, password?: string) {
@@ -58,6 +61,27 @@ export class EmailService {
   }
 
   emailResetPassword(email: string) {
-    this.afAuth.auth.sendPasswordResetEmail(email);
+    this.afAuth.auth.sendPasswordResetEmail(email)
+      .then(() => {
+        swal({
+          title: "Reset Password Email Sent!",
+          text: "Please check your inbox for a reset email!",
+          icon: "success",
+          buttons: {
+            ok: "Login"
+          }
+        } as any)
+        .then(() => {this.router.navigate(['/login'])});
+      })
+      .catch(() => {
+        swal({
+          title: "Error!",
+          text: "Email does not exist in ACP!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+      })
   }
 }

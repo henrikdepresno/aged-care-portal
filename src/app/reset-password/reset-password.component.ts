@@ -30,18 +30,10 @@ export class ResetPasswordComponent implements OnInit {
 
   submitResetEmail(){
     const email = $('#inputEmail').val();
-    const confirmEmail = $('#confirmEmail').val();
+    const confirmEmail = $('#inputConfirmEmail').val();
     if(isEmail(email)) {
       if(email == confirmEmail) {
         this.emailService.emailResetPassword(email);
-        swal({
-          title: "Reset Password Email Sent!",
-          text: "Please check your inbox for a reset email!",
-          icon: "success",
-          buttons: {
-            ok: "Login"
-          }
-        } as any)
       }
       else {
         this.swalError("The email and confirmation email do not match!")
