@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
+import swal from 'sweetalert';
+import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { capitalize, isNumeric, isEmail } from 'src/app/functions';
-import swal from 'sweetalert';
 
 @Component({
   selector: 'app-a-c-add',
@@ -14,17 +15,26 @@ export class A_C_AddComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private adminService: AdminService
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/admin', 'contractor-add']);
 
+    this.validateUserType();
+
     $('#inputFirstName, #inputLastName, #inputPhone, #inputEmail, #inputCompanyName, #inputField').keyup(e => {
       if(e.which == 13) {
         this.addContractor();
       }
     });
+  }
+
+  validateUserType() {
+    return new Promise(() => {
+      this.authService.checkUserType();
+    })
   }
 
   addContractor() {

@@ -1,7 +1,7 @@
 <section id="staff-headings">
     <form id="user-info">
         <span id="circle-user-icon"><img src="/assets/img/user-icon.png"></span>
-        <div class="div-btn div-btn-danger"><span [routerLink]="['../../login/login-a']">Log out</span></div>
+        <div class="div-btn div-btn-danger"><span (click)="logOut()">Log out</span></div>
     </form>
 
     <section id="staff-utility">
@@ -46,7 +46,7 @@
                     <span>Update</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span (click)="clickDelete()">Delete</span>
+                    <span>Delete</span>
                 </td>
             </tr>
             <tr id="item-2-text" class="item tr-text">

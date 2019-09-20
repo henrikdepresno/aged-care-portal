@@ -6,7 +6,7 @@
         <strong>ID:</strong>
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" id="staffID" value="A123B" readonly>
+        <input type="text" class="form-control" id="staffID" readonly>
     </div>
 </form>
 
@@ -23,13 +23,10 @@
         <input type="text" class="form-control" id="inputPhone" placeholder="Phone">
     </div>
     <div class="form-group">
-        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+        <input type="text" class="form-control" id="inputRole" placeholder="Role">
     </div>
     <div class="form-group">
-        <input type="role" class="form-control" id="inputRole" placeholder="Role">
-    </div>
-    <div class="form-group">
-        <span (click)="updateDetails()">Save!</span>
+        <span (click)="updateStaff()">Save!</span>
     </div>
     <div class="form-group go-back">
         <span [routerLink]="['../staff-view']">Go back</span>

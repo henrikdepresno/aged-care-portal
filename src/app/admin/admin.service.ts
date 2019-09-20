@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Resident, Contractor } from '../classes-input';
+import { Resident, Contractor, Staff } from '../classes-input';
 import { StaffView, VisitorView, Feedback, Flag } from '../classes-output';
 import { randomUniqueID } from '../functions';
 
@@ -22,6 +22,15 @@ export class AdminService {
     const num = 10;
     return num;
   }
+
+  private updateIdSource = new BehaviorSubject<string>("");
+  updateId = this.updateIdSource.asObservable();
+
+  passUpdateId(id: string) {
+    this.updateIdSource.next(id);
+  }
+
+  // Contractor Functions
 
   contractorsCollection: AngularFirestoreCollection<Contractor>;
   contractors: Observable<Contractor[]>;
@@ -42,13 +51,6 @@ export class AdminService {
     })
   }
 
-  private updateIdSource = new BehaviorSubject<string>("");
-  updateId = this.updateIdSource.asObservable();
-
-  passUpdateId(id: string) {
-    this.updateIdSource.next(id);
-  }
-
   updateContractor(id: string, cFirstName: string, cLastName: string, phone: string, companyName: string, field: string) {
     if(cFirstName != "") this.afs.collection('contractors').doc(id).update({cFirstName: cFirstName});
     if(cLastName != "") this.afs.collection('contractors').doc(id).update({cLastName: cLastName});
@@ -62,20 +64,37 @@ export class AdminService {
     this.authService.deleteUser(id);
   }
 
-  getStaffViews(): StaffView[] {
-    const staffViews: StaffView[] = [
-      new StaffView("Manahil", "Maguire"),
-      new StaffView("Dalia", "Walls"),
-      new StaffView("Ricardo", "Wynn"),
-      new StaffView("Abdullahi", "Bates"),
-      new StaffView("Sienna", "Frazier"),
-      new StaffView("Kyron", "Frank"),
-      new StaffView("Issa", "Rigby"),
-      new StaffView("Isla-Rae", "Hudson"),
-      new StaffView("Anya", "Perkins"),
-      new StaffView("Kaine", "Woolley")
-    ];
-    return staffViews;
+  // Staff Functions
+
+  staffsCollection: AngularFirestoreCollection<Staff>;
+  staffs: Observable<Staff[]>;
+
+  getStaffs() {
+    this.staffs = this.afs.collection('staffs').valueChanges();
+    return this.staffs;
+  }
+
+  addStaff(sFirstName: string, sLastName: string, email: string, phone: string, role: string) {
+    this.afs.collection('id-list').get().toPromise().then(idSnapshot => {
+      const newID = randomUniqueID(idSnapshot);
+      this.staffsCollection = this.afs.collection('staffs');
+      const staff = new Staff(newID, sFirstName, sLastName, phone, email, role)
+      this.staffsCollection.doc(newID).set(Object.assign({}, staff));
+      this.authService.addUser(newID, email, 'staff', sFirstName);
+      this.router.navigate(['/admin', 'staff-view']);
+    })
+  }
+
+  updateStaff(id: string, sFirstName: string, sLastName: string, phone: string, role: string) {
+    if(sFirstName != "") this.afs.collection('staffs').doc(id).update({sFirstName: sFirstName});
+    if(sLastName != "") this.afs.collection('staffs').doc(id).update({sLastName: sLastName});
+    if(phone != "") this.afs.collection('staffs').doc(id).update({phone: phone});
+    if(role != "") this.afs.collection('staffs').doc(id).update({role: role});
+  }
+
+  deleteStaff(id: string) {
+    this.afs.collection('staffs').doc(id).delete();
+    this.authService.deleteUser(id);
   }
 
   residentsCollection: AngularFirestoreCollection<Resident>;
@@ -134,7 +153,7 @@ export class AdminService {
 
   getFlags(): Flag[] {
     const flags: Flag[] = [
-      new Flag(new Date(2019, 6, 12, 14, 0, 0), new StaffView("Dalia", "Walls"), "")
+      new Flag(new Date(2019, 6, 12, 14, 0, 0), "Dalia Walls", "")
     ];
     return flags;
   }

@@ -24,6 +24,17 @@ export class Contractor {
   ) { }
 }
 
+export class Staff {
+  constructor(
+    public id?: string,
+    public sFirstName?: string,
+    public sLastName?: string,
+    public phone?: string,
+    public email?: string,
+    public role?: string
+  ) { }
+}
+
 export class Resident {
   constructor(
     public id?: string,

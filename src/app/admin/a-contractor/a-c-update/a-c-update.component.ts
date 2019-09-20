@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import swal from 'sweetalert';
+import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { capitalize, isNumeric } from 'src/app/functions';
 
@@ -16,12 +17,25 @@ export class A_C_UpdateComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private adminService: AdminService
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/admin', 'contractor-update']);
-    this.adminService.updateId.subscribe(id => this.id = id);
+
+    this.validateUserType();
+
+    this.adminService.updateId.subscribe(id => {
+      this.id = id
+      $('#contractorID').val(id);
+    });
+  }
+
+  validateUserType() {
+    return new Promise(() => {
+      this.authService.checkUserType();
+    })
   }
 
   updateContractor() {

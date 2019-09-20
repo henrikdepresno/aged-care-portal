@@ -16,6 +16,7 @@ export class ContractorView {
 
 export class StaffView {
   constructor(
+    public id: string,
     public sFirstName: string,
     public sLastName: string
   ) { }
@@ -50,7 +51,7 @@ export class Feedback {
 export class Flag {
   constructor(
     public date: Date,
-    public staff: StaffView,
+    public staff: string,
     public reason: string
   ) { }
 }

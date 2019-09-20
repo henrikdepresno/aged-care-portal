@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import $ from 'jquery';
 import swal from 'sweetalert';
+import { AuthService } from '../../../auth.service';
+import { AdminService } from '../../admin.service';
+import { capitalize, isNumeric, isEmail } from 'src/app/functions';
 
 @Component({
   selector: 'app-a-s-add',
@@ -10,38 +14,72 @@ import swal from 'sweetalert';
 export class A_S_AddComponent implements OnInit {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private adminService: AdminService
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/admin', 'staff-add']);
+
+    this.validateUserType();
+
+    $('#inputFirstName, #inputLastName, #inputPhone, #inputEmail, #inputRole').keyup(e => {
+      if(e.which == 13) {
+        this.addStaff();
+      }
+    });
+  }
+
+  validateUserType() {
+    return new Promise(() => {
+      this.authService.checkUserType();
+    })
   }
 
   addStaff(){
-
-    //update firebase
-    
-    swal({
-      title: "Success!",
-      text: "Staff added",
-      icon: "success",
-      buttons: {
-        ok: "OK"
+    const sFirstName = capitalize($('#inputFirstName').val());
+    const sLastName = capitalize($('#inputLastName').val());
+    const email = $('#inputEmail').val();
+    const phone = $('#inputPhone').val();
+    const role = capitalize($('#inputRole').val());
+    if(sFirstName != "" && sLastName != "" && email != "" && phone != "" && role != "") {
+      if(isNumeric(phone)) {
+        if(isEmail(email)) {
+          swal({
+            title: "Success!",
+            text: "Staff added",
+            icon: "success",
+            buttons: {
+              ok: "OK"
+            }
+          } as any)
+          .then(() => {
+            this.adminService.addStaff(sFirstName, sLastName, email, phone, role);
+          });
+        }
+        else {
+          this.swalError("The provided email is not valid!")
+        }
       }
-    } as any)
+      else {
+        this.swalError("The provided phone number can only be digits!")
+      }
+    }
+    else {
+      this.swalError("Some fields are left empty!")
+    }
+  }
 
-    //if some fields are empty
-
+  private swalError(errorText: string) {
     swal({
       title: "Error!",
-      text: "Some fields are empty!",
+      text: errorText,
       icon: "error",
       buttons: {
         ok: "OK"
       }
     } as any)
-
-    //return to staff view?
   }
 
 }
