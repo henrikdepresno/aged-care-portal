@@ -24,11 +24,13 @@ export class A_R_UpdateComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/admin', 'resident-update']);
 
-    this.validateUserType();
-
-    this.adminService.updateId.subscribe(id => {
-      this.id = id
-      $('#residentID').val(id);
+    this.validateUserType().then(res => {
+      if(res) { 
+        this.adminService.updateId.subscribe(id => {
+          this.id = id
+          $('#residentID').val(id);
+        });
+      }
     });
 
     $('#inputFirstName, #inputLastName, #inputPhone').keyup(e => {
@@ -39,8 +41,9 @@ export class A_R_UpdateComponent implements OnInit {
   }
 
   validateUserType() {
-    return new Promise(() => {
+    return new Promise((resolve, reject) => {
       this.authService.checkUserType();
+      resolve(this.router.url.includes("/admin/resident-update"));
     })
   }
 

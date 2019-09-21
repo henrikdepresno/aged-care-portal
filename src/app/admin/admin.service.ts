@@ -3,8 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Resident, Contractor, Staff, IDList } from '../classes';
-import { VisitorView, Feedback, Flag } from '../classes-output';
+import { Resident, Contractor, Staff, IDList, Visitor, Flag } from '../classes';
+import { Feedback } from '../classes-output';
 import { randomUniqueID } from '../functions';
 
 @Injectable({
@@ -202,30 +202,25 @@ export class AdminService {
     this.afs.collection('id-list').doc(id).delete();
   }
 
-  getVisitorViews(): VisitorView[] {
-    const visitorViews: VisitorView[] = [
-      new VisitorView("Arian", "Jacobson", false),
-      new VisitorView("Jadene", "Kane", false),
-      new VisitorView("Ida", "Esquivel", false),
-      new VisitorView("Carmel", "Conway", false),
-      new VisitorView("Nusaybah", "Horne", false),
-      new VisitorView("Mekhi", "Diaz", true),
-      new VisitorView("Rudi", "Betts", false),
-      new VisitorView("Arjan", "Forbes", false),
-      new VisitorView("Arman", "Haigh", false),
-      new VisitorView("Md", "Cannon", true),
-      new VisitorView("Gabriela", "Coles", false),
-      new VisitorView("Micheal", "Davey", true),
-      new VisitorView("Jeremy", "Whelan", false),
-      new VisitorView("Danyal", "Carter", false),
-      new VisitorView("Taybah", "Jaramillo", false),
-      new VisitorView("Tasha", "Wilks", true),
-      new VisitorView("Menna", "Chaney", false),
-      new VisitorView("Tania", "Kirkland", false),
-      new VisitorView("Vikki", "Ellis", false),
-      new VisitorView("Saxon", "Oneil", false)
-    ];
-    return visitorViews;
+  // Visitor Functions
+
+  visitorsCollection: AngularFirestoreCollection<Visitor>;
+  visitors: Observable<Visitor[]>;
+  visitor: Observable<Visitor>;
+
+  getVisitors() {
+    this.visitors = this.afs.collection('visitors').valueChanges();
+    return this.visitors;
+  }
+
+  getVisitor(id: string) {
+    this.visitor = this.afs.collection('visitors').doc(id).valueChanges();
+    return this.visitor;
+  }
+
+  clearFlag(flags: Flag[], index: number, id: string) {
+    flags.splice(index, 1);
+    this.afs.collection('visitors').doc(id).update({flags: flags});
   }
 
   getRatings(): number[] {
@@ -246,12 +241,5 @@ export class AdminService {
       new Feedback("Helpful staff!", "Saxon", "Oneil", "Visitor", new Date(2019, 5, 21, 14, 0, 0), "")
     ];
     return feedbacks;
-  }
-
-  getFlags(): Flag[] {
-    const flags: Flag[] = [
-      new Flag(new Date(2019, 6, 12, 14, 0, 0), "Dalia Walls", "")
-    ];
-    return flags;
   }
 }

@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import { AdminService } from '../../admin.service';
 import swal from 'sweetalert';
+import { AuthService } from '../../../auth.service';
+import { AdminService } from '../../admin.service';
+import { capitalize, isNumeric } from 'src/app/functions';
+import { mergeMap } from 'rxjs/operators';
+import { Flag } from 'src/app/classes';
 
 @Component({
   selector: 'app-a-v-update',
@@ -11,35 +15,94 @@ import swal from 'sweetalert';
 })
 export class A_V_UpdateComponent implements OnInit {
 
+  id: string;
+
   constructor(
     private router: Router,
+    private authService: AuthService,
     private adminService: AdminService
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/admin', 'visitor-update']);
 
-    const flags = this.adminService.getFlags();
-    for(let i = 1; i <= 3; i++) {
+    this.validateUserType().then(res => {
+      if(res) { 
+        this.adminService.updateId.pipe(
+          mergeMap(id => {
+            this.id = id
+            $('#visitorID').val(id);
+            return this.adminService.getVisitor(id);
+          })
+        ).subscribe(res => {
+          let flags = res.flags;
+          this.loadFlagTable(flags);
+        });
+      }
+    });
+
+    $('#inputFirstName, #inputLastName, #inputPhone').keyup(e => {
+      if(e.which == 13) {
+        this.updateVisitor();
+      }
+    });
+  }
+
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/admin/visitor-update"));
+    })
+  }
+
+  loadFlagTable(flags: Flag[]) {
+    for(let i = 0; i <= 3; i++) {
       const flag = flags[i - 1];
-      const date = flag.date;
-      const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
-        + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
-        + date.getFullYear();
-      $('p#date-' + i).text(dateStr);
+      $('p#date-' + i).text(flag.date);
       $('p#staff-' + i).text(flag.staff);
       $('span#view-' + i).show();
       $('span#view-' + i).click(() => {
-        this.viewFlag();
+        this.viewFlag(flag, flags, i - 1, this.id);
       });
     }
   }
 
-  viewFlag() {
-    
+  viewFlag(flag: Flag, flags: Flag[], index: number, visitorId: string) {
+    swal({
+      text: `Date flagged: ${flag.date}
+      Flagged by: ${flag.staff}
+      Reason: ${flag.reason}`,
+      icon: "info",
+      buttons: {
+        cancel: "Clear flag",
+        ok: "OK"
+      }
+    } as any)
+    .then((pressOk) => {
+      if(!pressOk) {
+        swal({
+          title: "Clear flag?",
+          text: "Are you sure you want to clear this flag?",
+          icon: "warning",
+          dangerMode: true,
+          buttons: {
+            cancel: "Cancel",
+            ok: "Yes"
+          }
+        } as any)
+        .then((willClear) => {
+          if(willClear) {
+            this.adminService.clearFlag(flags, index, visitorId);
+            swal("Flag cleared!", {
+              icon: "success",
+            })
+          }
+        });
+      }
+    });
   }
 
-  updateDetails(){
+  updateVisitor(){
         
     //update firebase
 

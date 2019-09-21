@@ -66,6 +66,37 @@ async function sendEmail(data, callback) {
   transporter.sendMail(mailOptions, callback);
 }
 
+// define a add auth user endpoint
+app.post("/add-auth-user-fb", (req, res) => {
+  console.log("add request came");
+  let data = req.body;
+  addAuthUser(data.email, data.password, (err, info) => {
+    if(err) {
+      console.log(err);
+      res.status(400);
+      res.send({error: "Failed to add"});
+    }
+    else {
+      console.log("User has been added");
+      res.send(info);
+    }
+  });
+});
+
+// add auth user function by email
+async function addAuthUser(email, password) {
+  admin.auth().createUser({
+    email: email,
+    emailVerified: true,
+    password: password
+  }).then(function(userRecord) {
+    console.log('Successfully created new auth user:', userRecord.uid);
+  })
+  .catch(function(error) {
+    console.log('Error deleting user:', error);
+  });
+}
+
 // define a delete auth user endpoint
 app.post("/delete-auth-user-fb", (req, res) => {
   console.log("delete request came");

@@ -148,15 +148,17 @@ export class AuthService {
 
   addUser(id: string, email: string, userType: string, firstName: string) {
     const password = randomPassword();
-    
-    this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
-      const user = new User(id, email, userType);
-      this.afs.collection('users').doc(id).set(Object.assign({}, user));
-      const newId = new IDList(id);
-      this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
+    const data = {
+      email: email,
+      password: password
+    }
+    this.http.post("http://localhost:3000/add-auth-user-fb", data).subscribe();
+    const user = new User(id, email, userType);
+    this.afs.collection('users').doc(id).set(Object.assign({}, user));
+    const newId = new IDList(id);
+    this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
 
-      this.emailService.emailNewAccount(email, id, firstName, userType, password);
-    })
+    this.emailService.emailNewAccount(email, id, firstName, userType, password);
   }
 
   deleteUser(id: string) {
