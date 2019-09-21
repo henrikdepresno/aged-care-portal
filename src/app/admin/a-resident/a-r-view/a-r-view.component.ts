@@ -1,9 +1,10 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import { AdminService } from '../../admin.service';
-import { ResidentView } from '../../../classes-output';
 import swal from 'sweetalert';
+import { AuthService } from '../../../auth.service';
+import { AdminService } from '../../admin.service';
+import { Resident } from 'src/app/classes';
 
 @Component({
   selector: 'app-a-r-view',
@@ -14,36 +15,47 @@ export class A_R_ViewComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private adminService: AdminService,
     @Optional() private pagesNum: number,
-    @Optional() private outputResidents: ResidentView[][]
+    @Optional() private outputResidents: Resident[][]
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/admin', 'resident-view']);
 
+    this.validateUserType().then(res => {
+      if(res) { 
+        this.loadComponent();
+      }
+    });
+  }
+
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/admin/resident-view"));
+    })
+  }
+
+  loadComponent() {
     const current = this.adminService.getCurrentVisitorNumber();
     $('strong#current-visitors-num').text(current);
     $('strong#current-visitors-num').css("user-select", "none");
     
     let residents = this.adminService.getResidents();
     residents.subscribe(res => {
-      let residentViews: ResidentView[] = [];
-      for(let i = 0; i < res.length; i++) {
-        residentViews.push(new ResidentView(res[i].rFirstName, res[i].rLastName));
-      }
-
       $('div#pages').empty();
 
-      let residentsNum = residentViews.length;
+      let residentsNum = res.length;
       this.pagesNum = ((residentsNum / 8) == 0) ? 1 : Math.ceil(residentsNum / 8);
       this.outputResidents = new Array(this.pagesNum);
       for(let iPage = 0; iPage < this.pagesNum; iPage++) {
         const fill = (residentsNum < 8) ? residentsNum : 8;
         this.outputResidents[iPage] = new Array(fill);
         for(let iRes = 0; iRes < fill; iRes++) {
-          this.outputResidents[iPage][iRes] = residentViews[0];
-          residentViews.shift();
+          this.outputResidents[iPage][iRes] = res[0];
+          res.shift();
           residentsNum--;
         }
       }
@@ -124,47 +136,64 @@ export class A_R_ViewComponent implements OnInit {
       $('tr#item-'+ i +' > td.td-btn').show();
       $('tr#item-'+ i +'-btn > td.td-btn').show();
 
+      $('p#resident-name-'+ i).click(() => {
+        this.clickInfo(resident);
+      })
+
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {
-        this.clickUpdate();
+        this.clickUpdate(resident.id);
       });
       $('tr#item-'+ i +'-btn > td.td-btn-primary > span').click(() => {
-        this.clickUpdate();
+        this.clickUpdate(resident.id);
       });
 
       $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
-        this.clickDelete();
+        this.clickDelete(resident.id);
       });
       $('tr#item-'+ i +'-btn > td.td-btn-danger > span').click(() => {
-        this.clickDelete();
+        this.clickDelete(resident.id);
       });
     }
   }
 
-  clickUpdate() {
+  clickInfo(resident: Resident) {
+    swal({
+      title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
+      text:
+      `Phone: ${resident.phone}`,
+      icon: "info",
+    });
+  }
+
+  clickUpdate(id: string) {
+    this.adminService.passUpdateId(id);
     this.router.navigate(['/admin', 'resident-update']);
   }
 
-  clickDelete(){
+  clickDelete(id: string) {
     swal({
       title: "Delete?",
       text: "Are you sure you want to delete this resident?",
       icon: "warning",
-      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      dangerMode: true,
       buttons: {
         cancel: "Cancel",
         ok: "Yes"
       }
     } as any)
-      .then((willDelete) => {
-        if (willDelete) {
+    .then((willDelete) => {
+      if(willDelete) {
+        this.adminService.deleteResident(id);
+        swal("Resident deleted!", {
+          icon: "success",
+        })
+      }
+    });
+  }
 
-          //remove contractor from firebase collection here
-          
-          swal("Resident deleted!", {
-            icon: "success",
-          });
-        }
-      });
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/login', 'login-a']);
   }
 
 }

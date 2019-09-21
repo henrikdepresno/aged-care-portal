@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import swal from 'sweetalert';
 import { EmailService } from './email.service';
 import { randomUniqueID, randomPassword } from './functions';
-import { User, IDList, Visitor } from './classes-input';
+import { User, IDList, Visitor } from './classes';
 
 @Injectable({
   providedIn: 'root'

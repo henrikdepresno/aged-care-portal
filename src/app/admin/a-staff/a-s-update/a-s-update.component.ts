@@ -30,6 +30,12 @@ export class A_S_UpdateComponent implements OnInit {
       this.id = id
       $('#staffID').val(id);
     });
+
+    $('#inputFirstName, #inputLastName, #inputPhone, #inputRole').keyup(e => {
+      if(e.which == 13) {
+        this.updateStaff();
+      }
+    });
   }
 
   validateUserType() {

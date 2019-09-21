@@ -30,6 +30,12 @@ export class A_C_UpdateComponent implements OnInit {
       this.id = id
       $('#contractorID').val(id);
     });
+
+    $('#inputFirstName, #inputLastName, #inputPhone, #inputCompanyName, #inputField').keyup(e => {
+      if(e.which == 13) {
+        this.updateContractor();
+      }
+    });
   }
 
   validateUserType() {

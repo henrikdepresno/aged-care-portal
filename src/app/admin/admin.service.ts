@@ -3,8 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Resident, Contractor, Staff } from '../classes-input';
-import { StaffView, VisitorView, Feedback, Flag } from '../classes-output';
+import { Resident, Contractor, Staff, IDList } from '../classes';
+import { VisitorView, Feedback, Flag } from '../classes-output';
 import { randomUniqueID } from '../functions';
 
 @Injectable({
@@ -97,12 +97,109 @@ export class AdminService {
     this.authService.deleteUser(id);
   }
 
+  // Resident Functions
+
   residentsCollection: AngularFirestoreCollection<Resident>;
   residents: Observable<Resident[]>;
 
   getResidents() {
     this.residents = this.afs.collection('residents').valueChanges();
     return this.residents;
+  }
+
+  addResident(rFirstName: string, rLastName: string, phone: string) {
+    this.afs.collection('id-list').get().toPromise().then(idSnapshot => {
+      const newID = randomUniqueID(idSnapshot);
+      this.residentsCollection = this.afs.collection('residents');
+      const resident = new Resident(newID, rFirstName, rLastName, phone)
+      this.residentsCollection.doc(newID).set(Object.assign({}, resident));
+      this.residentsCollection.doc(newID).update({schedule:{
+        0: {
+          7: {available: false, activity: "Sleep"}, 8: {available: false, activity: "Waking up"},
+          9: {available: false, activity: "Breakfast"}, 10: {available: true, activity: ""},
+          11: {available: true, activity: ""}, 12: {available: true, activity: ""},
+          13: {available: false, activity: "Lunch"}, 14: {available: true, activity: ""},
+          15: {available: true, activity: ""}, 16: {available: true, activity: ""},
+          17: {available: true, activity: ""}, 18: {available: false, activity: "Dinner"},
+          19: {available: true, activity: ""}, 20: {available: true, activity: ""},
+          21: {available: false, activity: "Evening snack"}, 22: {available: false, activity: "Sleep"},
+        },
+        1: {
+          7: {available: false, activity: "Sleep"}, 8: {available: false, activity: "Waking up"},
+          9: {available: false, activity: "Breakfast"}, 10: {available: true, activity: ""},
+          11: {available: true, activity: ""}, 12: {available: true, activity: ""},
+          13: {available: false, activity: "Lunch"}, 14: {available: true, activity: ""},
+          15: {available: true, activity: ""}, 16: {available: true, activity: ""},
+          17: {available: true, activity: ""}, 18: {available: false, activity: "Dinner"},
+          19: {available: true, activity: ""}, 20: {available: true, activity: ""},
+          21: {available: false, activity: "Evening snack"}, 22: {available: false, activity: "Sleep"},
+        },
+        2: {
+          7: {available: false, activity: "Sleep"}, 8: {available: false, activity: "Waking up"},
+          9: {available: false, activity: "Breakfast"}, 10: {available: true, activity: ""},
+          11: {available: true, activity: ""}, 12: {available: true, activity: ""},
+          13: {available: false, activity: "Lunch"}, 14: {available: true, activity: ""},
+          15: {available: true, activity: ""}, 16: {available: true, activity: ""},
+          17: {available: true, activity: ""}, 18: {available: false, activity: "Dinner"},
+          19: {available: true, activity: ""}, 20: {available: true, activity: ""},
+          21: {available: false, activity: "Evening snack"}, 22: {available: false, activity: "Sleep"},
+        },
+        3: {
+          7: {available: false, activity: "Sleep"}, 8: {available: false, activity: "Waking up"},
+          9: {available: false, activity: "Breakfast"}, 10: {available: true, activity: ""},
+          11: {available: true, activity: ""}, 12: {available: true, activity: ""},
+          13: {available: false, activity: "Lunch"}, 14: {available: true, activity: ""},
+          15: {available: true, activity: ""}, 16: {available: true, activity: ""},
+          17: {available: true, activity: ""}, 18: {available: false, activity: "Dinner"},
+          19: {available: true, activity: ""}, 20: {available: true, activity: ""},
+          21: {available: false, activity: "Evening snack"}, 22: {available: false, activity: "Sleep"},
+        },
+        4: {
+          7: {available: false, activity: "Sleep"}, 8: {available: false, activity: "Waking up"},
+          9: {available: false, activity: "Breakfast"}, 10: {available: true, activity: ""},
+          11: {available: true, activity: ""}, 12: {available: true, activity: ""},
+          13: {available: false, activity: "Lunch"}, 14: {available: true, activity: ""},
+          15: {available: true, activity: ""}, 16: {available: true, activity: ""},
+          17: {available: true, activity: ""}, 18: {available: false, activity: "Dinner"},
+          19: {available: true, activity: ""}, 20: {available: true, activity: ""},
+          21: {available: false, activity: "Evening snack"}, 22: {available: false, activity: "Sleep"},
+        },
+        5: {
+          7: {available: false, activity: "Sleep"}, 8: {available: false, activity: "Waking up"},
+          9: {available: false, activity: "Breakfast"}, 10: {available: true, activity: ""},
+          11: {available: true, activity: ""}, 12: {available: true, activity: ""},
+          13: {available: false, activity: "Lunch"}, 14: {available: true, activity: ""},
+          15: {available: true, activity: ""}, 16: {available: true, activity: ""},
+          17: {available: true, activity: ""}, 18: {available: false, activity: "Dinner"},
+          19: {available: true, activity: ""}, 20: {available: true, activity: ""},
+          21: {available: false, activity: "Evening snack"}, 22: {available: false, activity: "Sleep"},
+        },
+        6: {
+          7: {available: false, activity: "Sleep"}, 8: {available: false, activity: "Waking up"},
+          9: {available: false, activity: "Breakfast"}, 10: {available: true, activity: ""},
+          11: {available: true, activity: ""}, 12: {available: true, activity: ""},
+          13: {available: false, activity: "Lunch"}, 14: {available: true, activity: ""},
+          15: {available: true, activity: ""}, 16: {available: true, activity: ""},
+          17: {available: true, activity: ""}, 18: {available: false, activity: "Dinner"},
+          19: {available: true, activity: ""}, 20: {available: true, activity: ""},
+          21: {available: false, activity: "Evening snack"}, 22: {available: false, activity: "Sleep"},
+        }
+      }});
+      const newId = new IDList(newID);
+      this.afs.collection('id-list').doc(newID).set(Object.assign({}, newId));
+      this.router.navigate(['/admin', 'resident-view']);
+    })
+  }
+
+  updateResident(id: string, rFirstName: string, rLastName: string, phone: string) {
+    if(rFirstName != "") this.afs.collection('residents').doc(id).update({rFirstName: rFirstName});
+    if(rLastName != "") this.afs.collection('residents').doc(id).update({rLastName: rLastName});
+    if(phone != "") this.afs.collection('residents').doc(id).update({phone: phone});
+  }
+
+  deleteResident(id: string) {
+    this.afs.collection('residents').doc(id).delete();
+    this.afs.collection('id-list').doc(id).delete();
   }
 
   getVisitorViews(): VisitorView[] {

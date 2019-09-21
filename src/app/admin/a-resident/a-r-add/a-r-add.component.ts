@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import $ from 'jquery';
 import swal from 'sweetalert';
+import { AuthService } from '../../../auth.service';
+import { AdminService } from '../../admin.service';
+import { capitalize, isNumeric } from 'src/app/functions';
 
 @Component({
   selector: 'app-a-r-add',
@@ -10,38 +14,65 @@ import swal from 'sweetalert';
 export class A_R_AddComponent implements OnInit {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private adminService: AdminService
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/admin', 'resident-add']);
+
+    this.validateUserType();
+
+    $('#inputFirstName, #inputLastName, #inputPhone').keyup(e => {
+      if(e.which == 13) {
+        this.addResident();
+      }
+    });
+  }
+
+  validateUserType() {
+    return new Promise(() => {
+      this.authService.checkUserType();
+    })
   }
 
   addResident(){
-
-//update firebase
-
-    swal({
-      title: "Success!",
-      text: "Resident added",
-      icon: "success",
-      buttons: {
-        ok: "OK"
+    const rFirstName = capitalize($('#inputFirstName').val());
+    const rLastName = capitalize($('#inputLastName').val());
+    const phone = $('#inputPhone').val();
+    if(rFirstName != "" && rLastName != "" && phone != "") {
+      if(isNumeric(phone)) {
+        swal({
+          title: "Success!",
+          text: "Resident added",
+          icon: "success",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+        .then(() => {
+          this.adminService.addResident(rFirstName, rLastName, phone);
+        });
       }
-    } as any)
+      else {
+        this.swalError("The provided phone number can only be digits!")
+      }
+    }
+    else {
+      this.swalError("Some fields are left empty!")
+    }
+  }
 
-    //if fields are empty
-
+  private swalError(errorText: string) {
     swal({
       title: "Error!",
-      text: "Some fields are empty!",
+      text: errorText,
       icon: "error",
       buttons: {
         ok: "OK"
       }
     } as any)
-    
-    //return to resident view?
   }
 
 }

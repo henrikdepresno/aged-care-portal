@@ -27,7 +27,7 @@ export class A_V_UpdateComponent implements OnInit {
         + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
         + date.getFullYear();
       $('p#date-' + i).text(dateStr);
-      $('p#staff-' + i).text(flag.staff.sFirstName + " " + flag.staff.sLastName);
+      $('p#staff-' + i).text(flag.staff);
       $('span#view-' + i).show();
       $('span#view-' + i).click(() => {
         this.viewFlag();

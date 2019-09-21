@@ -4,7 +4,7 @@ import $ from 'jquery';
 import swal from 'sweetalert';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
-import { StaffView } from '../../../classes-output';
+import { Staff } from 'src/app/classes';
 
 @Component({
   selector: 'app-a-s-view',
@@ -18,7 +18,7 @@ export class A_S_ViewComponent implements OnInit {
     private authService: AuthService,
     private adminService: AdminService,
     @Optional() private pagesNum: number,
-    @Optional() private outputStaffs: StaffView[][]
+    @Optional() private outputStaffs: Staff[][]
   ) { }
 
   ngOnInit() {
@@ -34,7 +34,7 @@ export class A_S_ViewComponent implements OnInit {
   validateUserType() {
     return new Promise((resolve, reject) => {
       this.authService.checkUserType();
-      resolve(this.router.url.includes("/admin/contractor-view"));
+      resolve(this.router.url.includes("/admin/staff-view"));
     })
   }
 
@@ -45,22 +45,17 @@ export class A_S_ViewComponent implements OnInit {
 
     let staffs = this.adminService.getStaffs();
     staffs.subscribe(res => {
-      let staffViews: StaffView[] = [];
-      for(let i = 0; i < res.length; i++) {
-        staffViews.push(new StaffView(res[i].id, res[i].sFirstName, res[i].sLastName));
-      }
-
       $('div#pages').empty();
 
-      let staffsNum = staffViews.length;
+      let staffsNum = res.length;
       this.pagesNum = ((staffsNum / 8) == 0) ? 1 : Math.ceil(staffsNum / 8);
       this.outputStaffs = new Array(this.pagesNum);
       for(let iPage = 0; iPage < this.pagesNum; iPage++) {
         const fill = (staffsNum < 8) ? staffsNum : 8;
         this.outputStaffs[iPage] = new Array(fill);
         for(let iStaff = 0; iStaff < fill; iStaff++) {
-          this.outputStaffs[iPage][iStaff] = staffViews[0];
-          staffViews.shift();
+          this.outputStaffs[iPage][iStaff] = res[0];
+          res.shift();
           staffsNum--;
         }
       }
@@ -140,6 +135,10 @@ export class A_S_ViewComponent implements OnInit {
       $('p#staff-name-'+ i).text(staff.sFirstName + " " + staff.sLastName);
       $('tr#item-'+ i +' > td.td-btn').show();
       $('tr#item-'+ i +'-btn > td.td-btn').show();
+
+      $('p#staff-name-'+ i).click(() => {
+        this.clickInfo(staff);
+      })
       
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {
         this.clickUpdate(staff.id);
@@ -155,6 +154,17 @@ export class A_S_ViewComponent implements OnInit {
         this.clickDelete(staff.id);
       });
     }
+  }
+
+  clickInfo(staff: Staff) {
+    swal({
+      title: `Staff: ${staff.sFirstName} ${staff.sLastName}`,
+      text:
+      `Email: ${staff.email}
+      Phone: ${staff.phone}
+      Role: ${staff.role}`,
+      icon: "info",
+    });
   }
 
   clickUpdate(id: string) {

@@ -4,7 +4,7 @@ import $ from 'jquery';
 import swal from 'sweetalert';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
-import { ContractorView } from '../../../classes-output';
+import { Contractor } from 'src/app/classes';
 
 @Component({
   selector: 'app-a-c-view',
@@ -18,7 +18,7 @@ export class A_C_ViewComponent implements OnInit {
     private authService: AuthService,
     private adminService: AdminService,
     @Optional() private pagesNum: number,
-    @Optional() private outputContractors: ContractorView[][]
+    @Optional() private outputContractors: Contractor[][]
   ) { }
 
   ngOnInit() {
@@ -45,22 +45,17 @@ export class A_C_ViewComponent implements OnInit {
 
     let contractors = this.adminService.getContractors();
     contractors.subscribe(res => {
-      let contractorViews: ContractorView[] = [];
-      for(let i = 0; i < res.length; i++) {
-        contractorViews.push(new ContractorView(res[i].id, res[i].cFirstName, res[i].cLastName));
-      }
-
       $('div#pages').empty();
 
-      let contractorsNum = contractorViews.length;
+      let contractorsNum = res.length;
       this.pagesNum = ((contractorsNum / 8) == 0) ? 1 : Math.ceil(contractorsNum / 8);
       this.outputContractors = new Array(this.pagesNum);
       for(let iPage = 0; iPage < this.pagesNum; iPage++) {
         const fill = (contractorsNum < 8) ? contractorsNum : 8;
         this.outputContractors[iPage] = new Array(fill);
         for(let iCon = 0; iCon < fill; iCon++) {
-          this.outputContractors[iPage][iCon] = contractorViews[0];
-          contractorViews.shift();
+          this.outputContractors[iPage][iCon] = res[0];
+          res.shift();
           contractorsNum--;
         }
       }
@@ -141,6 +136,10 @@ export class A_C_ViewComponent implements OnInit {
       $('tr#item-'+ i +' > td.td-btn').show();
       $('tr#item-'+ i +'-btn > td.td-btn').show();
 
+      $('p#contractor-name-'+ i).click(() => {
+        this.clickInfo(contractor);
+      })
+
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {
         this.clickUpdate(contractor.id);
       });
@@ -155,6 +154,18 @@ export class A_C_ViewComponent implements OnInit {
         this.clickDelete(contractor.id);
       });
     }
+  }
+
+  clickInfo(contractor: Contractor) {
+    swal({
+      title: `Contractor: ${contractor.cFirstName} ${contractor.cLastName}`,
+      text:
+      `Email: ${contractor.email}
+      Phone: ${contractor.phone}
+      Company Name: ${contractor.companyName}
+      Field: ${contractor.field}`,
+      icon: "info",
+    });
   }
 
   clickUpdate(id: string) {

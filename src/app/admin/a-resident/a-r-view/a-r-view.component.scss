@@ -236,6 +236,7 @@ div#list-main {
                     font-weight: 400;
                     margin-right: 5px;
                     margin-left: 65px;
+                    cursor: pointer;
 
                     @include lg-width-max {
                         margin-left: 5px;
