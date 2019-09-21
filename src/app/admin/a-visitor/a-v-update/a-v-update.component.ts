@@ -103,17 +103,66 @@ export class A_V_UpdateComponent implements OnInit {
   }
 
   updateVisitor(){
-        
-    //update firebase
-
-    swal({
-      title: "Success!",
-      text: "Details updated",
-      icon: "success",
-      buttons: {
-        ok: "OK"
+    const vFirstName = capitalize($('#inputFirstName').val());
+    const vLastName = capitalize($('#inputLastName').val());
+    const phone = $('#inputPhone').val();
+    
+    const updates = this.showUpdates(vFirstName, vLastName, phone)
+    if(updates != "") {
+      if(isNumeric(phone)) {
+        swal({
+          title: "New updates:",
+          text: updates,
+          icon: "info",
+          dangerMode: true,
+          buttons: {
+            cancel: "Cancel",
+            ok: "Update"
+          }
+        } as any)
+        .then((willUpdate) => {
+          if(willUpdate) {
+            this.adminService.updateVisitor(this.id, vFirstName, vLastName, phone);
+            swal({
+              title: "Success!",
+              text: "Details updated!",
+              icon: "success",
+              buttons: {
+                ok: "OK"
+              }
+            } as any)
+          }
+        });
       }
-    } as any)
+      else {
+        swal({
+          title: "Error!",
+          text: "The provided phone number can only be digits!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+      }
+    }
+    else {
+      swal({
+        title: "Error!",
+        text: "Please update at least one field!",
+        icon: "error",
+        buttons: {
+          ok: "OK"
+        }
+      } as any)
+    }
+  }
+
+  private showUpdates(sFirstName, sLastName, phone) {
+    let updates = "";
+    updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "\n";
+    updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "\n";
+    updates += (phone == "") ? "" : "Phone: " + phone + "\n";
+    return updates;
   }
 
 }

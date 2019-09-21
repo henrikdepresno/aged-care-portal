@@ -223,6 +223,12 @@ export class AdminService {
     this.afs.collection('visitors').doc(id).update({flags: flags});
   }
 
+  updateVisitor(id: string, vFirstName: string, vLastName: string, phone: string) {
+    if(vFirstName != "") this.afs.collection('visitors').doc(id).update({vFirstName: vFirstName});
+    if(vLastName != "") this.afs.collection('visitors').doc(id).update({vLastName: vLastName});
+    if(phone != "") this.afs.collection('visitors').doc(id).update({phone: phone});
+  }
+
   getRatings(): number[] {
     const one = 4;
     const two = 3;
