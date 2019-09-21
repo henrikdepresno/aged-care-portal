@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { Visitor } from 'src/app/classes';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-a-v-view',
@@ -25,8 +26,17 @@ export class A_V_ViewComponent implements OnInit {
     this.router.navigate(['/admin', 'visitor-view']);
 
     this.validateUserType().then(res => {
-      if(res) { 
-        this.loadComponent();
+      if(res) {
+        this.adminService.getVisitors().pipe(
+          mergeMap(res => {
+            this.loadComponent(res);
+            return this.adminService.getCurrentVisitors();
+          }))
+          .subscribe(snapshot => {
+            let current = snapshot.size;
+            $('strong#current-visitors-num').text(current);
+            $('strong#current-visitors-num').css("user-select", "none");
+          });
       }
     });
   }
@@ -38,62 +48,55 @@ export class A_V_ViewComponent implements OnInit {
     })
   }
 
-  loadComponent() {
-    const current = this.adminService.getCurrentVisitorNumber();
-    $('strong#current-visitors-num').text(current);
-    $('strong#current-visitors-num').css("user-select", "none");
+  loadComponent(visitors: Visitor[]) {
+    $('div#pages').empty();
 
-    let visitors = this.adminService.getVisitors();
-    visitors.subscribe(res => {
-      $('div#pages').empty();
-
-      let visitorsNum = res.length;
-      this.pagesNum = ((visitorsNum / 8) == 0) ? 1 : Math.ceil(visitorsNum / 8);
-      this.outputVisitors = new Array(this.pagesNum);
-      for(let iPage = 0; iPage < this.pagesNum; iPage++) {
-        const fill = (visitorsNum < 8) ? visitorsNum : 8;
-        this.outputVisitors[iPage] = new Array(fill);
-        for(let iVis = 0; iVis < fill; iVis++) {
-          this.outputVisitors[iPage][iVis] = res[0];
-          res.shift();
-          visitorsNum--;
-        }
+    let visitorsNum = visitors.length;
+    this.pagesNum = ((visitorsNum / 8) == 0) ? 1 : Math.ceil(visitorsNum / 8);
+    this.outputVisitors = new Array(this.pagesNum);
+    for(let iPage = 0; iPage < this.pagesNum; iPage++) {
+      const fill = (visitorsNum < 8) ? visitorsNum : 8;
+      this.outputVisitors[iPage] = new Array(fill);
+      for(let iVis = 0; iVis < fill; iVis++) {
+        this.outputVisitors[iPage][iVis] = visitors[0];
+        visitors.shift();
+        visitorsNum--;
       }
+    }
 
-      for(let iPage = 1; iPage <= this.pagesNum; iPage++) {
-        $('div#pages').append('<span id="page-'+ iPage +'" class="page"><p>'+ iPage +'</p></span>');
-        $('#page-'+ iPage).click(() => {
-          this.clickPage(iPage);
-        });
-      }
-      $('span.page').css({
-        'display': 'inline-block',
-        'width': '30px',
-        'height': '30px',
-        'border-radius': '50%',
-        'background-color': '#E9EBEC',
-        'margin': '5px',
-        'cursor': 'pointer'
+    for(let iPage = 1; iPage <= this.pagesNum; iPage++) {
+      $('div#pages').append('<span id="page-'+ iPage +'" class="page"><p>'+ iPage +'</p></span>');
+      $('#page-'+ iPage).click(() => {
+        this.clickPage(iPage);
       });
-      $('span.page > p').css({
-        'color': '#313B45',
-        'font-size': '15px',
-        'font-weight': '400',
-        'text-transform': 'uppercase',
-        'margin': '5px',
-        '-webkit-user-select': 'none',
-        '-moz-user-select': 'none',
-        '-ms-user-select': 'none',
-        'user-select': 'none'
-      });
-      if(this.pagesNum > 7) {
-        for(let iPage = 7; iPage < this.pagesNum; iPage++) {
-          $('span#page-'+ iPage).hide();
-        }
-      }
-      
-      this.clickPage(1);
+    }
+    $('span.page').css({
+      'display': 'inline-block',
+      'width': '30px',
+      'height': '30px',
+      'border-radius': '50%',
+      'background-color': '#E9EBEC',
+      'margin': '5px',
+      'cursor': 'pointer'
     });
+    $('span.page > p').css({
+      'color': '#313B45',
+      'font-size': '15px',
+      'font-weight': '400',
+      'text-transform': 'uppercase',
+      'margin': '5px',
+      '-webkit-user-select': 'none',
+      '-moz-user-select': 'none',
+      '-ms-user-select': 'none',
+      'user-select': 'none'
+    });
+    if(this.pagesNum > 7) {
+      for(let iPage = 7; iPage < this.pagesNum; iPage++) {
+        $('span#page-'+ iPage).hide();
+      }
+    }
+    
+    this.clickPage(1);
   }
 
   clickPage(page: number) {

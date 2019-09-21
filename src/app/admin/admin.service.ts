@@ -3,8 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Resident, Contractor, Staff, IDList, Visitor, Flag } from '../classes';
-import { Feedback } from '../classes-output';
+import { Resident, Contractor, Staff, IDList, Visitor, Flag, Rating, Feedback } from '../classes';
 import { randomUniqueID } from '../functions';
 
 @Injectable({
@@ -18,9 +17,10 @@ export class AdminService {
     private router: Router
   ) { }
 
-  getCurrentVisitorNumber(): number {
-    const num = 10;
-    return num;
+  // For all components
+
+  getCurrentVisitors() {
+    return this.afs.collection('visitors', ref => ref.where('inFacility', '==', true)).get();
   }
 
   private updateIdSource = new BehaviorSubject<string>("");
@@ -229,23 +229,19 @@ export class AdminService {
     if(phone != "") this.afs.collection('visitors').doc(id).update({phone: phone});
   }
 
-  getRatings(): number[] {
-    const one = 4;
-    const two = 3;
-    const three = 5;
-    const four = 15;
-    const five = 23;
-    return [one, two, three, four, five];
+  // Feedback Functions
+
+  ratings: Observable<Rating>;
+
+  getRatings() {
+    this.ratings = this.afs.collection('ratings').doc('ratings').valueChanges();
+    return this.ratings;
   }
 
-  getFeedbacks(): Feedback[] {
-    const feedbacks: Feedback[] = [
-      new Feedback("Bad Ventilation", "Arian", "Jacobson", "Visitor", new Date(2019, 6, 12, 14, 0, 0), ""),
-      new Feedback("Rude Staff!", "Arjan", "Forbes", "Visitor", new Date(2019, 6, 10, 14, 0, 0), ""),
-      new Feedback("Lovely place", "Arman", "Haigh", "Visitor", new Date(2019, 6, 5, 14, 0, 0), ""),
-      new Feedback("great service", "Dixon", "Hills", "Contractor", new Date(2019, 5, 23, 14, 0, 0), ""),
-      new Feedback("Helpful staff!", "Saxon", "Oneil", "Visitor", new Date(2019, 5, 21, 14, 0, 0), "")
-    ];
-    return feedbacks;
+  feedbacks: Observable<Feedback[]>;
+
+  getFeedbacks() {
+    this.feedbacks = this.afs.collection('feedbacks').valueChanges();
+    return this.feedbacks;
   }
 }

@@ -69,6 +69,26 @@ export class Booking {
   ) { }
 }
 
+export class Rating {
+  constructor(
+    public one?: number,
+    public two?: number,
+    public three?: number,
+    public four?: number,
+    public five?: number,
+  ) { }
+}
+
+export class Feedback {
+  constructor(
+    public title?: string,
+    public author?: string,
+    public role?: string,
+    public date?: string,
+    public context?: string
+  ) { }
+}
+
 export class Flag {
   constructor(
     public date?: string,

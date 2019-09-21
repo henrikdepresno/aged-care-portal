@@ -44,20 +44,22 @@ app.post("/send-email", (req, res) => {
 
 // sendmail function
 async function sendEmail(data, callback) {
-  // send email as onshoringportal@gmail.com
+  const emailSender = require('./emailPasswordACP.json');
+
+  // send email
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {
-      user: "onshoringportal@gmail.com",
-      pass: "Agecare123"
+      user: emailSender.email,
+      pass: emailSender.password
     }
   });
 
   // context of the email
   const mailOptions = {
-    from: `"Onshoring ACP" <onshoringportal@gmail.com>`,
+    from: `"Onshoring ACP" <${emailSender.email}>`,
     to: data.email,
     subject: data.subject,
     text: data.text
