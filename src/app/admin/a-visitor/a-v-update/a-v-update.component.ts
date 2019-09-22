@@ -161,7 +161,7 @@ export class A_V_UpdateComponent implements OnInit {
     let updates = "";
     updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "\n";
     updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "\n";
-    updates += (phone == "") ? "" : "Phone: " + phone + "\n";
+    updates += (phone == "") ? "" : "Phone: " + phone;
     return updates;
   }
 

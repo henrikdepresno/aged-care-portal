@@ -108,7 +108,7 @@ export class A_S_UpdateComponent implements OnInit {
     updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "\n";
     updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "\n";
     updates += (phone == "") ? "" : "Phone: " + phone + "\n";
-    updates += (role == "") ? "" : "Role: " + role + "\n";
+    updates += (role == "") ? "" : "Role: " + role;
     return updates;
   }
 }

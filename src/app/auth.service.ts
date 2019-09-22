@@ -22,30 +22,29 @@ export class AuthService {
   ) { }
 
   checkUserType() {
-    this.afAuth.authState.subscribe(res => {
-      if(res != null){
-        const uid = res.uid;
-        this.afs.collection('users', ref => ref.where('uid', '==', uid)).get().toPromise()
-          .then(snapshot => {
-            snapshot.forEach(doc => { 
-              const afAuthUserType: string = doc.data().userType;
-              const routerUserType: string = this.router.url.substr(1, afAuthUserType.length);
-              if(afAuthUserType != routerUserType){
-                this.router.navigate(['/404']);
-              }
+    this.afAuth.authState.toPromise()
+      .then(user => {
+        if(user != null){
+          this.afs.collection('users', ref => ref.where('email', '==', user.email)).get().toPromise()
+            .then(snapshot => {
+              snapshot.forEach(doc => { 
+                const afAuthUserType: string = doc.data().userType;
+                const routerUserType: string = this.router.url.substr(1, afAuthUserType.length);
+                if(afAuthUserType != routerUserType){
+                  this.router.navigate(['/404']);
+                }
+              })
             })
-          })
-      } else {
-        this.router.navigate(['/404']);
-      }
+        } else {
+          this.router.navigate(['/404']);
+        }
     });
   }
 
   navigateToHome(loginCompInit: boolean) {
     this.afAuth.authState.subscribe(res => {
       if(res != null){
-        const email = res.email;
-        this.afs.collection('users', ref => ref.where('email', '==', email)).get().toPromise()
+        this.afs.collection('users', ref => ref.where('email', '==', res.email)).get().toPromise()
           .then(snapshot => {
             snapshot.forEach(doc => { 
               const afAuthUserType: string = doc.data().userType;

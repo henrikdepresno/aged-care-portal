@@ -106,7 +106,7 @@ export class A_R_UpdateComponent implements OnInit {
     let updates = "";
     updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "\n";
     updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "\n";
-    updates += (phone == "") ? "" : "Phone: " + phone + "\n";
+    updates += (phone == "") ? "" : "Phone: " + phone;
     return updates;
   }
 }
