@@ -124,4 +124,9 @@ export class C_UpdateComponent implements OnInit {
     let updates = (phone == "") ? "" : "Phone: " + phone;
     return updates;
   }
+
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/login', 'login-c']);
+  }
 }

@@ -1,10 +1,12 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import { VisitorService } from '../../visitor.service';
-import { ResidentView } from '../../../classes-output';
-import QRCode from 'qrcode';
 import swal from 'sweetalert';
+import QRCode from 'qrcode';
+import { AuthService } from 'src/app/auth.service';
+import { VisitorService } from '../../visitor.service';
+import { Resident } from '../../../classes';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-v-r-view',
@@ -13,28 +15,73 @@ import swal from 'sweetalert';
 })
 export class V_R_ViewComponent implements OnInit {
 
+  id: string
+
   constructor(
     private router: Router,
+    private authService: AuthService,
     private visitorService: VisitorService,
     @Optional() private pagesNum: number,
-    @Optional() private outputResidents: ResidentView[][]
+    @Optional() private outputResidents: Resident[][]
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/visitor', 'resident-view']);
 
-    QRCode.toCanvas(document.getElementById('qrcode'), this.visitorService.getVisitorId(), {scale: 9});
+    this.validateUserType().then(res => {
+      if(res) {
+        this.visitorService.getId();
+        this.visitorService.id.pipe(
+          mergeMap(id => {
+            this.id = id;
+            this.visitorService.getResidents(this.id);
+            QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
+            return this.visitorService.residents;
+          }))
+          .subscribe(residents => {
+            this.loadComponent(residents);
+          });
+      }
+    });
+  }
 
-    let residentViews = this.visitorService.getResidentViews();
-    let residentsNum = residentViews.length;
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/visitor/resident-view"));
+    })
+  }
+
+  toggleQRCode(toggle: boolean) {
+    if(toggle) {
+      $('div#qr-container').show();
+      $('body').addClass('stop-scrolling');
+      $('.stop-scrolling').css({
+        "height": "100%",
+        "overflow": "hidden"
+      });
+    } else {
+      $('div#qr-container').hide();
+      $('.stop-scrolling').css({
+        "height": "auto",
+        "overflow": "visible"
+      });
+      $('body').removeClass('stop-scrolling');
+    }
+  }
+
+  loadComponent(residents: Resident[]) {
+    $('div#pages').empty();
+
+    let residentsNum = residents.length;
     this.pagesNum = ((residentsNum / 8) == 0) ? 1 : Math.ceil(residentsNum / 8);
     this.outputResidents = new Array(this.pagesNum);
     for(let iPage = 0; iPage < this.pagesNum; iPage++) {
       const fill = (residentsNum < 8) ? residentsNum : 8;
       this.outputResidents[iPage] = new Array(fill);
       for(let iRes = 0; iRes < fill; iRes++) {
-        this.outputResidents[iPage][iRes] = residentViews[0];
-        residentViews.shift();
+        this.outputResidents[iPage][iRes] = residents[0];
+        residents.shift();
         residentsNum--;
       }
     }
@@ -113,69 +160,64 @@ export class V_R_ViewComponent implements OnInit {
       $('p#resident-name-'+ i).text(resident.rFirstName + " " + resident.rLastName);
       $('tr#item-'+ i +' > td.td-btn > span').show();
       $('tr#item-'+ i +'-btn > td.td-btn > span').show();
+
+      $('p#resident-name-'+ i).click(() => {
+        this.clickInfo(resident);
+      })
       
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {
-        this.clickBook();
+        this.clickBook(resident.id);
       });
       
       $('tr#item-'+ i +'-btn > td.td-btn-primary > span').click(() => {
-        this.clickBook();
+        this.clickBook(resident.id);
       });
 
       $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
-        this.clickDelete();
+        this.clickDelete(resident.id);
       });
       
       $('tr#item-'+ i +'-btn > td.td-btn-danger > span').click(() => {
-        this.clickDelete();
+        this.clickDelete(resident.id);
       });
     }
   }
 
-  clickBook() {
+  clickInfo(resident: Resident) {
+    swal({
+      title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
+      text:
+      `Phone: ${resident.phone}`,
+      icon: "info",
+    });
+  }
+
+  clickBook(id: string) {
+    this.visitorService.passResidentId(id);
     this.router.navigate(['/visitor', 'booking-add']);
   }
 
-  toggleQRCode(toggle: boolean) {
-    if(toggle) {
-      $('div#qr-container').show();
-      $('body').addClass('stop-scrolling');
-      $('.stop-scrolling').css({
-        "height": "100%",
-        "overflow": "hidden"
-      });
-    } else {
-      $('div#qr-container').hide();
-      $('.stop-scrolling').css({
-        "height": "auto",
-        "overflow": "visible"
-      });
-      $('body').removeClass('stop-scrolling');
-    }
-  }
-
-  clickDelete() {
-
+  clickDelete(id: string) {
     swal({
       title: "Delete?",
       text: "Are you sure you want to delete this resident?",
       icon: "warning",
-      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      dangerMode: true,
       buttons: {
         cancel: "Cancel",
         ok: "Yes"
       }
     } as any)
-      .then((willDelete) => {
-        if (willDelete) {
+    .then((willDelete) => {
+      if(willDelete) {
+        this.visitorService.deleteResident(this.id, id);
+      }
+    });
+  }
 
-          //remove resident from firebase collection here
-          
-          swal("Resident deleted!", {
-            icon: "success",
-          });
-        }
-      });
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/login', 'login-v']);
   }
 
 }

@@ -64,6 +64,7 @@ export class Booking {
   constructor(
     public id?: string,
     public residentId?: string,
+    public rName?: string,
     public date?: string,
     public timeSlots?: number[],
     public isCancelled?: boolean

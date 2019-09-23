@@ -332,26 +332,3 @@ div#list-main {
         }
     }
 }
-
-div#div-btn-generate {
-    text-align: center;
-    position: absolute;
-    top: 570px;
-    right: 4%;
-    width: 150px;
-    height: 75px;
-    margin: 10px auto;
-    background-color: #525E85;
-    border-radius: 20px;
-    padding: 15px 0;
-    text-transform: uppercase;
-    color: #FFFFFF;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    user-select: none;
-
-    @include lg-width-max {
-        position: static;
-    }
-}

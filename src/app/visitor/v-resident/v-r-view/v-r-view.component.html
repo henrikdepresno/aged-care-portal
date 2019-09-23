@@ -7,7 +7,7 @@
     <span id="circle-user-icon"><img src="/assets/img/user-icon.png"></span>
     <div class="div-btn div-btn-qr"><span (click)="toggleQRCode(true)">QR Code</span></div>
     <div class="div-btn div-btn-primary"><span [routerLink]="['../update']">Account</span></div>
-    <div class="div-btn div-btn-danger"><span [routerLink]="['../../login/login-v']">Log out</span></div>
+    <div class="div-btn div-btn-danger"><span (click)="logOut()">Log out</span></div>
 </form>
 
 <section id="list">
@@ -37,7 +37,7 @@
                     <span>Schedule</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span (click)="clickDelete()">Delete</span>
+                    <span>Delete</span>
                 </td>
             </tr>
             <tr id="item-2-text" class="item tr-text">

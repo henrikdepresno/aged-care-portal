@@ -7,7 +7,7 @@
     <span id="circle-user-icon"><img src="/assets/img/user-icon.png"></span>
     <div class="div-btn div-btn-qr"><span (click)="toggleQRCode(true)">QR Code</span></div>
     <div class="div-btn div-btn-primary"><span [routerLink]="['../update']">Account</span></div>
-    <div class="div-btn div-btn-danger"><span [routerLink]="['../../login/login-v']">Log out</span></div>
+    <div class="div-btn div-btn-danger"><span (click)="logOut()">Log out</span></div>
 </form>
 
 <section id="list">
@@ -38,8 +38,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <!-- Henrik: added click function-->
-                    <span (click)="clickDelete()">Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-2-text" class="item tr-text">
@@ -53,8 +52,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <!-- Henrik: added click function, extra comment for testing branch-->
-                    <span (click)="clickDelete()">Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-3-text" class="item tr-text">
@@ -68,7 +66,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-4-text" class="item tr-text">
@@ -82,7 +80,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-5-text" class="item tr-text">
@@ -96,7 +94,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-6-text" class="item tr-text">
@@ -110,7 +108,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-7-text" class="item tr-text">
@@ -124,7 +122,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-8-text" class="item tr-text">
@@ -138,7 +136,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
         </table>
@@ -153,7 +151,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-2" class="item">
@@ -165,7 +163,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-3" class="item">
@@ -177,7 +175,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-4" class="item">
@@ -189,7 +187,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-5" class="item">
@@ -201,7 +199,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-6" class="item">
@@ -213,7 +211,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-7" class="item">
@@ -225,7 +223,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
             <tr id="item-8" class="item">
@@ -237,7 +235,7 @@
                     <span>Modify</span>
                 </td>
                 <td class="td-btn td-btn-danger">
-                    <span>Delete</span>
+                    <span>Cancel</span>
                 </td>
             </tr>
         </table>

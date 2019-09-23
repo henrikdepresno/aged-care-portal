@@ -43,6 +43,7 @@ export class S_R_ScheduleComponent implements OnInit {
           mergeMap(resident => {
             const rName = resident.rFirstName + " " + resident.rLastName;
             this.weeklySchedules = this.staffService.convertWeeklySchedule(rName, resident.schedule);
+            this.loadComponent();
             return this.staffService.getCurrentVisitors();
           }))
           .subscribe(snapshot => {
@@ -191,7 +192,7 @@ export class S_R_ScheduleComponent implements OnInit {
         for(let i = 7; i <= 22; i++) {
           if(daySchedule[i - 7].hour == i){
             if(bookedSlots.includes(i)) {
-              $(this.jB + 'p#task-'+ i).text("Booked");
+              $(this.jB + 'p#task-'+ i).text("Meeting booked");
               $(this.jB + 'div#task-div-'+ i +" > span").css({
                 'background-color': '#EDAAAA',
                 'cursor': 'not-allowed'
@@ -227,7 +228,7 @@ export class S_R_ScheduleComponent implements OnInit {
           'background-color': '#C4DBB3',
           'cursor': 'pointer'
         });
-        this.selectedSlots = this.selectedSlots.filter((value) => {return value == hour});
+        this.selectedSlots = this.selectedSlots.filter((value) => {return value != hour});
       }
       else {
         swal({
@@ -308,10 +309,8 @@ export class S_R_ScheduleComponent implements OnInit {
   }
 
   addNewBooking() {
+    const dateStr = $(this.jB + 'p.p-date').text();
     if(this.selectedSlots.length != 0) {
-      const dateStr = (this.today.getDate() < 10 ? "0" + this.today.getDate() : this.today.getDate()) + "/"
-      + (this.today.getMonth() + 1 < 10 ? "0" + (this.today.getMonth() + 1) : this.today.getMonth() + 1) + "/"
-      + this.today.getFullYear();
       swal({
         title: "Add?",
         text: `Are you sure you want to add this booking?
@@ -325,7 +324,7 @@ export class S_R_ScheduleComponent implements OnInit {
       } as any)
       .then((willAdd) => {
         if(willAdd) {
-          this.staffService.addBooking(this.id, dateStr, this.selectedSlots);
+          this.staffService.addBooking(this.id, this.weeklySchedules.rName, dateStr, this.selectedSlots);
         }
       })
     }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import $ from 'jquery';
 import swal from 'sweetalert';
+import { AuthService } from 'src/app/auth.service';
+import { VisitorService } from '../../visitor.service';
+import { capitalize } from 'src/app/functions';
 
 @Component({
   selector: 'app-v-r-add',
@@ -9,38 +13,55 @@ import swal from 'sweetalert';
 })
 export class V_R_AddComponent implements OnInit {
 
+  id: string
+
   constructor(
+    private authService: AuthService,
+    private visitorService: VisitorService,
     private router: Router
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/visitor', 'resident-add']);
+
+    this.validateUserType().then(res => {
+      if(res) {
+        this.visitorService.getId();
+        this.visitorService.id.subscribe(id => {
+          this.id = id;
+          $('#inputFirstName, #inputLastName').keyup(e => {
+            if(e.which == 13) {
+              this.addResident();
+            }
+          });
+        });
+      }
+    });
   }
 
-  addResident() {
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/visitor/resident-add"));
+    })
+  }
 
-    //if no resident match found:
-
+  addResident(){
+    const rFirstName = capitalize($('#inputFirstName').val());
+    const rLastName = capitalize($('#inputLastName').val());
+    if(rFirstName != "" && rLastName != "") {
+      this.visitorService.addResident(this.id, rFirstName, rLastName);
+    }
+    else {
       swal({
         title: "Error!",
-        text: "Resident not found!",
+        text: "Some fields are left empty!",
         icon: "error",
         buttons: {
           ok: "OK"
         }
       } as any)
-    
-    // else, add resident to firebase collection
-
-    swal({
-      title: "Success!",
-      text: "Resident added succesfully",
-      icon: "success",
-      buttons: {
-        ok: "OK"
-      }
-    } as any)
-    this.router.navigate(['/visitor','resident-view']); //return to booking screen
+    }
   }
 
 }

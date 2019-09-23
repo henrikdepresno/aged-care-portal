@@ -68,7 +68,7 @@ export function arrayConsecutive(arr: number[], num: number, adding: boolean) {
     sortNumArray(arr);
   }
   else {
-    arr = arr.filter((value) => {return value == num});
+    arr = arr.filter((value) => {return value != num});
   }
   for(let i = 0; i < (arr.length - 1); i++) {
     if(!(arr[i] == (arr[i + 1] - 1))) {

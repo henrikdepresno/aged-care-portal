@@ -211,4 +211,9 @@ export class S_V_ViewComponent implements OnInit {
     });
   }
 
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/login', 'login-s']);
+  }
+
 }

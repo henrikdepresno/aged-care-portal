@@ -1,9 +1,12 @@
 import { Component, OnInit, Optional } from '@angular/core';
-import $ from 'jquery';
 import { Router } from '@angular/router';
-import { VisitorService } from '../../visitor.service';
-import { WeeklySchedules } from '../../../classes-output';
+import $ from 'jquery';
 import swal from 'sweetalert';
+import { AuthService } from 'src/app/auth.service';
+import { VisitorService } from '../../visitor.service';
+import { WeeklySchedules } from '../../../classes';
+import { mergeMap } from 'rxjs/operators';
+import { arrayConsecutive, sortNumArray } from 'src/app/functions';
 
 @Component({
   selector: 'app-v-b-modify',
@@ -12,28 +15,72 @@ import swal from 'sweetalert';
 })
 export class V_B_ModifyComponent implements OnInit {
 
+  bookingId: string
+  residentId: string
+
   constructor(
     private router: Router,
+    private authService: AuthService,
     private visitorService: VisitorService,
     @Optional() private initialClick: boolean,
-    @Optional() private weeklySchedules: WeeklySchedules
+    @Optional() private weeklySchedules: WeeklySchedules,
+    @Optional() private selectedSlots: number[],
+    @Optional() private oldBookingDate: string,
+    @Optional() private oldSelectedSlots: number[]
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/visitor', 'booking-modify']);
-    this.weeklySchedules = this.visitorService.getWeeklySchedules();
-    $('div#list-main > h1').text("SCHEDULE: " + this.weeklySchedules.rFirstName + " " + this.weeklySchedules.rLastName);
 
+    this.validateUserType().then(res => {
+      if(res) {
+        this.visitorService.residentId.pipe(
+          mergeMap(id => {
+            this.residentId = id;
+            return this.visitorService.bookingId;
+          }),
+          mergeMap(id => {
+            this.bookingId = id;
+            return this.visitorService.getResident(this.residentId);
+          }))
+          .subscribe(resident => {
+            const rName = resident.rFirstName + " " + resident.rLastName;
+            this.weeklySchedules = this.visitorService.convertWeeklySchedule(rName, resident.schedule);
+            this.loadComponent();
+          });
+      }
+    });
+  }
+
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/visitor/booking-modify"));
+    })
+  }
+
+  loadComponent() {
+    $('div#list-main > h1').text("SCHEDULE: " + this.weeklySchedules.rName);
+
+    this.selectedSlots = [];
     this.initialClick = true;
 
-    this.datePicker(new Date());
-    $('span#calendar-icon').click(() => {
-      $('div#dp').show();
-    });
+    this.visitorService.getBooking(this.bookingId).toPromise()
+    .then(booking => {
+      this.oldBookingDate = booking.date;
+      const bookingDate = `${booking.id.substring(0, 4)}-${booking.id.substring(4, 6)}-${booking.id.substring(6, 8)}`;
+      this.datePicker(new Date(bookingDate));
 
-    $('div#dp-close').click(() => {
-      $('div#dp').hide();
-    });
+      $('span#calendar-icon').click(() => {
+        $('div#dp').show();
+      });
+  
+      $('div#dp-close').click(() => {
+        $('div#dp').hide();
+      });
+
+      this.oldSelectedSlots = booking.timeSlots;
+    })    
   }
 
   datePicker(date: Date) {
@@ -117,52 +164,135 @@ export class V_B_ModifyComponent implements OnInit {
   }
 
   selectDate(date: Date){
-    const daySchedule = this.weeklySchedules.schedules[date.getDay()];
-    for(let i = 7; i <= 22; i++) {
-      if(daySchedule[i - 7].hour == i){
-        if(daySchedule[i - 7].available){
-          $('p#task-'+ i).text("Available");
-          $('div#task-div-'+ i +" > span").css({
-            'background-color': '#C4DBB3',
-            'cursor': 'pointer'
-          });
+    const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
+      + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
+      + date.getFullYear();
+    this.visitorService.getBookedSlots(dateStr);
+    this.visitorService.bookedSlots.toPromise()
+      .then((bookedSlots) => {
+        const daySchedule = this.weeklySchedules.schedules[date.getDay()];
+        for(let i = 7; i <= 22; i++) {
+          if(daySchedule[i - 7].hour == i){
+            if(bookedSlots.includes(i)) {
+              $('p#task-'+ i).text("Meeting booked");
+              $('div#task-div-'+ i +" > span").css({
+                'background-color': '#EDAAAA',
+                'cursor': 'not-allowed'
+              });
+            }
+            else if(!daySchedule[i - 7].available){
+              $('p#task-'+ i).text(daySchedule[i - 7].activity);
+              $('div#task-div-'+ i +" > span").css({
+                'background-color': '#EDAAAA',
+                'cursor': 'not-allowed'
+              });
+            }
+            else {
+              $('p#task-'+ i).text("Available");
+              $('div#task-div-'+ i +" > span").css({
+                'background-color': '#C4DBB3',
+                'cursor': 'pointer'
+              });
+              $('div#task-div-'+ i +" > span").click(() => {
+                this.selectSlot(i);
+              });
+            }
+          }
         }
-        else {
-          $('p#task-'+ i).text(daySchedule[i - 7].activity);
-          $('div#task-div-'+ i +" > span").css({
-            'background-color': '#EDAAAA',
-            'cursor': 'not-allowed'
-          });
+        if(dateStr == this.oldBookingDate) {
+          for(let hour of this.oldSelectedSlots) {
+            this.selectSlot(hour);
+          }
         }
+      })
+  }
+
+  selectSlot(hour: number) {
+    if(this.selectedSlots.includes(hour)){
+      if(arrayConsecutive(this.selectedSlots, hour, false)) {
+        $('p#task-'+ hour).text("Available");
+        $('div#task-div-'+ hour +" > span").css({
+          'background-color': '#C4DBB3',
+          'cursor': 'pointer'
+        });
+        this.selectedSlots = this.selectedSlots.filter((value) => {return value != hour});
+      }
+      else {
+        swal({
+          title: "Error!",
+          text: "Time slots must be next to each other!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+      }
+    }
+    else {
+      if(arrayConsecutive(this.selectedSlots, hour, true)) {
+        $('p#task-'+ hour).text("Selected");
+        $('div#task-div-'+ hour +" > span").css({
+          'background-color': '#9BCCE7',
+          'cursor': 'pointer'
+        });
+        this.selectedSlots.push(hour);
+        sortNumArray(this.selectedSlots);
+      }
+      else {
+        swal({
+          title: "Error!",
+          text: "Time slots must be next to each other!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
       }
     }
   }
 
-  updateBooking(){
-    swal({
-      title: "Update?",
-      text: "Are you sure you want to update this booking?",
-      icon: "warning",
-      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
-      buttons: {
-        cancel: "Cancel",
-        ok: "Yes"
+  updateBooking() {
+    const dateStr = $('p.p-date').text();
+    if(this.oldBookingDate == dateStr && JSON.stringify(this.oldSelectedSlots) == JSON.stringify(this.selectedSlots)) {
+      if(this.selectedSlots.length != 0) {
+        swal({
+          title: "Add?",
+          text: `Are you sure you want to modify this booking?
+          ${this.oldSelectedSlots[0]}:00 ${this.oldBookingDate} → ${this.selectedSlots[0]}:00 ${dateStr}`,
+          icon: "warning",
+          dangerMode: true,
+          buttons: {
+            cancel: "Cancel",
+            ok: "Yes"
+          }
+        } as any)
+        .then((willModify) => {
+          if(willModify) {
+            this.visitorService.modifyBooking(this.bookingId, dateStr, this.selectedSlots);
+          }
+        })
       }
-    } as any)
-      .then((willUpdate) => {
-        if (willUpdate) { //if they click yes, update the booking
-
-          //return to booking view
-          this.router.navigate(['/visitor','booking-view']);
-
-          //update the booking in the firebase collection here 
-        
-
-          swal("Booking updated!", {
-            icon: "success",
-          });
+      else {
+        swal({
+          title: "Error!",
+          text: "Please select at least one booking slot!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+      }
+    }
+    else {
+      swal({
+        title: "Error!",
+        text: "No changes made!",
+        icon: "error",
+        buttons: {
+          ok: "OK"
         }
-      });
+      } as any)
+    }
   }
 
 }

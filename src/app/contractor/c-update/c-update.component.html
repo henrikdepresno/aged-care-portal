@@ -6,7 +6,7 @@
 <form id="user-info">
     <span id="circle-user-icon"><img src="/assets/img/user-icon.png"></span>
     <div class="div-btn div-btn-qr"><span (click)="toggleQRCode(true)">QR Code</span></div>
-    <div class="div-btn div-btn-danger"><span [routerLink]="['../../login/login-c']">Log out</span></div>
+    <div class="div-btn div-btn-danger"><span (click)="logOut()">Log out</span></div>
 </form>
 
 <h2>Please fill in your details</h2>

@@ -167,4 +167,9 @@ export class S_R_ViewComponent implements OnInit {
     this.router.navigate(['/staff', 'resident-schedule']);
   }
 
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/login', 'login-s']);
+  }
+
 }

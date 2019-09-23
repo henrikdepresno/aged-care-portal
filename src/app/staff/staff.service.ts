@@ -39,6 +39,16 @@ export class StaffService {
     return this.resident;
   }
 
+  convertWeeklySchedule(rName: string, schedule: any) {
+    let weeklySchedules = new WeeklySchedules(rName, [[],[],[],[],[],[],[]]);
+    for(let i = 0; i <= 6; i++) {
+      for(let h = 7; h <= 22; h++) {
+        weeklySchedules.schedules[i].push(new ScheduleSlot(h, schedule[i][h].available, schedule[i][h].activity));
+      }
+    }
+    return weeklySchedules;
+  }
+
   bookingsCollection: AngularFirestoreCollection<Booking>;
   private bookedSlotsSource = new BehaviorSubject<number[]>([]);
   bookedSlots = this.bookedSlotsSource.asObservable();
@@ -54,23 +64,13 @@ export class StaffService {
       })
   }
 
-  convertWeeklySchedule(rName: string, schedule: any) {
-    let weeklySchedules = new WeeklySchedules(rName, [[],[],[],[],[],[],[]]);
-    for(let i = 0; i <= 6; i++) {
-      for(let h = 7; h <= 22; h++) {
-        weeklySchedules.schedules[i].push(new ScheduleSlot(h, schedule[i][h].available, schedule[i][h].activity));
-      }
-    }
-    return weeklySchedules;
-  }
-
-  addBooking(residentId: string, date: string, timeSlots: number[]) {
+  addBooking(residentId: string, rName: string, date: string, timeSlots: number[]) {
     this.bookingsCollection = this.afs.collection('bookings');
     this.bookingsCollection.get().toPromise().then(bookingSnapshot => {
       const latestId = bookingSnapshot.docs[bookingSnapshot.docs.length - 1].id;
       const newIdentifier = parseInt(latestId.substring(8)) + 1;
       const id = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + ((newIdentifier < 10) ? "0" + newIdentifier.toString() : newIdentifier.toString());
-      const booking = new Booking(id, residentId, date, timeSlots, false);
+      const booking = new Booking(id, residentId, rName, date, timeSlots, false);
       this.bookingsCollection.doc(id).set(Object.assign({}, booking))
         .then(() => {
           swal({

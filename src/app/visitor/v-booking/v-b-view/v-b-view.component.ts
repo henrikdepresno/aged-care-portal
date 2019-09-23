@@ -1,10 +1,12 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import { VisitorService } from '../../visitor.service';
-import { BookingView } from '../../../classes-output';
-import QRCode from 'qrcode';
 import swal from 'sweetalert';
+import QRCode from 'qrcode';
+import { AuthService } from 'src/app/auth.service';
+import { VisitorService } from '../../visitor.service';
+import { Booking } from '../../../classes';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-v-b-view',
@@ -13,28 +15,73 @@ import swal from 'sweetalert';
 })
 export class V_B_ViewComponent implements OnInit {
 
+  id: string
+
   constructor(
     private router: Router,
+    private authService: AuthService,
     private visitorService: VisitorService,
     @Optional() private pagesNum: number,
-    @Optional() private outputBookings: BookingView[][]
+    @Optional() private outputBookings: Booking[][]
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/visitor', 'booking-view']);
-    
-    QRCode.toCanvas(document.getElementById('qrcode'), this.visitorService.getVisitorId(), {scale: 9});
 
-    let bookingViews = this.visitorService.getBookingViews();
-    let booksNum = bookingViews.length;
+    this.validateUserType().then(res => {
+      if(res) {
+        this.visitorService.getId();
+        this.visitorService.id.pipe(
+          mergeMap(id => {
+            this.id = id;
+            this.visitorService.getBookings(this.id);
+            QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
+            return this.visitorService.bookings;
+          }))
+          .subscribe(bookings => {
+            this.loadComponent(bookings);
+          });
+      }
+    });
+  }
+
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/visitor/booking-view"));
+    })
+  }
+
+  toggleQRCode(toggle: boolean) {
+    if(toggle) {
+      $('div#qr-container').show();
+      $('body').addClass('stop-scrolling');
+      $('.stop-scrolling').css({
+        "height": "100%",
+        "overflow": "hidden"
+      });
+    } else {
+      $('div#qr-container').hide();
+      $('.stop-scrolling').css({
+        "height": "auto",
+        "overflow": "visible"
+      });
+      $('body').removeClass('stop-scrolling');
+    }
+  }
+
+  loadComponent(bookings: Booking[]) {
+    $('div#pages').empty();
+
+    let booksNum = bookings.length;
     this.pagesNum = ((booksNum / 8) == 0) ? 1 : Math.ceil(booksNum / 8);
     this.outputBookings = new Array(this.pagesNum);
     for(let iPage = 0; iPage < this.pagesNum; iPage++) {
       const fill = (booksNum < 8) ? booksNum : 8;
       this.outputBookings[iPage] = new Array(fill);
       for(let iBook = 0; iBook < fill; iBook++) {
-        this.outputBookings[iPage][iBook] = bookingViews[0];
-        bookingViews.shift();
+        this.outputBookings[iPage][iBook] = bookings[0];
+        bookings.shift();
         booksNum--;
       }
     }
@@ -71,7 +118,6 @@ export class V_B_ViewComponent implements OnInit {
     }
     
     this.clickPage(1);
-    
   }
 
   clickPage(page: number) {
@@ -111,94 +157,97 @@ export class V_B_ViewComponent implements OnInit {
       $('table#item-list-xs > tr#item-'+ i +'-text').show();
       $('table#item-list-xs > tr#item-'+ i +'-btn').show();
       const booking = output[i - 1];
-      $('strong#booking-status-'+ i).text(booking.status + ":");
-      if(booking.status == "Confirmed") {
+      const today = new Date();
+      const bookingDateStr = `${booking.date.substring(6)}-${booking.date.substring(3, 5)}-${booking.date.substring(0, 2)}}`
+      const bookingDate = new Date(bookingDateStr)
+      let status = "";
+      if(!booking.isCancelled) {
+        if(today.getFullYear() < bookingDate.getFullYear() ||
+        (today.getFullYear() == bookingDate.getFullYear() && today.getMonth() < bookingDate.getMonth()) ||
+        (today.getFullYear() == bookingDate.getFullYear() && today.getMonth() == bookingDate.getMonth() && today.getDate() < bookingDate.getDate())) {
+          status = "Expired"
+        }
+        else {
+          status = "Confirmed"
+        }
+      }
+      else {
+        status = "Cancelled"
+      }
+      $('strong#booking-status-'+ i).text(status + ":");
+      if(status == "Confirmed") {
         $('strong#booking-status-'+ i).css('color','#9ACA74');
-      } else if(booking.status == "Cancelled") {
+      } else if(status == "Cancelled") {
         $('strong#booking-status-'+ i).css('color','#E17272');
       } else {
         $('strong#booking-status-'+ i).css('color','#525E85');
       }
-      const time = booking.time;
-      const timeStr = (time.getHours() < 10 ? "0" + time.getHours() : time.getHours()) + ":"
-        + (time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes()) + " "
-        + (time.getDate() < 10 ? "0" + time.getDate() : time.getDate()) + "/"
-        + (time.getMonth() + 1 < 10 ? "0" + (time.getMonth() + 1) : time.getMonth() + 1) + "/"
-        + time.getFullYear();
-      $('p#booking-details-'+ i).text(booking.rFirstName + " | " + timeStr);
-
-      if(booking.status == "Confirmed"){
+      const time = `${booking.timeSlots[0]}:00 ${booking.date}`;
+      $('p#booking-details-'+ i).text(booking.rName + " | " + time);
+      if(status == "Confirmed"){
         $('tr#item-'+ i +' > td.td-btn > span').show();
         $('tr#item-'+ i +'-btn > td.td-btn > span').show();
       }
 
+      $('p#booking-details-'+ i).click(() => {
+        this.clickInfo(booking, status);
+      })
 
-      //jQuery for buttons. This will loop depending on how many bookings found in the database
-      // for now the buttons hardcoded per row of confirmed bookings
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {
-        this.clickModify();
+        this.clickModify(booking.id);
       });
       
       $('tr#item-'+ i +'-btn > td.td-btn-primary > span').click(() => {
-        this.clickModify();
+        this.clickModify(booking.id);
       });
 
-      //Henrik: added clickDelete function
       $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
-        this.clickDelete();
+        this.clickCancel(booking.id);
       });
       
       $('tr#item-'+ i +'-btn > td.td-btn-danger > span').click(() => {
-        this.clickDelete();
+        this.clickCancel(booking.id);
       });
     }
-
   }
 
-  clickModify() {
+  clickInfo(booking: Booking, status: string) {
+    swal({
+      title: `Booking for: ${booking.rName}`,
+      text:
+      `Time: ${booking.timeSlots[0]}:00 ${booking.date}
+      Status: ${status}`,
+      icon: "info",
+    });
+  }
+
+  clickModify(id) {
+    this.visitorService.passResidentId(this.id);
+    this.visitorService.passBookingId(id);
     this.router.navigate(['/visitor', 'booking-modify']);
   }
 
-  //Henrik: added following function
-  clickDelete() {
+  clickCancel(id: string) {
     swal({
-      title: "Delete?",
-      text: "Are you sure you want to delete this booking?",
+      title: "Cancel?",
+      text: "Are you sure you want to cancel this booking?",
       icon: "warning",
-      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+      dangerMode: true,
       buttons: {
         cancel: "Cancel",
         ok: "Yes"
       }
     } as any)
-      .then((willDelete) => {
-        if (willDelete) {
-
-          //remove from firebase collection here
-          
-          swal("Booking deleted!", {
-            icon: "success",
-          });
-        }
-      });
+    .then((willCancel) => {
+      if(willCancel) {
+        this.visitorService.cancelBooking(id);
+      }
+    });
   }
 
-  toggleQRCode(toggle: boolean) {
-    if(toggle) {
-      $('div#qr-container').show();
-      $('body').addClass('stop-scrolling');
-      $('.stop-scrolling').css({
-        "height": "100%",
-        "overflow": "hidden"
-      });
-    } else {
-      $('div#qr-container').hide();
-      $('.stop-scrolling').css({
-        "height": "auto",
-        "overflow": "visible"
-      });
-      $('body').removeClass('stop-scrolling');
-    }
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/login', 'login-v']);
   }
 
 }
