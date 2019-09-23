@@ -1,8 +1,11 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
+import swal from 'sweetalert';
+import { AuthService } from '../../../auth.service';
 import { StaffService } from '../../staff.service';
-import { ResidentView } from '../../../classes-output';
+import { Resident } from '../../../classes';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-s-r-view',
@@ -13,28 +16,50 @@ export class S_R_ViewComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private staffService: StaffService,
     @Optional() private pagesNum: number,
-    @Optional() private outputResidents: ResidentView[][]
+    @Optional() private outputResidents: Resident[][]
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/staff', 'resident-view']);
 
-    const current = this.staffService.getCurrentVisitorNumber();
-    $('strong#current-visitors-num').text(current);
-    $('strong#current-visitors-num').css("user-select", "none");
+    this.validateUserType().then(res => {
+      if(res) {
+        this.staffService.getResidents().pipe(
+          mergeMap(res => {
+            this.loadComponent(res);
+            return this.staffService.getCurrentVisitors();
+          }))
+          .subscribe(snapshot => {
+            let current = snapshot.size;
+            $('strong#current-visitors-num').text(current);
+            $('strong#current-visitors-num').css("user-select", "none");
+          });
+      }
+    });
+  }
 
-    let residentViews = this.staffService.getResidentViews();
-    let residentsNum = residentViews.length;
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/staff/resident-view"));
+    })
+  }
+
+  loadComponent(residents: Resident[]) {
+    $('div#pages').empty();
+
+    let residentsNum = residents.length;
     this.pagesNum = ((residentsNum / 8) == 0) ? 1 : Math.ceil(residentsNum / 8);
     this.outputResidents = new Array(this.pagesNum);
     for(let iPage = 0; iPage < this.pagesNum; iPage++) {
       const fill = (residentsNum < 8) ? residentsNum : 8;
       this.outputResidents[iPage] = new Array(fill);
       for(let iRes = 0; iRes < fill; iRes++) {
-        this.outputResidents[iPage][iRes] = residentViews[0];
-        residentViews.shift();
+        this.outputResidents[iPage][iRes] = residents[0];
+        residents.shift();
         residentsNum--;
       }
     }
@@ -114,17 +139,31 @@ export class S_R_ViewComponent implements OnInit {
       $('tr#item-'+ i +' > td.td-btn').show();
       $('tr#item-'+ i +'-btn > td.td-btn').show();
 
+      $('p#resident-name-'+ i).click(() => {
+        this.clickInfo(resident);
+      })
+
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {
-        this.clickSchedule();
+        this.clickSchedule(resident.id);
       });
       
       $('tr#item-'+ i +'-btn > td.td-btn-primary > span').click(() => {
-        this.clickSchedule();
+        this.clickSchedule(resident.id);
       });
     }
   }
 
-  clickSchedule() {
+  clickInfo(resident: Resident) {
+    swal({
+      title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
+      text:
+      `Phone: ${resident.phone}`,
+      icon: "info",
+    });
+  }
+
+  clickSchedule(id: string) {
+    this.staffService.passResidentId(id);
     this.router.navigate(['/staff', 'resident-schedule']);
   }
 

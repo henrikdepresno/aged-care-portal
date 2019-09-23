@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import swal from 'sweetalert';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Resident, Contractor, Staff, IDList, Visitor, Flag, Rating, Feedback } from '../classes';
-import { randomUniqueID } from '../functions';
+import { capitalize, randomUniqueID } from '../functions';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,31 @@ export class AdminService {
     this.updateIdSource.next(id);
   }
 
+  successAddUser(userType: string) {
+    swal({
+      title: "Success!",
+      text: `${capitalize(userType)} added`,
+      icon: "success",
+      buttons: {
+        ok: "OK"
+      }
+    } as any)
+    .then(() => {
+      this.router.navigate(['/admin', `${userType}-view`]);
+    })
+  }
+
+  emailInUse() {
+    swal({
+      title: "Error!",
+      text: "Email is already in use!",
+      icon: "error",
+      buttons: {
+        ok: "OK"
+      }
+    } as any)
+  }
+
   // Contractor Functions
 
   contractorsCollection: AngularFirestoreCollection<Contractor>;
@@ -42,12 +68,23 @@ export class AdminService {
 
   addContractor(cFirstName: string, cLastName: string, email: string, phone: string, companyName: string, field: string) {
     this.afs.collection('id-list').get().toPromise().then(idSnapshot => {
-      const newID = randomUniqueID(idSnapshot);
-      this.contractorsCollection = this.afs.collection('contractors');
-      const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field)
-      this.contractorsCollection.doc(newID).set(Object.assign({}, contractor));
-      this.authService.addUser(newID, email, 'contractor', cFirstName);
-      this.router.navigate(['/admin', 'contractor-view']);
+      this.afs.collection('users').get().toPromise().then(userSnapshot => {
+        let emails = [];
+        userSnapshot.docs.forEach(doc => {
+          emails.push(doc.data().email);
+          if(!emails.includes(email)) {
+            const newID = randomUniqueID(idSnapshot);
+            this.contractorsCollection = this.afs.collection('contractors');
+            const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field)
+            this.contractorsCollection.doc(newID).set(Object.assign({}, contractor));
+            this.authService.addUser(newID, email, 'contractor', cFirstName);
+            this.successAddUser('contractor');
+          }
+          else {
+            this.emailInUse();
+          }
+        })
+      })
     })
   }
 
@@ -76,12 +113,23 @@ export class AdminService {
 
   addStaff(sFirstName: string, sLastName: string, email: string, phone: string, role: string) {
     this.afs.collection('id-list').get().toPromise().then(idSnapshot => {
-      const newID = randomUniqueID(idSnapshot);
-      this.staffsCollection = this.afs.collection('staffs');
-      const staff = new Staff(newID, sFirstName, sLastName, phone, email, role)
-      this.staffsCollection.doc(newID).set(Object.assign({}, staff));
-      this.authService.addUser(newID, email, 'staff', sFirstName);
-      this.router.navigate(['/admin', 'staff-view']);
+      this.afs.collection('users').get().toPromise().then(userSnapshot => {
+        let emails = [];
+        userSnapshot.docs.forEach(doc => {
+          emails.push(doc.data().email);
+          if(!emails.includes(email)) {
+            const newID = randomUniqueID(idSnapshot);
+            this.staffsCollection = this.afs.collection('staffs');
+            const staff = new Staff(newID, sFirstName, sLastName, phone, email, role)
+            this.staffsCollection.doc(newID).set(Object.assign({}, staff));
+            this.authService.addUser(newID, email, 'staff', sFirstName);
+            this.successAddUser('staff');
+          }
+          else {
+            this.emailInUse();
+          }
+        })
+      })
     })
   }
 

@@ -1,211 +1,153 @@
 import { Injectable } from '@angular/core';
-import { ResidentView, ScheduleSlot, VisitorView, WeeklySchedules, Feedback } from '../classes-output';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import swal from 'sweetalert';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { Resident, Visitor, Flag, Rating, Feedback, WeeklySchedules, ScheduleSlot, Booking } from '../classes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StaffService {
 
-  constructor() { }
+  constructor(
+    private afs: AngularFirestore,
+    private afAuth: AngularFireAuth
+  ) { }
 
-  getCurrentVisitorNumber(): number {
-    const num = 10;
-    return num;
+  getCurrentVisitors() {
+    return this.afs.collection('visitors', ref => ref.where('inFacility', '==', true)).get();
   }
 
-  getResidentViews(): ResidentView[] {
-    const residentViews: ResidentView[] = [
-      new ResidentView("Charles", "Charleston"),
-      new ResidentView("Jacques", "Bates"),
-      new ResidentView("Shayna", "Stanton"),
-      new ResidentView("Aasiyah", "Terrell"),
-      new ResidentView("Angharad", "Moreno"),
-      new ResidentView("Roscoe", "William"),
-      new ResidentView("Kallum", "Jensen"),
-      new ResidentView("Gerard", "Castaneda"),
-      new ResidentView("Isabella", "Velez"),
-      new ResidentView("Shakira", "Tyson"),
-      new ResidentView("Ibraheem", "Brooks")
-    ];
-    return residentViews;
+  private residentIdSource = new BehaviorSubject<string>("");
+  residentId = this.residentIdSource.asObservable();
+
+  passResidentId(id: string) {
+    this.residentIdSource.next(id);
   }
 
-  getVisitorViews(): VisitorView[] {
-    const visitorViews: VisitorView[] = [
-      new VisitorView("Arian", "Jacobson", false),
-      new VisitorView("Jadene", "Kane", false),
-      new VisitorView("Ida", "Esquivel", false),
-      new VisitorView("Carmel", "Conway", false),
-      new VisitorView("Nusaybah", "Horne", false),
-      new VisitorView("Mekhi", "Diaz", true),
-      new VisitorView("Rudi", "Betts", false),
-      new VisitorView("Arjan", "Forbes", false),
-      new VisitorView("Arman", "Haigh", false),
-      new VisitorView("Md", "Cannon", true),
-      new VisitorView("Gabriela", "Coles", false),
-      new VisitorView("Micheal", "Davey", true),
-      new VisitorView("Jeremy", "Whelan", false),
-      new VisitorView("Danyal", "Carter", false),
-      new VisitorView("Taybah", "Jaramillo", false),
-      new VisitorView("Tasha", "Wilks", true),
-      new VisitorView("Menna", "Chaney", false),
-      new VisitorView("Tania", "Kirkland", false),
-      new VisitorView("Vikki", "Ellis", false),
-      new VisitorView("Saxon", "Oneil", false)
-    ];
-    return visitorViews;
+  residents: Observable<Resident[]>;
+  resident: Observable<Resident>;
+
+  getResidents() {
+    this.residents = this.afs.collection('residents').valueChanges();
+    return this.residents;
   }
 
-  getWeeklySchedules(): WeeklySchedules {
-    const weeklySchedules: WeeklySchedules = new WeeklySchedules("Charles", "Charleston",
-    [
-      [
-        new ScheduleSlot(7, false, "Sleep"),
-        new ScheduleSlot(8, false, "Medicine / Waking up"),
-        new ScheduleSlot(9, false, "Breakfast"),
-        new ScheduleSlot(10, true, ""),
-        new ScheduleSlot(11, false, "Meeting booked with Jamie"),
-        new ScheduleSlot(12, true, ""),
-        new ScheduleSlot(13, false, "Lunch"),
-        new ScheduleSlot(14, true, ""),
-        new ScheduleSlot(15, false, "Afternoon tea"),
-        new ScheduleSlot(16, true, ""),
-        new ScheduleSlot(17, true, ""),
-        new ScheduleSlot(18, false, "Dinner"),
-        new ScheduleSlot(19, true, ""),
-        new ScheduleSlot(20, true, ""),
-        new ScheduleSlot(21, false, "Preparation for sleep / Medicine"),
-        new ScheduleSlot(22, false, "Sleep")
-      ],
-      [
-        new ScheduleSlot(7, false, "Sleep"),
-        new ScheduleSlot(8, false, "Medicine / Waking up"),
-        new ScheduleSlot(9, false, "Breakfast"),
-        new ScheduleSlot(10, true, ""),
-        new ScheduleSlot(11, true, ""),
-        new ScheduleSlot(12, true, ""),
-        new ScheduleSlot(13, false, "Lunch"),
-        new ScheduleSlot(14, true, ""),
-        new ScheduleSlot(15, false, "Afternoon tea"),
-        new ScheduleSlot(16, true, ""),
-        new ScheduleSlot(17, true, ""),
-        new ScheduleSlot(18, false, "Dinner"),
-        new ScheduleSlot(19, true, ""),
-        new ScheduleSlot(20, true, ""),
-        new ScheduleSlot(21, false, "Preparation for sleep / Medicine"),
-        new ScheduleSlot(22, false, "Sleep")
-      ],
-      [
-        new ScheduleSlot(7, false, "Sleep"),
-        new ScheduleSlot(8, false, "Medicine / Waking up"),
-        new ScheduleSlot(9, false, "Breakfast"),
-        new ScheduleSlot(10, true, ""),
-        new ScheduleSlot(11, true, ""),
-        new ScheduleSlot(12, true, ""),
-        new ScheduleSlot(13, false, "Lunch"),
-        new ScheduleSlot(14, true, ""),
-        new ScheduleSlot(15, false, "Afternoon tea"),
-        new ScheduleSlot(16, true, ""),
-        new ScheduleSlot(17, true, ""),
-        new ScheduleSlot(18, false, "Dinner"),
-        new ScheduleSlot(19, true, ""),
-        new ScheduleSlot(20, true, ""),
-        new ScheduleSlot(21, false, "Preparation for sleep / Medicine"),
-        new ScheduleSlot(22, false, "Sleep")
-      ],
-      [
-        new ScheduleSlot(7, false, "Sleep"),
-        new ScheduleSlot(8, false, "Medicine / Waking up"),
-        new ScheduleSlot(9, false, "Breakfast"),
-        new ScheduleSlot(10, true, ""),
-        new ScheduleSlot(11, true, ""),
-        new ScheduleSlot(12, true, ""),
-        new ScheduleSlot(13, false, "Lunch"),
-        new ScheduleSlot(14, true, ""),
-        new ScheduleSlot(15, false, "Afternoon tea"),
-        new ScheduleSlot(16, true, ""),
-        new ScheduleSlot(17, true, ""),
-        new ScheduleSlot(18, false, "Dinner"),
-        new ScheduleSlot(19, true, ""),
-        new ScheduleSlot(20, true, ""),
-        new ScheduleSlot(21, false, "Preparation for sleep / Medicine"),
-        new ScheduleSlot(22, false, "Sleep")
-      ],
-      [
-        new ScheduleSlot(7, false, "Sleep"),
-        new ScheduleSlot(8, false, "Medicine / Waking up"),
-        new ScheduleSlot(9, false, "Breakfast"),
-        new ScheduleSlot(10, true, ""),
-        new ScheduleSlot(11, true, ""),
-        new ScheduleSlot(12, true, ""),
-        new ScheduleSlot(13, false, "Lunch"),
-        new ScheduleSlot(14, true, ""),
-        new ScheduleSlot(15, false, "Afternoon tea"),
-        new ScheduleSlot(16, true, ""),
-        new ScheduleSlot(17, true, ""),
-        new ScheduleSlot(18, false, "Dinner"),
-        new ScheduleSlot(19, true, ""),
-        new ScheduleSlot(20, true, ""),
-        new ScheduleSlot(21, false, "Preparation for sleep / Medicine"),
-        new ScheduleSlot(22, false, "Sleep")
-      ],
-      [
-        new ScheduleSlot(7, false, "Sleep"),
-        new ScheduleSlot(8, false, "Medicine / Waking up"),
-        new ScheduleSlot(9, false, "Breakfast"),
-        new ScheduleSlot(10, true, ""),
-        new ScheduleSlot(11, true, ""),
-        new ScheduleSlot(12, true, ""),
-        new ScheduleSlot(13, false, "Lunch"),
-        new ScheduleSlot(14, true, ""),
-        new ScheduleSlot(15, false, "Afternoon tea"),
-        new ScheduleSlot(16, true, ""),
-        new ScheduleSlot(17, true, ""),
-        new ScheduleSlot(18, false, "Dinner"),
-        new ScheduleSlot(19, true, ""),
-        new ScheduleSlot(20, true, ""),
-        new ScheduleSlot(21, false, "Preparation for sleep / Medicine"),
-        new ScheduleSlot(22, false, "Sleep")
-      ],
-      [
-        new ScheduleSlot(7, false, "Sleep"),
-        new ScheduleSlot(8, false, "Medicine / Waking up"),
-        new ScheduleSlot(9, false, "Breakfast"),
-        new ScheduleSlot(10, true, ""),
-        new ScheduleSlot(11, true, ""),
-        new ScheduleSlot(12, true, ""),
-        new ScheduleSlot(13, false, "Lunch"),
-        new ScheduleSlot(14, true, ""),
-        new ScheduleSlot(15, false, "Afternoon tea"),
-        new ScheduleSlot(16, true, ""),
-        new ScheduleSlot(17, true, ""),
-        new ScheduleSlot(18, false, "Dinner"),
-        new ScheduleSlot(19, true, ""),
-        new ScheduleSlot(20, true, ""),
-        new ScheduleSlot(21, false, "Preparation for sleep / Medicine"),
-        new ScheduleSlot(22, false, "Sleep")
-      ]
-    ]);
+  getResident(id: string) {
+    this.resident = this.afs.collection('residents').doc(id).valueChanges();
+    return this.resident;
+  }
+
+  bookingsCollection: AngularFirestoreCollection<Booking>;
+  private bookedSlotsSource = new BehaviorSubject<number[]>([]);
+  bookedSlots = this.bookedSlotsSource.asObservable();
+
+  getBookedSlots(date: string) {
+    let bookedSlots = [];
+    this.afs.collection('bookings', ref => ref.where('date', '==', date).where('isCancelled', '==', false)).get().toPromise()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          bookedSlots.concat(doc.data().timeSlots);
+        })
+        this.bookedSlotsSource.next(bookedSlots);
+      })
+  }
+
+  convertWeeklySchedule(rName: string, schedule: any) {
+    let weeklySchedules = new WeeklySchedules(rName, [[],[],[],[],[],[],[]]);
+    for(let i = 0; i <= 6; i++) {
+      for(let h = 7; h <= 22; h++) {
+        weeklySchedules.schedules[i].push(new ScheduleSlot(h, schedule[i][h].available, schedule[i][h].activity));
+      }
+    }
     return weeklySchedules;
   }
 
-  getRatings(): number[] {
-    const one = 4;
-    const two = 3;
-    const three = 5;
-    const four = 15;
-    const five = 23;
-    return [one, two, three, four, five];
+  addBooking(residentId: string, date: string, timeSlots: number[]) {
+    this.bookingsCollection = this.afs.collection('bookings');
+    this.bookingsCollection.get().toPromise().then(bookingSnapshot => {
+      const latestId = bookingSnapshot.docs[bookingSnapshot.docs.length - 1].id;
+      const newIdentifier = parseInt(latestId.substring(8)) + 1;
+      const id = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + ((newIdentifier < 10) ? "0" + newIdentifier.toString() : newIdentifier.toString());
+      const booking = new Booking(id, residentId, date, timeSlots, false);
+      this.bookingsCollection.doc(id).set(Object.assign({}, booking))
+        .then(() => {
+          swal({
+            title: "Success!",
+            text: "Booking added succesfully!",
+            icon: "success",
+            buttons: {
+              ok: "OK"
+            }
+          } as any)
+        });
+    })
   }
 
-  getFeedbacks(): Feedback[] {
-    const feedbacks: Feedback[] = [
-      new Feedback("Bad Ventilation", "Arian", "Jacobson", "Visitor", new Date(2019, 6, 12, 14, 0, 0), ""),
-      new Feedback("Rude Staff!", "Arjan", "Forbes", "Visitor", new Date(2019, 6, 10, 14, 0, 0), ""),
-      new Feedback("Lovely place", "Arman", "Haigh", "Visitor", new Date(2019, 6, 5, 14, 0, 0), ""),
-      new Feedback("great service", "Dixon", "Hills", "Contractor", new Date(2019, 5, 23, 14, 0, 0), ""),
-      new Feedback("Helpful staff!", "Saxon", "Oneil", "Visitor", new Date(2019, 5, 21, 14, 0, 0), "")
-    ];
-    return feedbacks;
+  makeScheduleChange(residentId: string, activity: string, day: number, hour: number) {
+    activity = (activity == "Available") ? "" : activity;
+    const update = {};
+    update[`schedule.${day}.${hour}`] = {
+      activity: activity,
+      isAvailable: (activity == "")
+    }
+    this.afs.collection('residents').doc(residentId).update(update)
+      .then(() => {
+        swal({
+          title: "Success!",
+          text: "Change made!",
+          icon: "success",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+      });
+  }
+
+  visitors: Observable<Visitor[]>;
+
+  getVisitors() {
+    this.visitors = this.afs.collection('visitors').valueChanges();
+    return this.visitors;
+  }
+
+  flagVisitor(id: string, reason: string) {
+    this.afAuth.authState.toPromise()
+      .then(user => {
+        this.afs.collection('staffs', ref => ref.where('email', '==', user.email)).get().toPromise()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              const staffName = doc.data().sFirstName + " " + doc.data().sFirstName;
+              this.afs.collection('visitors').doc(id).get().toPromise()
+              .then((doc) => {
+                let flags: Flag[] = doc.data().flags;
+                const date = new Date();
+                const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
+                  + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
+                  + date.getFullYear();
+                flags.unshift(new Flag(dateStr, staffName, reason));
+                this.afs.collection('visitors').doc(id).update({flags: flags});
+                swal("Visitor flagged!", {
+                  icon: "success",
+                })
+              });
+            })
+          })
+      })
+  }
+
+  ratings: Observable<Rating>;
+
+  getRatings() {
+    this.ratings = this.afs.collection('ratings').doc('ratings').valueChanges();
+    return this.ratings;
+  }
+
+  feedbacks: Observable<Feedback[]>;
+
+  getFeedbacks() {
+    this.feedbacks = this.afs.collection('feedbacks').valueChanges();
+    return this.feedbacks;
   }
 }

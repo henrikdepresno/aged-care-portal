@@ -40,7 +40,8 @@ export class Resident {
     public id?: string,
     public rFirstName?: string,
     public rLastName?: string,
-    public phone?: string
+    public phone?: string,
+    public schedule?: any
   ) { }
 }
 
@@ -62,7 +63,7 @@ export class Visitor {
 export class Booking {
   constructor(
     public id?: string,
-    public resident?: Resident,
+    public residentId?: string,
     public date?: string,
     public timeSlots?: number[],
     public isCancelled?: boolean
@@ -94,5 +95,20 @@ export class Flag {
     public date?: string,
     public staff?: string,
     public reason?: string
+  ) { }
+}
+
+export class ScheduleSlot {
+  constructor(
+    public hour: number,
+    public available: boolean,
+    public activity: string
+  ) { }
+}
+
+export class WeeklySchedules {
+  constructor(
+    public rName: string,
+    public schedules: ScheduleSlot[][]
   ) { }
 }

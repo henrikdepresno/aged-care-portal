@@ -1,9 +1,11 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import { StaffService } from '../../staff.service';
-import { VisitorView } from '../../../classes-output';
 import swal from 'sweetalert';
+import { AuthService } from '../../../auth.service';
+import { StaffService } from '../../staff.service';
+import { Visitor } from 'src/app/classes';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-s-v-view',
@@ -14,28 +16,50 @@ export class S_V_ViewComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private staffService: StaffService,
     @Optional() private pagesNum: number,
-    @Optional() private outputVisitors: VisitorView[][]
+    @Optional() private outputVisitors: Visitor[][]
   ) { }
 
   ngOnInit() {
     this.router.navigate(['/staff', 'visitor-view']);
 
-    const current = this.staffService.getCurrentVisitorNumber();
-    $('strong#current-visitors-num').text(current);
-    $('strong#current-visitors-num').css("user-select", "none");
+    this.validateUserType().then(res => {
+      if(res) {
+        this.staffService.getVisitors().pipe(
+          mergeMap(res => {
+            this.loadComponent(res);
+            return this.staffService.getCurrentVisitors();
+          }))
+          .subscribe(snapshot => {
+            let current = snapshot.size;
+            $('strong#current-visitors-num').text(current);
+            $('strong#current-visitors-num').css("user-select", "none");
+          });
+      }
+    });
+  }
 
-    let visitorViews = this.staffService.getVisitorViews();
-    let visitorsNum = visitorViews.length;
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/staff/visitor-view"));
+    })
+  }
+
+  loadComponent(visitors: Visitor[]) {
+    $('div#pages').empty();
+
+    let visitorsNum = visitors.length;
     this.pagesNum = ((visitorsNum / 8) == 0) ? 1 : Math.ceil(visitorsNum / 8);
     this.outputVisitors = new Array(this.pagesNum);
     for(let iPage = 0; iPage < this.pagesNum; iPage++) {
       const fill = (visitorsNum < 8) ? visitorsNum : 8;
       this.outputVisitors[iPage] = new Array(fill);
       for(let iVis = 0; iVis < fill; iVis++) {
-        this.outputVisitors[iPage][iVis] = visitorViews[0];
-        visitorViews.shift();
+        this.outputVisitors[iPage][iVis] = visitors[0];
+        visitors.shift();
         visitorsNum--;
       }
     }
@@ -115,40 +139,73 @@ export class S_V_ViewComponent implements OnInit {
       $('p#visitor-name-'+ i).text(visitor.vFirstName + " " + visitor.vLastName);
       $('tr#item-'+ i +' > td.td-btn-danger').show();
       $('tr#item-'+ i +'-btn > td.td-btn-danger').show();
-      if(visitor.isFlagged){
+
+      $('p#visitor-name-'+ i).click(() => {
+        this.clickInfo(visitor);
+      })
+
+      if(visitor.flags.length != 0){
         $('tr#item-'+ i +' > td.td-btn-img img').show();
         $('tr#item-'+ i +'-btn > td.td-btn-img img').show();
       }
 
       $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
-        this.clickFlag();
+        this.clickFlag(visitor.id);
       });
       $('tr#item-'+ i +'-btn > td.td-btn-danger > span').click(() => {
-        this.clickFlag();
+        this.clickFlag(visitor.id);
       });
     }
   }
 
-  clickFlag(){
+  clickInfo(visitor: Visitor) {
     swal({
-      title: "Flag visitor",
-      text: "Please fill in the reason below:",
-      content: "input",
+      title: `Visitor: ${visitor.vFirstName} ${visitor.vLastName}`,
+      text:
+      `Email: ${visitor.email}
+      Phone: ${visitor.phone}
+      Flagged: ${(visitor.flags.length != 0) ? "Yes" : "No"}`,
       icon: "info",
-      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
+    });
+  }
+
+  clickFlag(id: string){
+    swal({
+      title: "Flag?",
+      text: "Are you sure you want to flag this visitor?",
+      icon: "warning",
+      dangerMode: true,
       buttons: {
         cancel: "Cancel",
-        ok: "Submit"
+        ok: "Yes"
       }
-      
     } as any)
-    .then((willSubmit) => {
-      if (willSubmit) {
-
-        //add the flag in the firebase for the selected visitor
-        
-        swal("Flag submitted", {
-          icon: "success",
+    .then((willFlag) => {
+      if(willFlag) {
+        swal({
+          content: {
+            element: "input",
+            attributes: {
+              placeholder: "Reason",
+              type: "text",
+            },
+          },
+        })
+        .then((reason) => {
+          swal({
+            text: `Reason: ${reason}`,
+            icon: "info",
+            dangerMode: true,
+            buttons: {
+              cancel: "Cancel",
+              ok: "Flag"
+            }
+          } as any)
+          .then((confirmFlag) => {
+            if(confirmFlag) {
+              this.staffService.flagVisitor(id, reason);
+            }
+          });
         });
       }
     });

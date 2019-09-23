@@ -46,17 +46,7 @@ export class A_S_AddComponent implements OnInit {
     if(sFirstName != "" && sLastName != "" && email != "" && phone != "" && role != "") {
       if(isNumeric(phone)) {
         if(isEmail(email)) {
-          swal({
-            title: "Success!",
-            text: "Staff added",
-            icon: "success",
-            buttons: {
-              ok: "OK"
-            }
-          } as any)
-          .then(() => {
-            this.adminService.addStaff(sFirstName, sLastName, email, phone, role);
-          });
+          this.adminService.addStaff(sFirstName, sLastName, email, phone, role);
         }
         else {
           this.swalError("The provided email is not valid!")

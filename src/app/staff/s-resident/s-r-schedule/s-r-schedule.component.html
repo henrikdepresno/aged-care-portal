@@ -268,8 +268,7 @@
             </table>
 
             <div id="list-page">
-                <div class="div-btn div-btn-primary"><span (click)="makeChanges()">Make changes</span></div>
-                <div class="div-btn div-btn-switch" id="switch-booking"><span>Booking view</span></div>
+                <div class="div-btn div-btn-switch" id="switch-booking" (click)="switchSection('booking')"><span>Booking view</span></div>
                 <div class="div-btn div-btn-danger"><span [routerLink]="['../resident-view']">Back</span></div>
             </div>
         </div>
@@ -562,7 +561,7 @@
 
             <div id="list-page">
                 <div class="div-btn div-btn-primary"><span (click)="addNewBooking()">Add new booking</span></div>
-                <div class="div-btn div-btn-switch" id="switch-weekly"><span>Schedule view</span></div>
+                <div class="div-btn div-btn-switch" id="switch-weekly" (click)="switchSection('weekly')"><span>Schedule view</span></div>
                 <div class="div-btn div-btn-danger"><span [routerLink]="['../resident-view']">Back</span></div>
             </div>
         </div>

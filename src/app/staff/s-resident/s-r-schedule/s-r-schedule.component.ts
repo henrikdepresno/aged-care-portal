@@ -1,9 +1,12 @@
 import { Component, OnInit, Optional } from '@angular/core';
-import $ from 'jquery';
 import { Router } from '@angular/router';
-import { StaffService } from '../../staff.service';
-import { WeeklySchedules } from '../../../classes-output';
+import $ from 'jquery';
 import swal from 'sweetalert';
+import { AuthService } from 'src/app/auth.service';
+import { StaffService } from '../../staff.service';
+import { WeeklySchedules } from '../../../classes';
+import { mergeMap } from 'rxjs/operators';
+import { arrayConsecutive, sortNumArray } from 'src/app/functions';
 
 @Component({
   selector: 'app-s-r-schedule',
@@ -12,12 +15,16 @@ import swal from 'sweetalert';
 })
 export class S_R_ScheduleComponent implements OnInit {
 
+  id: string;
+
   constructor(
     private router: Router,
+    private authService: AuthService,
     private staffService: StaffService,
     @Optional() private initialClick: boolean,
     @Optional() private weeklySchedules: WeeklySchedules,
-    @Optional() private today: Date
+    @Optional() private today: Date,
+    @Optional() private selectedSlots: number[]
   ) { }
 
   jB = "section#list-booking ";
@@ -26,25 +33,41 @@ export class S_R_ScheduleComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/staff', 'resident-schedule']);
 
-    const current = this.staffService.getCurrentVisitorNumber();
-    $('strong#current-visitors-num').text(current);
-    $('strong#current-visitors-num').css("user-select", "none");
+    this.validateUserType().then(res => {
+      if(res) {
+        this.staffService.residentId.pipe(
+          mergeMap(id => {
+            this.id = id;
+            return this.staffService.getResident(this.id);
+          }),
+          mergeMap(resident => {
+            const rName = resident.rFirstName + " " + resident.rLastName;
+            this.weeklySchedules = this.staffService.convertWeeklySchedule(rName, resident.schedule);
+            return this.staffService.getCurrentVisitors();
+          }))
+          .subscribe(snapshot => {
+            let current = snapshot.size;
+            $('strong#current-visitors-num').text(current);
+            $('strong#current-visitors-num').css("user-select", "none");
+          });
+      }
+    });
+  }
 
-    $('div#switch-booking').click(() => {
-      $('section#list-weekly').hide();
-      $('section#list-booking').show();
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/staff/resident-schedule"));
     })
-    $('div#switch-weekly').click(() => {
-      $('section#list-booking').hide();
-      $('section#list-weekly').show();
-    })
+  }
 
-    this.weeklySchedules = this.staffService.getWeeklySchedules();
-    $(this.jB + ' div#list-main > h1').text("MAKE A BOOKING: " + this.weeklySchedules.rFirstName + " " + this.weeklySchedules.rLastName);
-    $(this.jW + ' div#list-main > h1').text("WEEKLY SCHEDULE: " + this.weeklySchedules.rFirstName + " " + this.weeklySchedules.rLastName);
+  loadComponent() {
+    $(this.jB + ' div#list-main > h1').text("MAKE A BOOKING: " + this.weeklySchedules.rName);
+    $(this.jW + ' div#list-main > h1').text("WEEKLY SCHEDULE: " + this.weeklySchedules.rName);
 
     this.loadWeeklySchedule();
 
+    this.selectedSlots = [];
     this.initialClick = true;
     this.today = new Date();
 
@@ -56,6 +79,17 @@ export class S_R_ScheduleComponent implements OnInit {
     $('div#dp-close').click(() => {
         $('div#dp').hide();
     });
+  }
+
+  switchSection(section: string) {
+    if(section == "booking") {
+      $('section#list-weekly').hide();
+      $('section#list-booking').show();
+    }
+    else {
+      $('section#list-booking').hide();
+      $('section#list-weekly').show();
+    }
   }
 
   datePicker(date: Date) {
@@ -147,23 +181,84 @@ export class S_R_ScheduleComponent implements OnInit {
   }
 
   selectDate(date: Date){
-    const daySchedule = this.weeklySchedules.schedules[date.getDay()];
-    for(let i = 7; i <= 22; i++) {
-      if(daySchedule[i - 7].hour == i){
-        if(daySchedule[i - 7].available){
-          $(this.jB + 'p#task-'+ i).text("Available");
-          $(this.jB + 'div#task-div-'+ i +" > span").css({
-            'background-color': '#C4DBB3',
-            'cursor': 'pointer'
-          });
+    const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
+      + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
+      + date.getFullYear();
+    this.staffService.getBookedSlots(dateStr);
+    this.staffService.bookedSlots.toPromise()
+      .then((bookedSlots) => {
+        const daySchedule = this.weeklySchedules.schedules[date.getDay()];
+        for(let i = 7; i <= 22; i++) {
+          if(daySchedule[i - 7].hour == i){
+            if(bookedSlots.includes(i)) {
+              $(this.jB + 'p#task-'+ i).text("Booked");
+              $(this.jB + 'div#task-div-'+ i +" > span").css({
+                'background-color': '#EDAAAA',
+                'cursor': 'not-allowed'
+              });
+            }
+            else if(!daySchedule[i - 7].available){
+              $(this.jB + 'p#task-'+ i).text(daySchedule[i - 7].activity);
+              $(this.jB + 'div#task-div-'+ i +" > span").css({
+                'background-color': '#EDAAAA',
+                'cursor': 'not-allowed'
+              });
+            }
+            else {
+              $(this.jB + 'p#task-'+ i).text("Available");
+              $(this.jB + 'div#task-div-'+ i +" > span").css({
+                'background-color': '#C4DBB3',
+                'cursor': 'pointer'
+              });
+              $(this.jB + 'div#task-div-'+ i +" > span").click(() => {
+                this.selectSlot(i);
+              });
+            }
+          }
         }
-        else {
-          $(this.jB + 'p#task-'+ i).text(daySchedule[i - 7].activity);
-          $(this.jB + 'div#task-div-'+ i +" > span").css({
-            'background-color': '#EDAAAA',
-            'cursor': 'not-allowed'
-          });
-        }
+      })
+  }
+
+  selectSlot(hour: number) {
+    if(this.selectedSlots.includes(hour)){
+      if(arrayConsecutive(this.selectedSlots, hour, false)) {
+        $(this.jB + 'p#task-'+ hour).text("Available");
+        $(this.jB + 'div#task-div-'+ hour +" > span").css({
+          'background-color': '#C4DBB3',
+          'cursor': 'pointer'
+        });
+        this.selectedSlots = this.selectedSlots.filter((value) => {return value == hour});
+      }
+      else {
+        swal({
+          title: "Error!",
+          text: "Time slots must be next to each other!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+      }
+    }
+    else {
+      if(arrayConsecutive(this.selectedSlots, hour, true)) {
+        $(this.jB + 'p#task-'+ hour).text("Selected");
+        $(this.jB + 'div#task-div-'+ hour +" > span").css({
+          'background-color': '#9BCCE7',
+          'cursor': 'pointer'
+        });
+        this.selectedSlots.push(hour);
+        sortNumArray(this.selectedSlots);
+      }
+      else {
+        swal({
+          title: "Error!",
+          text: "Time slots must be next to each other!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
       }
     }
   }
@@ -195,6 +290,9 @@ export class S_R_ScheduleComponent implements OnInit {
             'cursor': 'pointer'
           });
         }
+        $(this.jW + 'div#task-div-'+ i +" > span").click(() => {
+          this.makeChanges(day, i, daySchedule[i - 7].activity);
+        });
       }
     }
     $('p.p-day').css({
@@ -209,42 +307,82 @@ export class S_R_ScheduleComponent implements OnInit {
     });
   }
 
-  makeChanges(){
-    swal({
-      title: "Make changes?",
-      text: "Are you sure you want to make changes to the weekly schedule?",
-      icon: "warning",
-      dangerMode: true, //sets the focus to cancel button to avoid accidentally delete
-      buttons: {
-        cancel: "Cancel",
-        ok: "Yes"
-      }
-    } as any)
-      .then((willUpdate) => {
-        if (willUpdate) { //if they click yes, update the schedule
+  addNewBooking() {
+    if(this.selectedSlots.length != 0) {
+      const dateStr = (this.today.getDate() < 10 ? "0" + this.today.getDate() : this.today.getDate()) + "/"
+      + (this.today.getMonth() + 1 < 10 ? "0" + (this.today.getMonth() + 1) : this.today.getMonth() + 1) + "/"
+      + this.today.getFullYear();
+      swal({
+        title: "Add?",
+        text: `Are you sure you want to add this booking?
+        Visiting time: ${this.selectedSlots[0]}:00 ${dateStr}`,
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          cancel: "Cancel",
+          ok: "Yes"
+        }
+      } as any)
+      .then((willAdd) => {
+        if(willAdd) {
+          this.staffService.addBooking(this.id, dateStr, this.selectedSlots);
+        }
+      })
+    }
+    else {
+      swal({
+        title: "Error!",
+        text: "Please select at least one booking slot!",
+        icon: "error",
+        buttons: {
+          ok: "OK"
+        }
+      } as any)
+    }
+  }
 
-          //update the schedule in the firebase collection here 
-        
-          swal("Schedule updated!", {
-            icon: "success",
-          });
+  makeChanges(day: number, hour: number, oldActivity: string){
+    let dayStr = "";
+    switch(day) {
+      case 0: dayStr = "Sunday"; break;
+      case 1: dayStr = "Monday"; break;
+      case 2: dayStr = "Tuesday"; break;
+      case 3: dayStr = "Wednesday"; break;
+      case 4: dayStr = "Thursday"; break;
+      case 5: dayStr = "Friday"; break;
+      case 6: dayStr = "Saturday"; break;
+    }
+    swal({
+      text: `Change activity on ${dayStr} at ${hour}:00
+      (Leave the field empty or type "Activity"
+      if you want to make the slot vacant)`,
+      content: {
+        element: "input",
+        attributes: {
+          placeholder: "Reason",
+          type: "text",
+        },
+      },
+    })
+    .then((inputActivity) => {
+      const activity = (inputActivity == "") ? "Available" : inputActivity.charAt(0).toUpperCase() + inputActivity.toLowerCase().slice(1);
+      swal({
+        title: "Make changes?",
+        text: `${oldActivity} → ${activity}
+        on ${dayStr} at ${hour}:00?`,
+        icon: "info",
+        dangerMode: true,
+        buttons: {
+          cancel: "Cancel",
+          ok: "Change"
+        }
+      } as any)
+      .then((willChange) => {
+        if(willChange) {
+          this.staffService.makeScheduleChange(this.id, activity, day, hour);
         }
       });
+    });
   }
-
-  addNewBooking() {
-     //add to firebase collection here
-    
-     swal({
-      title: "Success!",
-      text: "Booking added succesfully",
-      icon: "success",
-      buttons: {
-        ok: "OK"
-      }
-    } as any)
-
-    this.router.navigate(['/staff','resident-view']); //return to booking screen
-  }
-
+  
 }

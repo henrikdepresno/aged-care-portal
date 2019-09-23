@@ -1,8 +1,11 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
+import swal from 'sweetalert';
+import { AuthService } from 'src/app/auth.service';
 import { StaffService } from '../staff.service';
-import { Feedback } from '../../classes-output';
+import { Feedback } from '../../classes';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-s-feedback',
@@ -13,6 +16,7 @@ export class S_FeedbackComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private staffService: StaffService,
     @Optional() private pagesNum: number,
     @Optional() private outputfeedbacks: Feedback[][]
@@ -21,16 +25,38 @@ export class S_FeedbackComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/staff', 'feedback']);
 
-    const current = this.staffService.getCurrentVisitorNumber();
-    $('strong#current-visitors-num').text(current);
-    $('strong#current-visitors-num').css("user-select", "none");
+    this.validateUserType().then(res => {
+      if(res) { 
+        this.staffService.getFeedbacks().pipe(
+          mergeMap(res => {
+            this.loadComponent(res);
+            return this.staffService.getRatings();
+          }),
+          mergeMap(res => {
+            $('#rating-num-1').text(res.one);
+            $('#rating-num-2').text(res.two);
+            $('#rating-num-3').text(res.three);
+            $('#rating-num-4').text(res.four);
+            $('#rating-num-5').text(res.five);
+            return this.staffService.getCurrentVisitors();
+          }))
+          .subscribe(snapshot => {
+            let current = snapshot.size;
+            $('strong#current-visitors-num').text(current);
+            $('strong#current-visitors-num').css("user-select", "none");
+          });
+      }
+    });
+  }
 
-    const ratings = this.staffService.getRatings();
-    for(let i = 1; i <= 5; i++) {
-      $('b#rating-num-' + i).text(ratings[i - 1]);
-    }
+  validateUserType() {
+    return new Promise((resolve, reject) => {
+      this.authService.checkUserType();
+      resolve(this.router.url.includes("/staff/feedback"));
+    })
+  }
 
-    let feedbacks = this.staffService.getFeedbacks();
+  loadComponent(feedbacks: Feedback[]) {
     let feedbacksNum = feedbacks.length;
     this.pagesNum = ((feedbacksNum / 8) == 0) ? 1 : Math.ceil(feedbacksNum / 8);
     this.outputfeedbacks = new Array(this.pagesNum);
@@ -118,17 +144,30 @@ export class S_FeedbackComponent implements OnInit {
       $('table#item-list-xs > tr#item-'+ i +'-btn').show();
       const feedback = output[i - 1];
       $('p#title-'+ i).text(feedback.title);
-      $('p#author-'+ i).text(feedback.firstName + " " + feedback.lastName);
+      $('p#author-'+ i).text(feedback.author);
       $('p#role-'+ i).text(feedback.role);
-      const date = feedback.date;
-      const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
-        + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
-        + date.getFullYear();
-      $('p#date-'+ i).text(dateStr);
+      $('p#date-'+ i).text(feedback.date);
       $('tr#item-'+ i +' > td.td-btn > span').show();
       $('tr#item-'+ i +'-btn > td.td-btn > span').show();
 
+      $('tr#item-'+ i +' > td.td-btn > span').click(() => {
+        this.clickView(feedback);
+      });
+      $('tr#item-'+ i +'-btn > td.td-btn > span').click(() => {
+        this.clickView(feedback);
+      });
     }
+  }
+
+  clickView(feedback: Feedback) {
+    swal({
+      title: feedback.title,
+      text:
+      `${feedback.context}
+      Author: ${feedback.author} - ${feedback.role}
+      Date: ${feedback.date}`,
+      icon: "info",
+    });
   }
 
 }

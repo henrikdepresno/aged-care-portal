@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth'
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 
@@ -23,7 +23,7 @@ export class ContractorService {
   getId() {
     this.afAuth.authState.toPromise()
       .then(user => {
-        this.afs.collection('users', ref => ref.where('email', '==', user.email)).get().toPromise()
+        this.afs.collection('contractors', ref => ref.where('email', '==', user.email)).get().toPromise()
           .then(snapshot => {
             snapshot.forEach(doc => {
               this.passId(doc.id);

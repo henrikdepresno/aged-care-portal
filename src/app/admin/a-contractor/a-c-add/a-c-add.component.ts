@@ -47,17 +47,7 @@ export class A_C_AddComponent implements OnInit {
     if(cFirstName != "" && cLastName != "" && email != "" && phone != "" && companyName != "" && field != "") {
       if(isNumeric(phone)) {
         if(isEmail(email)) {
-          swal({
-            title: "Success!",
-            text: "Contractor added",
-            icon: "success",
-            buttons: {
-              ok: "OK"
-            }
-          } as any)
-          .then(() => {
-            this.adminService.addContractor(cFirstName, cLastName, email, phone, companyName, field);
-          });
+          this.adminService.addContractor(cFirstName, cLastName, email, phone, companyName, field);
         }
         else {
           this.swalError("The provided email is not valid!")

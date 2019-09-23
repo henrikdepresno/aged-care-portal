@@ -60,3 +60,26 @@ export function isEmail(string: string) {
   return (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(string);
 }
 
+/** Check if array elements in an array with a number added (or removed) are consecutive by 1 */
+export function arrayConsecutive(arr: number[], num: number, adding: boolean) {
+  let isConsecutive = true;
+  if(adding) {
+    arr.push(num);
+    sortNumArray(arr);
+  }
+  else {
+    arr = arr.filter((value) => {return value == num});
+  }
+  for(let i = 0; i < (arr.length - 1); i++) {
+    if(!(arr[i] == (arr[i + 1] - 1))) {
+      isConsecutive = false;
+    }
+  }
+  return isConsecutive;
+}
+
+/** Sort number array in ascending order */
+export function sortNumArray(arr: number[]) {
+  arr.sort((a, b) => {return a - b});
+  return arr;
+}

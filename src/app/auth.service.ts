@@ -103,33 +103,56 @@ export class AuthService {
     this.afAuth.auth.signOut();
   }
 
+  emails: string[]
+
+  getEmails() {
+    this.emails = [];
+    this.afs.collection('users').get().toPromise().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        this.emails.push(doc.data().email); 
+      })
+    })
+  }
+
   registerVisitor(email: string, password: string, vFirstName: string, vLastName: string, phone: string,  rFirstName: string, rLastName: string) {
     this.afs.collection('residents', ref =>
       ref.where('rFirstName', '==', rFirstName).where('rLastName', '==', rLastName)).get().toPromise()
       .then(snapshot => {
         if(snapshot.docs.length != 0) {
           this.afs.collection('id-list').get().toPromise().then(idSnapshot => {
-            const newID = randomUniqueID(idSnapshot);
-            const visitor = new Visitor(newID, vFirstName, vLastName, email, phone, [snapshot.docs[0].id], [], [], false, false);
-            this.afs.collection('visitors').doc(newID).set(Object.assign({}, visitor));
-            this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
-              const user = new User(newID, email, 'visitor');
-              this.afs.collection('users').doc(newID).set(Object.assign({}, user));
-              const newId = new IDList(newID);
-              this.afs.collection('id-list').doc(newID).set(Object.assign({}, newId));
-              this.emailService.emailNewAccount(email, newID, vFirstName, 'visitor');
-              swal({
-                title: "Account created!",
-                text: "Your new ID has been sent to your email!",
-                icon: "success",
-                buttons: {
-                  ok: "Login"
+            this.afs.collection('users').get().toPromise().then(userSnapshot => {
+              let emails = [];
+              userSnapshot.docs.forEach(doc => {
+                emails.push(doc.data().email);
+                if(!emails.includes(email)) {
+                  const newID = randomUniqueID(idSnapshot);
+                  const visitor = new Visitor(newID, vFirstName, vLastName, email, phone, [snapshot.docs[0].id], [], [], false, false);
+                  this.afs.collection('visitors').doc(newID).set(Object.assign({}, visitor));
+                  this.addUser(newID, email, 'visitor', vFirstName, password);
+                  swal({
+                    title: "Account created!",
+                    text: "Your new ID has been sent to your email!",
+                    icon: "success",
+                    buttons: {
+                      ok: "Login"
+                    }
+                  } as any)
+                  .then(() => {
+                    this.router.navigate(['/login', 'login-v'])
+                  });
                 }
-              } as any)
-              .then(() => {
-                this.router.navigate(['/login', 'login-v'])
-              });
-            });
+                else {
+                  swal({
+                    title: "Error!",
+                    text: "Email is already in use!",
+                    icon: "error",
+                    buttons: {
+                      ok: "OK"
+                    }
+                  } as any)
+                }
+              })
+            })
           })
         }
         else {
@@ -145,19 +168,23 @@ export class AuthService {
       })
   }
 
-  addUser(id: string, email: string, userType: string, firstName: string) {
-    const password = randomPassword();
+  addUser(id: string, email: string, userType: string, firstName: string, password?: string) {
+    if(password == ""){ 
+      password = randomPassword();
+    }
     const data = {
       email: email,
       password: password
     }
-    this.http.post("http://localhost:3000/add-auth-user-fb", data).subscribe();
-    const user = new User(id, email, userType);
-    this.afs.collection('users').doc(id).set(Object.assign({}, user));
-    const newId = new IDList(id);
-    this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
+    this.http.post("http://localhost:3000/add-auth-user-fb", data).toPromise()
+      .then(() => {
+        const user = new User(id, email, userType);
+        this.afs.collection('users').doc(id).set(Object.assign({}, user));
+        const newId = new IDList(id);
+        this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
 
-    this.emailService.emailNewAccount(email, id, firstName, userType, password);
+        this.emailService.emailNewAccount(email, id, firstName, userType, password);
+      });
   }
 
   deleteUser(id: string) {
