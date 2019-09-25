@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/auth.service';
 import { VisitorService } from '../../visitor.service';
 import { Booking } from '../../../classes';
 import { mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs'
 
 @Component({
   selector: 'app-v-b-view',
@@ -15,14 +16,13 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class V_B_ViewComponent implements OnInit {
 
-  id: string
-
   constructor(
     private router: Router,
     private authService: AuthService,
     private visitorService: VisitorService,
     @Optional() private pagesNum: number,
-    @Optional() private outputBookings: Booking[][]
+    @Optional() private outputBookings: Booking[][],
+    @Optional() private id: string
   ) { }
 
   ngOnInit() {
@@ -30,13 +30,22 @@ export class V_B_ViewComponent implements OnInit {
 
     this.validateUserType().then(res => {
       if(res) {
-        this.visitorService.getId();
-        this.visitorService.id.pipe(
-          mergeMap(id => {
-            this.id = id;
-            this.visitorService.getBookings(this.id);
+        this.visitorService.getAuthState().pipe(
+          mergeMap(authState => {
+            return this.visitorService.getQuerySnapshotByEmail(authState.email, 'visitor');
+          }),
+          mergeMap(querySnapshot => {
+            this.id = this.visitorService.getIdFromEmailQuerySnapshot(querySnapshot);
             QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
-            return this.visitorService.bookings;
+            return this.visitorService.getVisitorById(this.id);
+          }),
+          mergeMap(visitor => {
+            if(visitor.bookingIds.length != 0) {
+              return this.visitorService.getBookings(visitor.bookingIds);
+            }
+            else {
+              return of([]);
+            }
           }))
           .subscribe(bookings => {
             this.loadComponent(bookings);

@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import { VisitorService } from '../visitor.service';
 import { AuthService } from 'src/app/auth.service';
 import { isNumeric } from 'src/app/functions';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-v-update',
@@ -26,11 +27,14 @@ export class V_UpdateComponent implements OnInit {
 
     this.validateUserType().then(res => {
       if(res) { 
-        this.visitorService.getId();
-        this.visitorService.id.subscribe(id => {
-          this.id = id;
-          $('#visitorID').val(id);
-        });
+        this.visitorService.getAuthState().pipe(
+          mergeMap(authState => {
+            return this.visitorService.getQuerySnapshotByEmail(authState.email, 'visitor');
+          }))
+          .subscribe(querySnapshot => {
+            this.id = this.visitorService.getIdFromEmailQuerySnapshot(querySnapshot);
+            $('#visitorID').val(this.id);
+          })
       }
     });
 

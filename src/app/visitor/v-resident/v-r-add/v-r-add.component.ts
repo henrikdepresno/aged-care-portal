@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import { AuthService } from 'src/app/auth.service';
 import { VisitorService } from '../../visitor.service';
 import { capitalize } from 'src/app/functions';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-v-r-add',
@@ -26,15 +27,18 @@ export class V_R_AddComponent implements OnInit {
 
     this.validateUserType().then(res => {
       if(res) {
-        this.visitorService.getId();
-        this.visitorService.id.subscribe(id => {
-          this.id = id;
-          $('#inputFirstName, #inputLastName').keyup(e => {
-            if(e.which == 13) {
-              this.addResident();
-            }
-          });
-        });
+        this.visitorService.getAuthState().pipe(
+          mergeMap(authState => {
+            return this.visitorService.getQuerySnapshotByEmail(authState.email, 'visitor');
+          }))
+          .subscribe(querySnapshot => {
+            this.id = this.visitorService.getIdFromEmailQuerySnapshot(querySnapshot);
+            $('#inputFirstName, #inputLastName').keyup(e => {
+              if(e.which == 13) {
+                this.addResident();
+              }
+            });
+          })
       }
     });
   }

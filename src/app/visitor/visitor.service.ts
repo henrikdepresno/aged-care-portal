@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import swal from 'sweetalert';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { Resident, Visitor, Booking, WeeklySchedules, ScheduleSlot } from '../classes';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -24,39 +25,39 @@ export class VisitorService {
     this.idSource.next(id);
   }
 
-  getId() {
-    this.afAuth.authState.toPromise()
-      .then(user => {
-        this.afs.collection('visitors', ref => ref.where('email', '==', user.email)).get().toPromise()
-          .then(snapshot => {
-            snapshot.forEach(doc => {
-              this.passId(doc.id);
-            })
-          })
-      })
+  getAuthState() {
+    return this.afAuth.authState;
+  }
+
+  getQuerySnapshotByEmail(email: string, userType: string) {
+    return this.afs.collection(userType + 's', ref => ref.where('email', '==', email)).get();
+  }
+
+  getIdFromEmailQuerySnapshot(snapshot) {
+    let id = ''
+    snapshot.forEach(doc => {
+      id = doc.id;
+    })
+    return id;
   }
 
   updateDetails(id: string, phone: string) {
     if(phone != "") this.afs.collection('visitors').doc(id).update({phone: phone});
   }
 
-  bookings: Observable<Booking[]>;
+  getVisitorById(id: string) {
+    const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(id);
+    return visitorDoc.valueChanges();
+  }
+
   booking: Observable<Booking>;
 
-  getBookings(visitorId: string) {
+  getBookings(bookingIds: string[]) {
     let bookingsObs: Observable<Booking>[] = [];
-    const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
-    visitorDoc.valueChanges().toPromise()
-      .then((visitor) => {
-        const bookingIds = visitor.residentIds;
-        for(let bookingId of bookingIds) {
-          bookingsObs.push(this.afs.collection('bookings').doc(bookingId).valueChanges());
-        }
-        combineLatest(bookingsObs).toPromise()
-          .then((bookings) => {
-            this.bookings = of(bookings);
-          })
-      })
+    for(let bookingId of bookingIds) {
+      bookingsObs.push(this.afs.collection('bookings').doc(bookingId).valueChanges());
+    }
+    return combineLatest(bookingsObs)
   }
 
   getBooking(id: string) {
@@ -104,26 +105,30 @@ export class VisitorService {
       const id = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + ((newIdentifier < 10) ? "0" + newIdentifier.toString() : newIdentifier.toString());
       const booking = new Booking(id, residentId, rName, date, timeSlots, false);
       this.bookingsCollection.doc(id).set(Object.assign({}, booking))
-      this.getId();
-      this.id.toPromise().then((visitorId) => {
-        const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
-        visitorDoc.valueChanges().toPromise()
-          .then((visitor) => {
-            let bookingIds = visitor.residentIds;
-            bookingIds.unshift(id);
-            visitorDoc.update({bookingIds: bookingIds});
-          })
-          .then(() => {
-            swal({
-              title: "Success!",
-              text: "Booking added succesfully!",
-              icon: "success",
-              buttons: {
-                ok: "OK"
-              }
-            } as any)
-          });
-      })
+      this.getAuthState().pipe(
+        mergeMap(authState => {
+          return this.getQuerySnapshotByEmail(authState.email, 'visitor');
+        }))
+        .toPromise().then(querySnapshot => {
+          const visitorId = this.getIdFromEmailQuerySnapshot(querySnapshot);
+          const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
+          visitorDoc.valueChanges().toPromise()
+            .then((visitor) => {
+              let bookingIds = visitor.residentIds;
+              bookingIds.unshift(id);
+              visitorDoc.update({bookingIds: bookingIds});
+            })
+            .then(() => {
+              swal({
+                title: "Success!",
+                text: "Booking added succesfully!",
+                icon: "success",
+                buttons: {
+                  ok: "OK"
+                }
+              } as any)
+            });
+        })
     })
   }
 
@@ -158,23 +163,14 @@ export class VisitorService {
     })
   }
 
-  residents: Observable<Resident[]>;
   resident: Observable<Resident>;
 
-  getResidents(visitorId: string) {
+  getResidents(residentIds: string[]) {
     let residentObs: Observable<Resident>[] = [];
-    const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
-    visitorDoc.valueChanges().toPromise()
-      .then((visitor) => {
-        const residentIds = visitor.residentIds;
-        for(let residentId of residentIds) {
-          residentObs.push(this.afs.collection('residents').doc(residentId).valueChanges());
-        }
-        combineLatest(residentObs).toPromise()
-          .then((residents) => {
-            this.residents = of(residents);
-          })
-      })
+    for(let residentId of residentIds) {
+      residentObs.push(this.afs.collection('residents').doc(residentId).valueChanges());
+    }
+    return combineLatest(residentObs)
   }
 
   getResident(id: string) {

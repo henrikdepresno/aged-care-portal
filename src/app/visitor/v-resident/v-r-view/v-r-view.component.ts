@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/auth.service';
 import { VisitorService } from '../../visitor.service';
 import { Resident } from '../../../classes';
 import { mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-v-r-view',
@@ -30,13 +31,22 @@ export class V_R_ViewComponent implements OnInit {
 
     this.validateUserType().then(res => {
       if(res) {
-        this.visitorService.getId();
-        this.visitorService.id.pipe(
-          mergeMap(id => {
-            this.id = id;
-            this.visitorService.getResidents(this.id);
+        this.visitorService.getAuthState().pipe(
+          mergeMap(authState => {
+            return this.visitorService.getQuerySnapshotByEmail(authState.email, 'visitor');
+          }),
+          mergeMap(querySnapshot => {
+            this.id = this.visitorService.getIdFromEmailQuerySnapshot(querySnapshot);
             QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
-            return this.visitorService.residents;
+            return this.visitorService.getVisitorById(this.id);
+          }),
+          mergeMap(visitor => {
+            if(visitor.residentIds.length != 0) {
+              return this.visitorService.getResidents(visitor.residentIds);
+            }
+            else {
+              return of([])
+            }
           }))
           .subscribe(residents => {
             this.loadComponent(residents);
