@@ -170,7 +170,7 @@ export class AuthService {
   }
 
   addUser(id: string, email: string, userType: string, firstName: string, password?: string) {
-    if(password == ""){ 
+    if(password == undefined){ 
       password = randomPassword();
     }
     

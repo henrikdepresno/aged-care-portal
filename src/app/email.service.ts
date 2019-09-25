@@ -28,8 +28,8 @@ export class EmailService {
       You can also reset your password here if you forget:
       http://localhost:4200/reset-password
       
-      <p>Welcome to ACP,</p>
-      <p>Your ACP team</p>
+      Welcome to ACP,
+      Your ACP team
       `
     }
     else {
@@ -46,8 +46,8 @@ export class EmailService {
       You can also reset your password here:
       http://localhost:4200/reset-password
       
-      <p>Welcome to ACP,</p>
-      <p>Your ACP team</p>
+      Welcome to ACP,
+      Your ACP team
       `
     }
     const data = {
