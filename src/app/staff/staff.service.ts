@@ -50,19 +50,19 @@ export class StaffService {
   }
 
   bookingsCollection: AngularFirestoreCollection<Booking>;
-  private bookedSlotsSource = new BehaviorSubject<number[]>([]);
-  bookedSlots = this.bookedSlotsSource.asObservable();
 
-  getBookedSlots(date: string) {
-    let bookedSlots = [];
-    this.afs.collection('bookings', ref => ref.where('date', '==', date).where('isCancelled', '==', false)).get().toPromise()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          bookedSlots.concat(doc.data().timeSlots);
-        })
-        this.bookedSlotsSource.next(bookedSlots);
-      })
+  getBookedSlots(snapshot) {
+    let bookedSlots: number[] = [];
+    snapshot.forEach(doc => {
+      bookedSlots.concat(doc.data().timeSlots);
+    })
+    return bookedSlots;
   }
+
+  getBookingsByDate(date: string) {
+    return this.afs.collection('bookings', ref => ref.where('date', '==', date).where('isCancelled', '==', false)).get();
+  }
+
 
   addBooking(residentId: string, rName: string, date: string, timeSlots: number[]) {
     this.bookingsCollection = this.afs.collection('bookings');

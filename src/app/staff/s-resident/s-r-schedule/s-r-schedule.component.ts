@@ -185,39 +185,39 @@ export class S_R_ScheduleComponent implements OnInit {
     const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
       + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
       + date.getFullYear();
-    this.staffService.getBookedSlots(dateStr);
-    this.staffService.bookedSlots.toPromise()
-      .then((bookedSlots) => {
-        const daySchedule = this.weeklySchedules.schedules[date.getDay()];
-        for(let i = 7; i <= 22; i++) {
-          if(daySchedule[i - 7].hour == i){
-            if(bookedSlots.includes(i)) {
-              $(this.jB + 'p#task-'+ i).text("Meeting booked");
-              $(this.jB + 'div#task-div-'+ i +" > span").css({
-                'background-color': '#EDAAAA',
-                'cursor': 'not-allowed'
-              });
-            }
-            else if(!daySchedule[i - 7].available){
-              $(this.jB + 'p#task-'+ i).text(daySchedule[i - 7].activity);
-              $(this.jB + 'div#task-div-'+ i +" > span").css({
-                'background-color': '#EDAAAA',
-                'cursor': 'not-allowed'
-              });
-            }
-            else {
-              $(this.jB + 'p#task-'+ i).text("Available");
-              $(this.jB + 'div#task-div-'+ i +" > span").css({
-                'background-color': '#C4DBB3',
-                'cursor': 'pointer'
-              });
-              $(this.jB + 'div#task-div-'+ i +" > span").click(() => {
-                this.selectSlot(i);
-              });
-            }
+    this.staffService.getBookingsByDate(dateStr).toPromise()
+    .then((snapshot) => {
+      const bookedSlots = this.staffService.getBookedSlots(snapshot);
+      const daySchedule = this.weeklySchedules.schedules[date.getDay()];
+      for(let i = 7; i <= 22; i++) {
+        if(daySchedule[i - 7].hour == i){
+          if(bookedSlots.includes(i)) {
+            $(this.jB + 'p#task-'+ i).text("Meeting booked");
+            $(this.jB + 'div#task-div-'+ i +" > span").css({
+              'background-color': '#EDAAAA',
+              'cursor': 'not-allowed'
+            });
+          }
+          else if(!daySchedule[i - 7].available){
+            $(this.jB + 'p#task-'+ i).text(daySchedule[i - 7].activity);
+            $(this.jB + 'div#task-div-'+ i +" > span").css({
+              'background-color': '#EDAAAA',
+              'cursor': 'not-allowed'
+            });
+          }
+          else {
+            $(this.jB + 'p#task-'+ i).text("Available");
+            $(this.jB + 'div#task-div-'+ i +" > span").css({
+              'background-color': '#C4DBB3',
+              'cursor': 'pointer'
+            });
+            $(this.jB + 'div#task-div-'+ i +" > span").click(() => {
+              this.selectSlot(i);
+            });
           }
         }
-      })
+      }
+    })
   }
 
   selectSlot(hour: number) {
