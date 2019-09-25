@@ -62,16 +62,18 @@ export function isEmail(string: string) {
 
 /** Check if array elements in an array with a number added (or removed) are consecutive by 1 */
 export function arrayConsecutive(arr: number[], num: number, adding: boolean) {
+  let array: number[] = [];
+  array = array.concat(arr);
   let isConsecutive = true;
   if(adding) {
-    arr.push(num);
-    sortNumArray(arr);
+    array.push(num);
+    sortNumArray(array);
   }
   else {
-    arr = arr.filter((value) => {return value != num});
+    array = array.filter((value) => {return value != num});
   }
-  for(let i = 0; i < (arr.length - 1); i++) {
-    if(!(arr[i] == (arr[i + 1] - 1))) {
+  for(let i = 0; i < (array.length - 1); i++) {
+    if(!(array[i] == (array[i + 1] - 1))) {
       isConsecutive = false;
     }
   }

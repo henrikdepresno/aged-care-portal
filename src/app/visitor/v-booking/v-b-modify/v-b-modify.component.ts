@@ -4,7 +4,7 @@ import $ from 'jquery';
 import swal from 'sweetalert';
 import { AuthService } from 'src/app/auth.service';
 import { VisitorService } from '../../visitor.service';
-import { WeeklySchedules } from '../../../classes';
+import { WeeklySchedules, Booking } from '../../../classes';
 import { mergeMap } from 'rxjs/operators';
 import { arrayConsecutive, sortNumArray } from 'src/app/functions';
 
@@ -25,6 +25,7 @@ export class V_B_ModifyComponent implements OnInit {
     @Optional() private initialClick: boolean,
     @Optional() private weeklySchedules: WeeklySchedules,
     @Optional() private selectedSlots: number[],
+    @Optional() private today: Date,
     @Optional() private oldBookingDate: string,
     @Optional() private oldSelectedSlots: number[]
   ) { }
@@ -37,16 +38,19 @@ export class V_B_ModifyComponent implements OnInit {
         this.visitorService.residentId.pipe(
           mergeMap(id => {
             this.residentId = id;
-            return this.visitorService.bookingId;
+            return this.visitorService.getBookingSnapshot(id);
           }),
-          mergeMap(id => {
-            this.bookingId = id;
+          mergeMap(snapshot => {
+            this.bookingId = snapshot.docs[0].id
             return this.visitorService.getResident(this.residentId);
-          }))
-          .subscribe(resident => {
+          }),
+          mergeMap(resident => {
             const rName = resident.rFirstName + " " + resident.rLastName;
             this.weeklySchedules = this.visitorService.convertWeeklySchedule(rName, resident.schedule);
-            this.loadComponent();
+            return this.visitorService.getBooking(this.bookingId);
+          }))
+          .subscribe(booking => {
+            this.loadComponent(booking);
           });
       }
     });
@@ -59,28 +63,25 @@ export class V_B_ModifyComponent implements OnInit {
     })
   }
 
-  loadComponent() {
+  loadComponent(booking: Booking) {
     $('div#list-main > h1').text("SCHEDULE: " + this.weeklySchedules.rName);
 
     this.selectedSlots = [];
     this.initialClick = true;
+    this.today = new Date();
+    this.oldBookingDate = booking.date;
+    const bookingDate = `${booking.id.substring(0, 4)}-${booking.id.substring(4, 6)}-${booking.id.substring(6, 8)}`;
+    this.datePicker(new Date(bookingDate));
 
-    this.visitorService.getBooking(this.bookingId).toPromise()
-    .then(booking => {
-      this.oldBookingDate = booking.date;
-      const bookingDate = `${booking.id.substring(0, 4)}-${booking.id.substring(4, 6)}-${booking.id.substring(6, 8)}`;
-      this.datePicker(new Date(bookingDate));
+    $('span#calendar-icon').click(() => {
+      $('div#dp').show();
+    });
 
-      $('span#calendar-icon').click(() => {
-        $('div#dp').show();
-      });
-  
-      $('div#dp-close').click(() => {
-        $('div#dp').hide();
-      });
+    $('div#dp-close').click(() => {
+      $('div#dp').hide();
+    });
 
-      this.oldSelectedSlots = booking.timeSlots;
-    })    
+    this.oldSelectedSlots = booking.timeSlots;
   }
 
   datePicker(date: Date) {
@@ -140,15 +141,23 @@ export class V_B_ModifyComponent implements OnInit {
         cellInRow = 0;
         rowIndex++;
       }
-      $('tr#dp-row-' + rowIndex + '> td:eq('+ cellInRow +')').text(i);
-      $('tr#dp-row-' + rowIndex + '> td:eq('+ cellInRow +')').click(() => {
-        this.selectDate(new Date(year, month, i));
-        $('p.p-date').text(
-          ((i < 10) ? "0" + i : i)  + "/" +
-          ((month + 1 < 10) ? "0" + (month + 1) : month + 1) + "/" +
-          year);
-        $('div#dp').hide();
-      });
+      $('tr#dp-row-' + rowIndex + '> td:eq('+ cellInRow +')').off('click');
+      const outputDate = new Date(year, month, i);
+      if(this.today.getFullYear() < outputDate.getFullYear() ||
+        (this.today.getFullYear() == outputDate.getFullYear() && this.today.getMonth() < outputDate.getMonth()) ||
+        (this.today.getFullYear() == outputDate.getFullYear() && this.today.getMonth() == outputDate.getMonth() && this.today.getDate() <= outputDate.getDate())) {
+        $('tr#dp-row-' + rowIndex + '> td:eq('+ cellInRow +')').text(i);
+        $('tr#dp-row-' + rowIndex + '> td:eq('+ cellInRow +')').click(() => {
+          this.selectDate(outputDate);
+          $('p.p-date').text(
+            ((i < 10) ? "0" + i : i)  + "/" +
+            ((month + 1 < 10) ? "0" + (month + 1) : month + 1) + "/" +
+            year);
+          $('div#dp').hide();
+        });
+      } else {
+        $('tr#dp-row-' + rowIndex + '> td:eq('+ cellInRow +')').text("");
+      }
       cellInRow++;
     }
 
@@ -164,6 +173,7 @@ export class V_B_ModifyComponent implements OnInit {
   }
 
   selectDate(date: Date){
+    this.selectedSlots = [];
     const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
       + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
       + date.getFullYear();
@@ -174,6 +184,7 @@ export class V_B_ModifyComponent implements OnInit {
       const daySchedule = this.weeklySchedules.schedules[date.getDay()];
         for(let i = 7; i <= 22; i++) {
           if(daySchedule[i - 7].hour == i){
+            $('div#task-div-'+ i +" > span").off('click');
             if(bookedSlots.includes(i)) {
               $('p#task-'+ i).text("Meeting booked");
               $('div#task-div-'+ i +" > span").css({
@@ -203,6 +214,9 @@ export class V_B_ModifyComponent implements OnInit {
         if(dateStr == this.oldBookingDate) {
           for(let hour of this.oldSelectedSlots) {
             this.selectSlot(hour);
+            $('div#task-div-'+ hour +" > span").click(() => {
+              this.selectSlot(hour);
+            });
           }
         }
     })
@@ -250,11 +264,14 @@ export class V_B_ModifyComponent implements OnInit {
         } as any)
       }
     }
+    console.log(this.selectedSlots)
   }
 
   updateBooking() {
+    console.log(JSON.stringify(this.oldSelectedSlots))
+    console.log(JSON.stringify(this.selectedSlots))
     const dateStr = $('p.p-date').text();
-    if(this.oldBookingDate == dateStr && JSON.stringify(this.oldSelectedSlots) == JSON.stringify(this.selectedSlots)) {
+    if(this.oldBookingDate != dateStr || (this.oldBookingDate == dateStr && JSON.stringify(this.oldSelectedSlots) != JSON.stringify(this.selectedSlots))) {
       if(this.selectedSlots.length != 0) {
         swal({
           title: "Add?",

@@ -203,11 +203,11 @@ export class V_B_ViewComponent implements OnInit {
       })
 
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {
-        this.clickModify(booking.id);
+        this.clickModify(booking.residentId, booking.id);
       });
       
       $('tr#item-'+ i +'-btn > td.td-btn-primary > span').click(() => {
-        this.clickModify(booking.id);
+        this.clickModify(booking.residentId, booking.id);
       });
 
       $('tr#item-'+ i +' > td.td-btn-danger > span').click(() => {
@@ -230,9 +230,9 @@ export class V_B_ViewComponent implements OnInit {
     });
   }
 
-  clickModify(id) {
-    this.visitorService.passResidentId(this.id);
-    this.visitorService.passBookingId(id);
+  clickModify(residentId, bookingId) {
+    this.visitorService.passResidentId(residentId);
+    this.visitorService.passBookingId(bookingId);
     this.router.navigate(['/visitor', 'booking-modify']);
   }
 

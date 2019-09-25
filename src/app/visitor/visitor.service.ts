@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import swal from 'sweetalert';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { Resident, Visitor, Booking, WeeklySchedules, ScheduleSlot } from '../classes';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -43,8 +43,6 @@ export class VisitorService {
     if(phone != "") this.afs.collection('visitors').doc(id).update({phone: phone});
   }
 
-  booking: Observable<Booking>;
-
   getBookings(bookingIds: string[]) {
     let bookingsObs: Observable<Booking>[] = [];
     for(let bookingId of bookingIds) {
@@ -53,9 +51,15 @@ export class VisitorService {
     return combineLatest(bookingsObs)
   }
 
+  booking: Observable<Booking>
+
   getBooking(id: string) {
     this.booking = this.afs.collection('bookings').doc(id).valueChanges();
-    return this.booking;
+    return this.booking
+  }
+
+  getBookingSnapshot(residentId: string) {
+    return this.afs.collection('bookings', ref => ref.where('residentId', '==', residentId)).get()
   }
 
   private bookingIdSource = new BehaviorSubject<string>("");
@@ -80,7 +84,7 @@ export class VisitorService {
   getBookedSlots(snapshot) {
     let bookedSlots: number[] = [];
     snapshot.forEach(doc => {
-      bookedSlots.concat(doc.data().timeSlots);
+      bookedSlots = bookedSlots.concat(doc.data().timeSlots);
     })
     return bookedSlots;
   }
@@ -92,40 +96,43 @@ export class VisitorService {
   addBooking(residentId: string, rName: string, date: string, timeSlots: number[]) {
     this.bookingsCollection = this.afs.collection('bookings', ref => ref.where('date', '==', date));
     this.bookingsCollection.get().toPromise().then(bookingSnapshot => {
-      let id = "";
+      let bookingId = "";
       if(bookingSnapshot.docs.length! = 0) {
         const latestId = bookingSnapshot.docs[bookingSnapshot.docs.length - 1].id;
         const newIdentifier = parseInt(latestId.substring(8)) + 1;
-        id = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + ((newIdentifier < 10) ? "0" + newIdentifier.toString() : newIdentifier.toString());
+        bookingId = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + ((newIdentifier < 10) ? "0" + newIdentifier.toString() : newIdentifier.toString());
       }
       else {
-        id = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + "01";
+        bookingId = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + "01";
       }
-      const booking = new Booking(id, residentId, rName, date, timeSlots, false);
-      this.bookingsCollection.doc(id).set(Object.assign({}, booking))
+      const booking = new Booking(bookingId, residentId, rName, date, timeSlots, false);
+      this.bookingsCollection.doc(bookingId).set(Object.assign({}, booking))
       this.getAuthState().pipe(
         mergeMap(authState => {
           return this.getQuerySnapshotByEmail(authState.email, 'visitor');
-        }))
-        .toPromise().then(querySnapshot => {
+        }),
+        mergeMap(querySnapshot => {
+          console.log(querySnapshot)
           const visitorId = this.getIdFromEmailQuerySnapshot(querySnapshot);
           const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
-          visitorDoc.valueChanges().toPromise()
-            .then((visitor) => {
-              let bookingIds = visitor.residentIds;
-              bookingIds.unshift(id);
-              visitorDoc.update({bookingIds: bookingIds});
-            })
-            .then(() => {
-              swal({
-                title: "Success!",
-                text: "Booking added succesfully!",
-                icon: "success",
-                buttons: {
-                  ok: "OK"
-                }
-              } as any)
-            });
+          return visitorDoc.valueChanges();
+        }),
+        take(1))
+        .subscribe((visitor) => {
+          console.log(visitor)
+          let bookingIds = visitor.bookingIds;
+          bookingIds.unshift(bookingId);
+          this.afs.collection('visitors').doc(visitor.id).update({bookingIds: bookingIds});
+          console.log("swal")
+          swal({
+            title: "Success!",
+            text: "Booking added succesfully!",
+            icon: "success",
+            buttons: {
+              ok: "OK"
+            }
+          } as any)
+          this.router.navigate(['/visitor', 'booking-view'])
         })
     })
   }
@@ -144,6 +151,7 @@ export class VisitorService {
           ok: "OK"
         }
       } as any)
+      this.router.navigate(['/visitor', 'booking-view'])
     })
   }
 

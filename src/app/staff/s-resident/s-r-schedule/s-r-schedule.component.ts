@@ -182,6 +182,7 @@ export class S_R_ScheduleComponent implements OnInit {
   }
 
   selectDate(date: Date){
+    this.selectedSlots = [];
     const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
       + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
       + date.getFullYear();
@@ -191,6 +192,7 @@ export class S_R_ScheduleComponent implements OnInit {
       const daySchedule = this.weeklySchedules.schedules[date.getDay()];
       for(let i = 7; i <= 22; i++) {
         if(daySchedule[i - 7].hour == i){
+          $(this.jB + 'div#task-div-'+ i +" > span").off('click');
           if(bookedSlots.includes(i)) {
             $(this.jB + 'p#task-'+ i).text("Meeting booked");
             $(this.jB + 'div#task-div-'+ i +" > span").css({
@@ -277,6 +279,7 @@ export class S_R_ScheduleComponent implements OnInit {
     const daySchedule = this.weeklySchedules.schedules[day];
     for(let i = 7; i <= 22; i++) {
       if(daySchedule[i - 7].hour == i){
+        $(this.jW + 'div#task-div-'+ i +" > span").off('click');
         if(daySchedule[i - 7].available){
           $(this.jW + 'p#task-'+ i).text("Available");
           $(this.jW + 'div#task-div-'+ i +" > span").css({

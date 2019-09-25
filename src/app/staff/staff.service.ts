@@ -54,7 +54,7 @@ export class StaffService {
   getBookedSlots(snapshot) {
     let bookedSlots: number[] = [];
     snapshot.forEach(doc => {
-      bookedSlots.concat(doc.data().timeSlots);
+      bookedSlots = bookedSlots.concat(doc.data().timeSlots);
     })
     return bookedSlots;
   }

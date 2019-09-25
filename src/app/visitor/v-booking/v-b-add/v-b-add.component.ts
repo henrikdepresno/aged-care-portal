@@ -159,6 +159,7 @@ export class V_B_AddComponent implements OnInit {
   }
 
   selectDate(date: Date){
+    this.selectedSlots = [];
     const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
       + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
       + date.getFullYear();
@@ -168,6 +169,7 @@ export class V_B_AddComponent implements OnInit {
       const daySchedule = this.weeklySchedules.schedules[date.getDay()];
         for(let i = 7; i <= 22; i++) {
           if(daySchedule[i - 7].hour == i){
+            $('div#task-div-'+ i +" > span").off('click');
             if(bookedSlots.includes(i)) {
               $('p#task-'+ i).text("Meeting booked");
               $('div#task-div-'+ i +" > span").css({
@@ -225,6 +227,7 @@ export class V_B_AddComponent implements OnInit {
           'background-color': '#9BCCE7',
           'cursor': 'pointer'
         });
+        this.selectedSlots.push(hour);
         sortNumArray(this.selectedSlots);
       }
       else {
