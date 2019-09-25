@@ -124,34 +124,34 @@ export class AuthService {
               let emails = [];
               userSnapshot.docs.forEach(doc => {
                 emails.push(doc.data().email);
-                if(!emails.includes(email)) {
-                  const newID = randomUniqueID(idSnapshot);
-                  const visitor = new Visitor(newID, vFirstName, vLastName, email, phone, [snapshot.docs[0].id], [], [], false, false);
-                  this.afs.collection('visitors').doc(newID).set(Object.assign({}, visitor));
-                  this.addUser(newID, email, 'visitor', vFirstName, password);
-                  swal({
-                    title: "Account created!",
-                    text: "Your new ID has been sent to your email!",
-                    icon: "success",
-                    buttons: {
-                      ok: "Login"
-                    }
-                  } as any)
-                  .then(() => {
-                    this.router.navigate(['/login', 'login-v'])
-                  });
-                }
-                else {
-                  swal({
-                    title: "Error!",
-                    text: "Email is already in use!",
-                    icon: "error",
-                    buttons: {
-                      ok: "OK"
-                    }
-                  } as any)
-                }
               })
+              if(!emails.includes(email)) {
+                const newID = randomUniqueID(idSnapshot);
+                const visitor = new Visitor(newID, vFirstName, vLastName, email, phone, [snapshot.docs[0].id], [], [], false, false);
+                this.afs.collection('visitors').doc(newID).set(Object.assign({}, visitor));
+                this.addUser(newID, email, 'visitor', vFirstName, password);
+                swal({
+                  title: "Account created!",
+                  text: "Your new ID has been sent to your email!",
+                  icon: "success",
+                  buttons: {
+                    ok: "Login"
+                  }
+                } as any)
+                .then(() => {
+                  this.router.navigate(['/login', 'login-v'])
+                });
+              }
+              else {
+                swal({
+                  title: "Error!",
+                  text: "Email is already in use!",
+                  icon: "error",
+                  buttons: {
+                    ok: "OK"
+                  }
+                } as any)
+              }
             })
           })
         }

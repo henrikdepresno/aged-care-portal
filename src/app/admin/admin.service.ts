@@ -72,18 +72,18 @@ export class AdminService {
         let emails = [];
         userSnapshot.docs.forEach(doc => {
           emails.push(doc.data().email);
-          if(!emails.includes(email)) {
-            const newID = randomUniqueID(idSnapshot);
-            this.contractorsCollection = this.afs.collection('contractors');
-            const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field)
-            this.contractorsCollection.doc(newID).set(Object.assign({}, contractor));
-            this.authService.addUser(newID, email, 'contractor', cFirstName);
-            this.successAddUser('contractor');
-          }
-          else {
-            this.emailInUse();
-          }
         })
+        if(!emails.includes(email)) {
+          const newID = randomUniqueID(idSnapshot);
+          this.contractorsCollection = this.afs.collection('contractors');
+          const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field)
+          this.contractorsCollection.doc(newID).set(Object.assign({}, contractor));
+          this.authService.addUser(newID, email, 'contractor', cFirstName);
+          this.successAddUser('contractor');
+        }
+        else {
+          this.emailInUse();
+        }
       })
     })
   }
@@ -117,18 +117,18 @@ export class AdminService {
         let emails = [];
         userSnapshot.docs.forEach(doc => {
           emails.push(doc.data().email);
-          if(!emails.includes(email)) {
-            const newID = randomUniqueID(idSnapshot);
-            this.staffsCollection = this.afs.collection('staffs');
-            const staff = new Staff(newID, sFirstName, sLastName, phone, email, role)
-            this.staffsCollection.doc(newID).set(Object.assign({}, staff));
-            this.authService.addUser(newID, email, 'staff', sFirstName);
-            this.successAddUser('staff');
-          }
-          else {
-            this.emailInUse();
-          }
         })
+        if(!emails.includes(email)) {
+          const newID = randomUniqueID(idSnapshot);
+          this.staffsCollection = this.afs.collection('staffs');
+          const staff = new Staff(newID, sFirstName, sLastName, phone, email, role)
+          this.staffsCollection.doc(newID).set(Object.assign({}, staff));
+          this.authService.addUser(newID, email, 'staff', sFirstName);
+          this.successAddUser('staff');
+        }
+        else {
+          this.emailInUse();
+        }
       })
     })
   }
