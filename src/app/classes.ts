@@ -35,6 +35,15 @@ export class Staff {
   ) { }
 }
 
+export class ResidentAdd {
+  constructor(
+    public id?: string,
+    public rFirstName?: string,
+    public rLastName?: string,
+    public phone?: string
+  ) { }
+}
+
 export class Resident {
   constructor(
     public id?: string,

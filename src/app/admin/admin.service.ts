@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Resident, Contractor, Staff, IDList, Visitor, Flag, Rating, Feedback } from '../classes';
+import { Resident, Contractor, Staff, IDList, Visitor, Flag, Rating, Feedback, ResidentAdd } from '../classes';
 import { capitalize, randomUniqueID } from '../functions';
 
 @Injectable({
@@ -147,7 +147,7 @@ export class AdminService {
 
   // Resident Functions
 
-  residentsCollection: AngularFirestoreCollection<Resident>;
+  residentsAddCollection: AngularFirestoreCollection<ResidentAdd>;
   residents: Observable<Resident[]>;
 
   getResidents() {
@@ -158,10 +158,10 @@ export class AdminService {
   addResident(rFirstName: string, rLastName: string, phone: string) {
     this.afs.collection('id-list').get().toPromise().then(idSnapshot => {
       const newID = randomUniqueID(idSnapshot);
-      this.residentsCollection = this.afs.collection('residents');
-      const resident = new Resident(newID, rFirstName, rLastName, phone)
-      this.residentsCollection.doc(newID).set(Object.assign({}, resident));
-      this.residentsCollection.doc(newID).update({schedule:{
+      this.residentsAddCollection = this.afs.collection('residents');
+      const resident = new ResidentAdd(newID, rFirstName, rLastName, phone)
+      this.residentsAddCollection.doc(newID).set(Object.assign({}, resident));
+      this.residentsAddCollection.doc(newID).update({schedule:{
         0: {
           7: {available: false, activity: "Sleep"}, 8: {available: false, activity: "Waking up"},
           9: {available: false, activity: "Breakfast"}, 10: {available: true, activity: ""},
