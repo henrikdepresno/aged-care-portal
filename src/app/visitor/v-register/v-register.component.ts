@@ -37,7 +37,7 @@ export class V_RegisterComponent implements OnInit {
     const phone = $('#inputPhone').val();
     const rFirstName = capitalize($('#inputResidentFirstName').val());
     const rLastName = capitalize($('#inputResidentLastName').val());
-    if(password.length < 8) {
+    if(password.length >= 8) {
       if(password == confirmPassword) {
         if(email != "" && vFirstName != "" && vLastName != "" && phone != "" && rFirstName != "" && rLastName != "") {
           if(isNumeric(phone)) {

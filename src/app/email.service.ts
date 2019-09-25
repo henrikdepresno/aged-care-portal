@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
@@ -10,7 +9,6 @@ import swal from 'sweetalert';
 export class EmailService {
 
   constructor(
-    private http: HttpClient,
     private afAuth: AngularFireAuth,
     private router: Router
   ) { }
@@ -57,7 +55,7 @@ export class EmailService {
       subject: "Welcome to Onshoring ACP!",
       text: text
     }
-    this.http.post("http://localhost:3000/send-mail", data).subscribe();
+    return data;
   }
 
   emailResetPassword(email: string) {

@@ -7,6 +7,7 @@ import swal from 'sweetalert';
 import { EmailService } from './email.service';
 import { randomUniqueID, randomPassword } from './functions';
 import { User, IDList, Visitor } from './classes';
+import { forkJoin } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
@@ -172,19 +173,20 @@ export class AuthService {
     if(password == ""){ 
       password = randomPassword();
     }
-    const data = {
+    
+    const user = new User(id, email, userType);
+    this.afs.collection('users').doc(id).set(Object.assign({}, user));
+    const newId = new IDList(id);
+    this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
+
+    const addData = {
       email: email,
       password: password
     }
-    this.http.post("http://localhost:3000/add-auth-user-fb", data).toPromise()
-      .then(() => {
-        const user = new User(id, email, userType);
-        this.afs.collection('users').doc(id).set(Object.assign({}, user));
-        const newId = new IDList(id);
-        this.afs.collection('id-list').doc(id).set(Object.assign({}, newId));
-
-        this.emailService.emailNewAccount(email, id, firstName, userType, password);
-      });
+    const addPost = this.http.post("http://localhost:3000/add-auth-user-fb", addData);
+    const emailData = this.emailService.emailNewAccount(email, id, firstName, userType, password);
+    const emailPost = this.http.post("http://localhost:3000/send-email", emailData);
+    forkJoin(addPost, emailPost).subscribe();
   }
 
   deleteUser(id: string) {

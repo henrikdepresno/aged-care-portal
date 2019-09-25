@@ -51,6 +51,7 @@ async function sendEmail(data, callback) {
     host: "smtp.gmail.com",
     port: 587,
     secure: false,
+    requireTLS: true,
     auth: {
       user: emailSender.email,
       pass: emailSender.password
