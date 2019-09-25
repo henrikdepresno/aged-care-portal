@@ -225,7 +225,6 @@ export class V_B_AddComponent implements OnInit {
           'background-color': '#9BCCE7',
           'cursor': 'pointer'
         });
-        this.selectedSlots.push(hour);
         sortNumArray(this.selectedSlots);
       }
       else {
