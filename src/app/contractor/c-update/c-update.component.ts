@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 import { AuthService } from '../../auth.service';
 import { ContractorService } from '../contractor.service';
 import { isNumeric } from 'src/app/functions';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-c-update',
@@ -26,12 +27,15 @@ export class C_UpdateComponent implements OnInit {
     this.router.navigate(['/contractor', 'update']);
 
     this.validateUserType().then(res => {
-      if(res) { 
-        this.contractorService.getId();
-        this.contractorService.id.subscribe(id => {
-          this.id = id;
-          QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
-        });
+      if(res) {
+        this.contractorService.getAuthState().pipe(
+          mergeMap(authState => {
+            return this.contractorService.getQuerySnapshotByEmail(authState.email, 'contractor');
+          }))
+          .subscribe(querySnapshot => {
+            this.id = this.contractorService.getIdFromEmailQuerySnapshot(querySnapshot);
+            QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
+          })
       }
     });
 

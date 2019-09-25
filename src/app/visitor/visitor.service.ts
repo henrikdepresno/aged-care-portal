@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
-import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { Resident, Visitor, Booking, WeeklySchedules, ScheduleSlot } from '../classes';
 import { mergeMap } from 'rxjs/operators';
 
@@ -17,13 +17,6 @@ export class VisitorService {
     private afs: AngularFirestore,
     private router: Router
   ) { }
-
-  private idSource = new BehaviorSubject<string>("");
-  id = this.idSource.asObservable();
-
-  passId(id: string) {
-    this.idSource.next(id);
-  }
 
   getAuthState() {
     return this.afAuth.authState;
@@ -41,13 +34,13 @@ export class VisitorService {
     return id;
   }
 
-  updateDetails(id: string, phone: string) {
-    if(phone != "") this.afs.collection('visitors').doc(id).update({phone: phone});
-  }
-
   getVisitorById(id: string) {
     const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(id);
     return visitorDoc.valueChanges();
+  }
+
+  updateDetails(id: string, phone: string) {
+    if(phone != "") this.afs.collection('visitors').doc(id).update({phone: phone});
   }
 
   booking: Observable<Booking>;
@@ -83,18 +76,17 @@ export class VisitorService {
   }
 
   bookingsCollection: AngularFirestoreCollection<Booking>;
-  private bookedSlotsSource = new BehaviorSubject<number[]>([]);
-  bookedSlots = this.bookedSlotsSource.asObservable();
 
-  getBookedSlots(date: string) {
-    let bookedSlots = [];
-    this.afs.collection('bookings', ref => ref.where('date', '==', date).where('isCancelled', '==', false)).get().toPromise()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          bookedSlots.concat(doc.data().timeSlots);
-        })
-        this.bookedSlotsSource.next(bookedSlots);
-      })
+  getBookedSlots(snapshot) {
+    let bookedSlots: number[] = [];
+    snapshot.forEach(doc => {
+      bookedSlots.concat(doc.data().timeSlots);
+    })
+    return bookedSlots;
+  }
+
+  getBookingsByDate(date: string) {
+    return this.afs.collection('bookings', ref => ref.where('date', '==', date).where('isCancelled', '==', false)).get();
   }
 
   addBooking(residentId: string, rName: string, date: string, timeSlots: number[]) {

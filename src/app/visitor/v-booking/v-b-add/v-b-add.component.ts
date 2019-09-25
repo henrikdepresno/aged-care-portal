@@ -162,11 +162,10 @@ export class V_B_AddComponent implements OnInit {
     const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
       + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
       + date.getFullYear();
-    // TODO: fix
-    this.visitorService.getBookedSlots(dateStr);
-    this.visitorService.bookedSlots.toPromise()
-      .then((bookedSlots) => {
-        const daySchedule = this.weeklySchedules.schedules[date.getDay()];
+    this.visitorService.getBookingsByDate(dateStr).toPromise()
+    .then((snapshot) => {
+      const bookedSlots = this.visitorService.getBookedSlots(snapshot);
+      const daySchedule = this.weeklySchedules.schedules[date.getDay()];
         for(let i = 7; i <= 22; i++) {
           if(daySchedule[i - 7].hour == i){
             if(bookedSlots.includes(i)) {
@@ -195,7 +194,7 @@ export class V_B_AddComponent implements OnInit {
             }
           }
         }
-      })
+    })
   }
 
   selectSlot(hour: number) {

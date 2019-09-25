@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
+import { Contractor } from '../classes';
 
 @Injectable({
   providedIn: 'root'
@@ -16,20 +17,25 @@ export class ContractorService {
   private idSource = new BehaviorSubject<string>("");
   id = this.idSource.asObservable();
 
-  passId(id: string) {
-    this.idSource.next(id);
+  getAuthState() {
+    return this.afAuth.authState;
   }
 
-  getId() {
-    this.afAuth.authState.toPromise()
-      .then(user => {
-        this.afs.collection('contractors', ref => ref.where('email', '==', user.email)).get().toPromise()
-          .then(snapshot => {
-            snapshot.forEach(doc => {
-              this.passId(doc.id);
-            })
-          })
-      })
+  getQuerySnapshotByEmail(email: string, userType: string) {
+    return this.afs.collection(userType + 's', ref => ref.where('email', '==', email)).get();
+  }
+
+  getIdFromEmailQuerySnapshot(snapshot) {
+    let id = ''
+    snapshot.forEach(doc => {
+      id = doc.id;
+    })
+    return id;
+  }
+
+  getContractorById(id: string) {
+    const contractorDoc: AngularFirestoreDocument<Contractor> = this.afs.collection('contractors').doc(id);
+    return contractorDoc.valueChanges();
   }
 
   updateDetails(id: string, phone: string) {
