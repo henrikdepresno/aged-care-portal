@@ -274,7 +274,7 @@ export class V_B_ModifyComponent implements OnInit {
     if(this.oldBookingDate != dateStr || (this.oldBookingDate == dateStr && JSON.stringify(this.oldSelectedSlots) != JSON.stringify(this.selectedSlots))) {
       if(this.selectedSlots.length != 0) {
         swal({
-          title: "Add?",
+          title: "Modify?",
           text: `Are you sure you want to modify this booking?
           ${this.oldSelectedSlots[0]}:00 ${this.oldBookingDate} → ${this.selectedSlots[0]}:00 ${dateStr}`,
           icon: "warning",

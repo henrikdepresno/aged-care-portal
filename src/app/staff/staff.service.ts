@@ -75,7 +75,7 @@ export class StaffService {
         .then(() => {
           swal({
             title: "Success!",
-            text: "Booking added succesfully!",
+            text: "Booking added successfully!",
             icon: "success",
             buttons: {
               ok: "OK"
