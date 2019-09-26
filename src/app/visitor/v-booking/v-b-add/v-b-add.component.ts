@@ -17,6 +17,8 @@ export class V_B_AddComponent implements OnInit {
 
   id: string
 
+  lA = "table.list-add "
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -169,28 +171,28 @@ export class V_B_AddComponent implements OnInit {
       const daySchedule = this.weeklySchedules.schedules[date.getDay()];
         for(let i = 7; i <= 22; i++) {
           if(daySchedule[i - 7].hour == i){
-            $('div#task-div-'+ i +" > span").off('click');
+            $(this.lA + 'div#task-div-'+ i +" > span").off('click');
             if(bookedSlots.includes(i)) {
-              $('p#task-'+ i).text("Meeting booked");
-              $('div#task-div-'+ i +" > span").css({
+              $(this.lA + 'p#task-'+ i).text("Meeting booked");
+              $(this.lA + 'div#task-div-'+ i +" > span").css({
                 'background-color': '#EDAAAA',
                 'cursor': 'not-allowed'
               });
             }
             else if(!daySchedule[i - 7].available){
-              $('p#task-'+ i).text(daySchedule[i - 7].activity);
-              $('div#task-div-'+ i +" > span").css({
+              $(this.lA + 'p#task-'+ i).text(daySchedule[i - 7].activity);
+              $(this.lA + 'div#task-div-'+ i +" > span").css({
                 'background-color': '#EDAAAA',
                 'cursor': 'not-allowed'
               });
             }
             else {
-              $('p#task-'+ i).text("Available");
-              $('div#task-div-'+ i +" > span").css({
+              $(this.lA + 'p#task-'+ i).text("Available");
+              $(this.lA + 'div#task-div-'+ i +" > span").css({
                 'background-color': '#C4DBB3',
                 'cursor': 'pointer'
               });
-              $('div#task-div-'+ i +" > span").click(() => {
+              $(this.lA + 'div#task-div-'+ i +" > span").click(() => {
                 this.selectSlot(i);
               });
             }
@@ -202,8 +204,8 @@ export class V_B_AddComponent implements OnInit {
   selectSlot(hour: number) {
     if(this.selectedSlots.includes(hour)){
       if(arrayConsecutive(this.selectedSlots, hour, false)) {
-        $('p#task-'+ hour).text("Available");
-        $('div#task-div-'+ hour +" > span").css({
+        $(this.lA + 'p#task-'+ hour).text("Available");
+        $(this.lA + 'div#task-div-'+ hour +" > span").css({
           'background-color': '#C4DBB3',
           'cursor': 'pointer'
         });
@@ -222,8 +224,8 @@ export class V_B_AddComponent implements OnInit {
     }
     else {
       if(arrayConsecutive(this.selectedSlots, hour, true)) {
-        $('p#task-'+ hour).text("Selected");
-        $('div#task-div-'+ hour +" > span").css({
+        $(this.lA + 'p#task-'+ hour).text("Selected");
+        $(this.lA + 'div#task-div-'+ hour +" > span").css({
           'background-color': '#9BCCE7',
           'cursor': 'pointer'
         });
