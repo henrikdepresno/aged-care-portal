@@ -18,6 +18,8 @@ export class V_B_ModifyComponent implements OnInit {
   bookingId: string
   residentId: string
 
+  lM = "table.list-modify "
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -38,10 +40,10 @@ export class V_B_ModifyComponent implements OnInit {
         this.visitorService.residentId.pipe(
           mergeMap(id => {
             this.residentId = id;
-            return this.visitorService.getBookingSnapshot(id);
+            return this.visitorService.bookingId;
           }),
-          mergeMap(snapshot => {
-            this.bookingId = snapshot.docs[0].id
+          mergeMap(id => {
+            this.bookingId = id;
             return this.visitorService.getResident(this.residentId);
           }),
           mergeMap(resident => {
@@ -184,28 +186,28 @@ export class V_B_ModifyComponent implements OnInit {
       const daySchedule = this.weeklySchedules.schedules[date.getDay()];
         for(let i = 7; i <= 22; i++) {
           if(daySchedule[i - 7].hour == i){
-            $('div#task-div-'+ i +" > span").off('click');
+            $(this.lM + 'div#task-div-'+ i +" > span").off('click');
             if(bookedSlots.includes(i)) {
-              $('p#task-'+ i).text("Meeting booked");
-              $('div#task-div-'+ i +" > span").css({
+              $(this.lM + 'p#task-'+ i).text("Meeting booked");
+              $(this.lM + 'div#task-div-'+ i +" > span").css({
                 'background-color': '#EDAAAA',
                 'cursor': 'not-allowed'
               });
             }
             else if(!daySchedule[i - 7].available){
-              $('p#task-'+ i).text(daySchedule[i - 7].activity);
-              $('div#task-div-'+ i +" > span").css({
+              $(this.lM + 'p#task-'+ i).text(daySchedule[i - 7].activity);
+              $(this.lM + 'div#task-div-'+ i +" > span").css({
                 'background-color': '#EDAAAA',
                 'cursor': 'not-allowed'
               });
             }
             else {
-              $('p#task-'+ i).text("Available");
-              $('div#task-div-'+ i +" > span").css({
+              $(this.lM + 'p#task-'+ i).text("Available");
+              $(this.lM + 'div#task-div-'+ i +" > span").css({
                 'background-color': '#C4DBB3',
                 'cursor': 'pointer'
               });
-              $('div#task-div-'+ i +" > span").click(() => {
+              $(this.lM + 'div#task-div-'+ i +" > span").click(() => {
                 this.selectSlot(i);
               });
             }
@@ -214,7 +216,7 @@ export class V_B_ModifyComponent implements OnInit {
         if(dateStr == this.oldBookingDate) {
           for(let hour of this.oldSelectedSlots) {
             this.selectSlot(hour);
-            $('div#task-div-'+ hour +" > span").click(() => {
+            $(this.lM + 'div#task-div-'+ hour +" > span").click(() => {
               this.selectSlot(hour);
             });
           }
@@ -225,8 +227,8 @@ export class V_B_ModifyComponent implements OnInit {
   selectSlot(hour: number) {
     if(this.selectedSlots.includes(hour)){
       if(arrayConsecutive(this.selectedSlots, hour, false)) {
-        $('p#task-'+ hour).text("Available");
-        $('div#task-div-'+ hour +" > span").css({
+        $(this.lM + 'p#task-'+ hour).text("Available");
+        $(this.lM + 'div#task-div-'+ hour +" > span").css({
           'background-color': '#C4DBB3',
           'cursor': 'pointer'
         });
@@ -245,8 +247,8 @@ export class V_B_ModifyComponent implements OnInit {
     }
     else {
       if(arrayConsecutive(this.selectedSlots, hour, true)) {
-        $('p#task-'+ hour).text("Selected");
-        $('div#task-div-'+ hour +" > span").css({
+        $(this.lM + 'p#task-'+ hour).text("Selected");
+        $(this.lM + 'div#task-div-'+ hour +" > span").css({
           'background-color': '#9BCCE7',
           'cursor': 'pointer'
         });
@@ -264,12 +266,9 @@ export class V_B_ModifyComponent implements OnInit {
         } as any)
       }
     }
-    console.log(this.selectedSlots)
   }
 
   updateBooking() {
-    console.log(JSON.stringify(this.oldSelectedSlots))
-    console.log(JSON.stringify(this.selectedSlots))
     const dateStr = $('p.p-date').text();
     if(this.oldBookingDate != dateStr || (this.oldBookingDate == dateStr && JSON.stringify(this.oldSelectedSlots) != JSON.stringify(this.selectedSlots))) {
       if(this.selectedSlots.length != 0) {

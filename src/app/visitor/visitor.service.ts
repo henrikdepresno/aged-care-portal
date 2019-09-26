@@ -58,10 +58,6 @@ export class VisitorService {
     return this.booking
   }
 
-  getBookingSnapshot(residentId: string) {
-    return this.afs.collection('bookings', ref => ref.where('residentId', '==', residentId)).get()
-  }
-
   private bookingIdSource = new BehaviorSubject<string>("");
   bookingId = this.bookingIdSource.asObservable();
 
@@ -97,7 +93,7 @@ export class VisitorService {
     this.bookingsCollection = this.afs.collection('bookings', ref => ref.where('date', '==', date));
     this.bookingsCollection.get().toPromise().then(bookingSnapshot => {
       let bookingId = "";
-      if(bookingSnapshot.docs.length! = 0) {
+      if(bookingSnapshot.docs.length != 0) {
         const latestId = bookingSnapshot.docs[bookingSnapshot.docs.length - 1].id;
         const newIdentifier = parseInt(latestId.substring(8)) + 1;
         bookingId = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + ((newIdentifier < 10) ? "0" + newIdentifier.toString() : newIdentifier.toString());
@@ -112,18 +108,15 @@ export class VisitorService {
           return this.getQuerySnapshotByEmail(authState.email, 'visitor');
         }),
         mergeMap(querySnapshot => {
-          console.log(querySnapshot)
           const visitorId = this.getIdFromEmailQuerySnapshot(querySnapshot);
           const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
           return visitorDoc.valueChanges();
         }),
         take(1))
         .subscribe((visitor) => {
-          console.log(visitor)
           let bookingIds = visitor.bookingIds;
           bookingIds.unshift(bookingId);
           this.afs.collection('visitors').doc(visitor.id).update({bookingIds: bookingIds});
-          console.log("swal")
           swal({
             title: "Success!",
             text: "Booking added succesfully!",
@@ -197,25 +190,22 @@ export class VisitorService {
       .then(snapshot => {
         if(snapshot.docs.length != 0) {
           const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
-          visitorDoc.valueChanges().toPromise()
-            .then(visitor => {
-              let residentIds = visitor.residentIds;
-              residentIds.push(snapshot.docs[0].id);
-              visitorDoc.update({residentIds: residentIds});
-            })
+          visitorDoc.valueChanges().pipe(take(1)).subscribe(visitor => {
+            let residentIds = visitor.residentIds;
+            residentIds.push(snapshot.docs[0].id);
+            visitorDoc.update({residentIds: residentIds});
+            swal({
+              title: "Success!",
+              text: "Resident added",
+              icon: "success",
+              buttons: {
+                ok: "OK"
+              }
+            } as any)
             .then(() => {
-              swal({
-                title: "Success!",
-                text: "Resident added",
-                icon: "success",
-                buttons: {
-                  ok: "OK"
-                }
-              } as any)
-              .then(() => {
-                this.router.navigate(['/visitor', 'resident-view']);
-              })
+              this.router.navigate(['/visitor', 'resident-view']);
             })
+          })
         }
         else {
           swal({
