@@ -119,7 +119,7 @@ export class VisitorService {
           this.afs.collection('visitors').doc(visitor.id).update({bookingIds: bookingIds});
           swal({
             title: "Success!",
-            text: "Booking added succesfully!",
+            text: "Booking added successfully!",
             icon: "success",
             buttons: {
               ok: "OK"
@@ -138,7 +138,7 @@ export class VisitorService {
     .then(() => {
       swal({
         title: "Success!",
-        text: "Booking modified succesfully!",
+        text: "Booking modified successfully!",
         icon: "success",
         buttons: {
           ok: "OK"
