@@ -361,7 +361,7 @@ export class S_R_ScheduleComponent implements OnInit {
       content: {
         element: "input",
         attributes: {
-          placeholder: "Reason",
+          placeholder: "New activity",
           type: "text",
         },
       },

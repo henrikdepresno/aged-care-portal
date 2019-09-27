@@ -130,14 +130,14 @@ export class A_R_ViewComponent implements OnInit {
     for(let i = 1; i <= 8; i++) {
       $('p#resident-name-'+ i).empty();
     }
-    $('td.td-btn').hide();
+    $('td.td-btn > span').hide();
     for(let i = 1; i <= output.length; i++) {
       $('table#item-list-xs > tr#item-'+ i +'-text').show();
       $('table#item-list-xs > tr#item-'+ i +'-btn').show();
       const resident = output[i - 1];
       $('p#resident-name-'+ i).text(resident.rFirstName + " " + resident.rLastName);
-      $('tr#item-'+ i +' > td.td-btn').show();
-      $('tr#item-'+ i +'-btn > td.td-btn').show();
+      $('tr#item-'+ i +' > td.td-btn > span').show();
+      $('tr#item-'+ i +'-btn > td.td-btn > span').show();
 
       $('p#resident-name-'+ i).click(() => {
         this.clickInfo(resident);

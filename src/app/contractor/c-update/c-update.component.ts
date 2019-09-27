@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import QRCode from 'qrcode';
@@ -20,7 +20,10 @@ export class C_UpdateComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private contractorService: ContractorService
+    private contractorService: ContractorService,
+    @Optional() private justCheckOut: boolean,
+    @Optional() private cName: string,
+    @Optional() private email: string
   ) { }
 
   ngOnInit() {
@@ -31,10 +34,19 @@ export class C_UpdateComponent implements OnInit {
         this.contractorService.getAuthState().pipe(
           mergeMap(authState => {
             return this.contractorService.getQuerySnapshotByEmail(authState.email, 'contractor');
-          }))
-          .subscribe(querySnapshot => {
+          }),
+          mergeMap(querySnapshot => {
             this.id = this.contractorService.getIdFromEmailQuerySnapshot(querySnapshot);
             QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
+            return this.contractorService.getContractorById(this.id)
+          }))
+          .subscribe(contractor => {
+            this.justCheckOut = contractor.justCheckOut;
+            this.cName = contractor.cFirstName + ' ' + contractor.cLastName
+            this.email = contractor.email
+            if(this.justCheckOut) {
+              this.provideFeedback();
+            }
           })
       }
     });
@@ -127,6 +139,65 @@ export class C_UpdateComponent implements OnInit {
   private showUpdates(phone) {
     let updates = (phone == "") ? "" : "Phone: " + phone;
     return updates;
+  }
+
+  provideFeedback() {
+    swal({
+      title: "Hi!",
+      text: `Since you recently visited our facility,
+      do you want to provide feedback about the visit?`,
+      icon: "info",
+      buttons: {
+        cancel: "No",
+        ok: "Yes"
+      }
+    } as any)
+    .then((willProvide) => {
+      if(willProvide) {
+        swal({
+          content: {
+            element: "input",
+            attributes: {
+              placeholder: "Feedback Title",
+              type: "text",
+            },
+          },
+        })
+        .then((title) => {
+          swal({
+            content: {
+              element: "input",
+              attributes: {
+                placeholder: "Please provide details of your visit",
+                type: "text",
+              },
+            },
+          })
+          .then((context) => {
+            swal({
+              text: `Feedback: ${title}
+              Details: ${context}`,
+              icon: "info",
+              buttons: {
+                cancel: "Cancel",
+                ok: "Submit"
+              }
+            } as any)
+            .then((confirmFeedback) => {
+              if(confirmFeedback) {
+                this.contractorService.provideFeedback(this.id, true, this.cName, this.email, title, context)
+              }
+              else {
+                this.contractorService.provideFeedback(this.id, false)
+              }
+            });
+          });
+        });
+      }
+      else {
+        this.contractorService.provideFeedback(this.id, false)
+      }
+    });
   }
 
   logOut() {

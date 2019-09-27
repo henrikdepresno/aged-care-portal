@@ -20,7 +20,8 @@ export class Contractor {
     public phone?: string,
     public email?: string,
     public companyName?: string,
-    public field?: string
+    public field?: string,
+    public justCheckOut?: boolean
   ) { }
 }
 
@@ -92,8 +93,10 @@ export class Rating {
 
 export class Feedback {
   constructor(
+    public id?: string,
     public title?: string,
     public author?: string,
+    public authorEmail?: string,
     public role?: string,
     public date?: string,
     public context?: string

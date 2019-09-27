@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import swal from 'sweetalert';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Resident, Visitor, Flag, Rating, Feedback, WeeklySchedules, ScheduleSlot, Booking } from '../classes';
+import { take } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
@@ -113,21 +114,24 @@ export class StaffService {
   }
 
   flagVisitor(id: string, reason: string) {
-    this.afAuth.authState.toPromise()
-      .then(user => {
+    this.afAuth.authState.pipe(take(1))
+      .subscribe(user => {
+        console.log(user)
         this.afs.collection('staffs', ref => ref.where('email', '==', user.email)).get().toPromise()
           .then(snapshot => {
+            console.log(snapshot)
             snapshot.forEach(doc => {
-              const staffName = doc.data().sFirstName + " " + doc.data().sFirstName;
+              const staffName = doc.data().sFirstName + " " + doc.data().sLastName;
               this.afs.collection('visitors').doc(id).get().toPromise()
               .then((doc) => {
-                let flags: Flag[] = doc.data().flags;
+                console.log(doc)
+                let flags: any[] = doc.data().flags;
                 const date = new Date();
                 const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
                   + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
                   + date.getFullYear();
                 flags.unshift(new Flag(dateStr, staffName, reason));
-                this.afs.collection('visitors').doc(id).update({flags: flags});
+                this.afs.collection('visitors').doc(id).update({flags: JSON.parse(JSON.stringify(flags))});
                 swal("Visitor flagged!", {
                   icon: "success",
                 })

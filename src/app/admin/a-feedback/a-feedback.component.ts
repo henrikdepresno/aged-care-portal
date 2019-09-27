@@ -29,6 +29,7 @@ export class A_FeedbackComponent implements OnInit {
       if(res) { 
         this.adminService.getFeedbacks().pipe(
           mergeMap(res => {
+            res = res.reverse();
             this.loadComponent(res);
             return this.adminService.getRatings();
           }),
@@ -165,6 +166,7 @@ export class A_FeedbackComponent implements OnInit {
       text:
       `${feedback.context}
       Author: ${feedback.author} - ${feedback.role}
+      < ${feedback.authorEmail} >
       Date: ${feedback.date}`,
       icon: "info",
     });

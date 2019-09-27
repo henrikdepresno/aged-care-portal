@@ -56,7 +56,7 @@ export class A_V_UpdateComponent implements OnInit {
   }
 
   loadFlagTable(flags: Flag[]) {
-    for(let i = 0; i <= 3; i++) {
+    for(let i = 1; i <= flags.length; i++) {
       const flag = flags[i - 1];
       $('p#date-' + i).text(flag.date);
       $('p#staff-' + i).text(flag.staff);
@@ -93,9 +93,6 @@ export class A_V_UpdateComponent implements OnInit {
         .then((willClear) => {
           if(willClear) {
             this.adminService.clearFlag(flags, index, visitorId);
-            swal("Flag cleared!", {
-              icon: "success",
-            })
           }
         });
       }

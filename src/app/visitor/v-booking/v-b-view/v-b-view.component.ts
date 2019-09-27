@@ -22,7 +22,10 @@ export class V_B_ViewComponent implements OnInit {
     private visitorService: VisitorService,
     @Optional() private pagesNum: number,
     @Optional() private outputBookings: Booking[][],
-    @Optional() private id: string
+    @Optional() private id: string,
+    @Optional() private justCheckOut: boolean,
+    @Optional() private vName: string,
+    @Optional() private email: string
   ) { }
 
   ngOnInit() {
@@ -40,6 +43,9 @@ export class V_B_ViewComponent implements OnInit {
             return this.visitorService.getVisitorById(this.id);
           }),
           mergeMap(visitor => {
+            this.justCheckOut = visitor.justCheckOut;
+            this.vName = visitor.vFirstName + ' ' + visitor.vLastName
+            this.email = visitor.email
             if(visitor.bookingIds.length != 0) {
               return this.visitorService.getBookings(visitor.bookingIds);
             }
@@ -127,6 +133,10 @@ export class V_B_ViewComponent implements OnInit {
     }
     
     this.clickPage(1);
+    
+    if(this.justCheckOut) {
+      this.provideFeedback();
+    }
   }
 
   clickPage(page: number) {
@@ -167,17 +177,17 @@ export class V_B_ViewComponent implements OnInit {
       $('table#item-list-xs > tr#item-'+ i +'-btn').show();
       const booking = output[i - 1];
       const today = new Date();
-      const bookingDateStr = `${booking.date.substring(6)}-${booking.date.substring(3, 5)}-${booking.date.substring(0, 2)}}`
+      const bookingDateStr = `${booking.date.substring(6)}-${booking.date.substring(3, 5)}-${booking.date.substring(0, 2)}`
       const bookingDate = new Date(bookingDateStr)
       let status = "";
       if(!booking.isCancelled) {
         if(today.getFullYear() < bookingDate.getFullYear() ||
         (today.getFullYear() == bookingDate.getFullYear() && today.getMonth() < bookingDate.getMonth()) ||
-        (today.getFullYear() == bookingDate.getFullYear() && today.getMonth() == bookingDate.getMonth() && today.getDate() < bookingDate.getDate())) {
-          status = "Expired"
+        (today.getFullYear() == bookingDate.getFullYear() && today.getMonth() == bookingDate.getMonth() && today.getDate() <= bookingDate.getDate())) {
+          status = "Confirmed"
         }
         else {
-          status = "Confirmed"
+          status = "Expired"
         }
       }
       else {
@@ -250,6 +260,65 @@ export class V_B_ViewComponent implements OnInit {
     .then((willCancel) => {
       if(willCancel) {
         this.visitorService.cancelBooking(id);
+      }
+    });
+  }
+
+  provideFeedback() {
+    swal({
+      title: "Hi!",
+      text: `Since you recently visited our facility,
+      do you want to provide feedback about the visit?`,
+      icon: "info",
+      buttons: {
+        cancel: "No",
+        ok: "Yes"
+      }
+    } as any)
+    .then((willProvide) => {
+      if(willProvide) {
+        swal({
+          content: {
+            element: "input",
+            attributes: {
+              placeholder: "Feedback Title",
+              type: "text",
+            },
+          },
+        })
+        .then((title) => {
+          swal({
+            content: {
+              element: "input",
+              attributes: {
+                placeholder: "Please provide details of your visit",
+                type: "text",
+              },
+            },
+          })
+          .then((context) => {
+            swal({
+              text: `Feedback: ${title}
+              Details: ${context}`,
+              icon: "info",
+              buttons: {
+                cancel: "Cancel",
+                ok: "Submit"
+              }
+            } as any)
+            .then((confirmFeedback) => {
+              if(confirmFeedback) {
+                this.visitorService.provideFeedback(this.id, true, this.vName, this.email, title, context)
+              }
+              else {
+                this.visitorService.provideFeedback(this.id, false)
+              }
+            });
+          });
+        });
+      }
+      else {
+        this.visitorService.provideFeedback(this.id, false)
       }
     });
   }

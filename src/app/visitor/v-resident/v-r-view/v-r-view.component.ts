@@ -16,14 +16,16 @@ import { of } from 'rxjs';
 })
 export class V_R_ViewComponent implements OnInit {
 
-  id: string
-
   constructor(
     private router: Router,
     private authService: AuthService,
     private visitorService: VisitorService,
     @Optional() private pagesNum: number,
-    @Optional() private outputResidents: Resident[][]
+    @Optional() private outputResidents: Resident[][],
+    @Optional() private id: string,
+    @Optional() private justCheckOut: boolean,
+    @Optional() private vName: string,
+    @Optional() private email: string
   ) { }
 
   ngOnInit() {
@@ -41,6 +43,9 @@ export class V_R_ViewComponent implements OnInit {
             return this.visitorService.getVisitorById(this.id);
           }),
           mergeMap(visitor => {
+            this.justCheckOut = visitor.justCheckOut;
+            this.vName = visitor.vFirstName + ' ' + visitor.vLastName
+            this.email = visitor.email
             if(visitor.residentIds.length != 0) {
               return this.visitorService.getResidents(visitor.residentIds);
             }
@@ -129,6 +134,10 @@ export class V_R_ViewComponent implements OnInit {
     }
     
     this.clickPage(1);
+
+    if(this.justCheckOut) {
+      this.provideFeedback();
+    }
   }
 
   clickPage(page: number) {
@@ -221,6 +230,65 @@ export class V_R_ViewComponent implements OnInit {
     .then((willDelete) => {
       if(willDelete) {
         this.visitorService.deleteResident(this.id, id);
+      }
+    });
+  }
+
+  provideFeedback() {
+    swal({
+      title: "Hi!",
+      text: `Since you recently visited our facility,
+      do you want to provide feedback about the visit?`,
+      icon: "info",
+      buttons: {
+        cancel: "No",
+        ok: "Yes"
+      }
+    } as any)
+    .then((willProvide) => {
+      if(willProvide) {
+        swal({
+          content: {
+            element: "input",
+            attributes: {
+              placeholder: "Feedback Title",
+              type: "text",
+            },
+          },
+        })
+        .then((title) => {
+          swal({
+            content: {
+              element: "input",
+              attributes: {
+                placeholder: "Please provide details of your visit",
+                type: "text",
+              },
+            },
+          })
+          .then((context) => {
+            swal({
+              text: `Feedback: ${title}
+              Details: ${context}`,
+              icon: "info",
+              buttons: {
+                cancel: "Cancel",
+                ok: "Submit"
+              }
+            } as any)
+            .then((confirmFeedback) => {
+              if(confirmFeedback) {
+                this.visitorService.provideFeedback(this.id, true, this.vName, this.email, title, context)
+              }
+              else {
+                this.visitorService.provideFeedback(this.id, false)
+              }
+            });
+          });
+        });
+      }
+      else {
+        this.visitorService.provideFeedback(this.id, false)
       }
     });
   }

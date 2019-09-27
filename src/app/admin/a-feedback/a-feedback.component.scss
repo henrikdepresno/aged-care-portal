@@ -225,6 +225,7 @@ div#list-main {
                 p {
                     display: inline;
                     font-weight: 400;
+                    cursor: pointer;
                 }
             }
             
@@ -239,6 +240,7 @@ div#list-main {
                 background-color: #525E85;
                 user-select: none;
                 cursor: pointer;
+                display: none;
 
                 @include xxs-width-max {
                     margin: 0 5px;

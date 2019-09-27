@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { Resident, Visitor, Booking, WeeklySchedules, ScheduleSlot } from '../classes';
+import { Resident, Visitor, Booking, WeeklySchedules, ScheduleSlot, Feedback } from '../classes';
 import { mergeMap, take } from 'rxjs/operators';
 
 @Injectable({
@@ -233,5 +233,38 @@ export class VisitorService {
           icon: "success",
         })
       })
+  }
+
+  provideFeedback(visitorId: string, willProvide: boolean, vName?: string, email?: string, title?: string, context?: string) {
+    if(willProvide) {
+      let feedbackCollections: AngularFirestoreCollection<Feedback> = this.afs.collection('feedbacks')
+      feedbackCollections.valueChanges().pipe(take(1))
+      .subscribe(feedbacks => {
+        let newId = ''
+        if(feedbacks.length != 0) {
+          const latestId = feedbacks[feedbacks.length - 1].id;
+          const newIdStr = (parseInt(latestId) + 1).toString();
+          newId = '00000000'.substring(0, 8 - newIdStr.length) + newIdStr
+        }
+        else {
+          newId = '00000001'
+        }
+        const date = new Date();
+        const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
+        + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
+        + date.getFullYear();
+        const feedback = new Feedback(newId, title, vName, email, 'Visitor', dateStr, context);
+        this.afs.collection('feedbacks').doc(newId).set(Object.assign({}, feedback))
+      })
+      swal({
+        title: "Submitted!",
+        text: "Thanks for the feedback!",
+        icon: "success",
+        buttons: {
+          ok: "OK"
+        }
+      } as any)
+    }
+    this.afs.collection('visitors').doc(visitorId).update({justCheckOut: false})
   }
 }

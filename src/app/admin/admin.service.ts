@@ -76,7 +76,7 @@ export class AdminService {
         if(!emails.includes(email)) {
           const newID = randomUniqueID(idSnapshot);
           this.contractorsCollection = this.afs.collection('contractors');
-          const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field)
+          const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field, false)
           this.contractorsCollection.doc(newID).set(Object.assign({}, contractor));
           this.authService.addUser(newID, email, 'contractor', cFirstName);
           this.successAddUser('contractor');
@@ -268,7 +268,13 @@ export class AdminService {
 
   clearFlag(flags: Flag[], index: number, id: string) {
     flags.splice(index, 1);
-    this.afs.collection('visitors').doc(id).update({flags: flags});
+    this.afs.collection('visitors').doc(id).update({flags: JSON.parse(JSON.stringify(flags))})
+    .then(() => {
+      swal("Flag cleared!", {
+        icon: "success",
+      })
+      this.router.navigate(['/admin', 'visitor-view'])
+    });
   }
 
   updateVisitor(id: string, vFirstName: string, vLastName: string, phone: string) {

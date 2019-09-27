@@ -165,6 +165,7 @@ div#list-main {
                     font-weight: 800;
                     margin-right: 5px;
                     margin-left: 65px;
+                    cursor: pointer;
 
                     @include lg-width-max {
                         margin-left: 5px;
@@ -174,6 +175,7 @@ div#list-main {
                 p {
                     display: inline;
                     font-weight: 400;
+                    cursor: pointer;
                 }
             }
             
@@ -187,6 +189,7 @@ div#list-main {
                 text-transform: uppercase;
                 cursor: pointer;
                 user-select: none;
+                display: none;
 
                 @include xxs-width-max {
                     margin: 0 5px;

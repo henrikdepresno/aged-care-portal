@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import swal from 'sweetalert';
 import { BehaviorSubject } from 'rxjs';
-import { Contractor } from '../classes';
+import { Contractor, Feedback } from '../classes';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +42,38 @@ export class ContractorService {
 
   updateDetails(id: string, phone: string) {
     if(phone != "") this.afs.collection('contractors').doc(id).update({phone: phone});
+  }
+
+  provideFeedback(contractorId: string, willProvide: boolean, cName?: string, email?: string, title?: string, context?: string) {
+    if(willProvide) {
+      let feedbackCollections: AngularFirestoreCollection<Feedback> = this.afs.collection('feedbacks')
+      feedbackCollections.valueChanges().pipe(take(1))
+      .subscribe(feedbacks => {
+        let newId = ''
+        if(feedbacks.length != 0) {
+          const latestId = feedbacks[feedbacks.length - 1].id;
+          const newIdStr = (parseInt(latestId) + 1).toString();
+          newId = '00000000'.substring(0, 8 - newIdStr.length) + newIdStr
+        }
+        else {
+          newId = '00000001'
+        }
+        const date = new Date();
+        const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
+        + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
+        + date.getFullYear();
+        const feedback = new Feedback(newId, title, cName, email, 'Contractor', dateStr, context);
+        this.afs.collection('feedbacks').doc(newId).set(Object.assign({}, feedback))
+      })
+      swal({
+        title: "Submitted!",
+        text: "Thanks for the feedback!",
+        icon: "success",
+        buttons: {
+          ok: "OK"
+        }
+      } as any)
+    }
+    this.afs.collection('contractors').doc(contractorId).update({justCheckOut: false})
   }
 }

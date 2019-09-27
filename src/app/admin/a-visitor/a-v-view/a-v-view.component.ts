@@ -130,23 +130,29 @@ export class A_V_ViewComponent implements OnInit {
     for(let i = 1; i <= 8; i++) {
       $('p#visitor-name-'+ i).empty();
     }
-    $('td.td-btn-primary').hide();
-    $('td.td-btn-img img').hide();
+    $('td.td-btn-primary > span').hide();
+    $('td.td-btn-img > span').hide();
     for(let i = 1; i <= output.length; i++) {
       $('table#item-list-xs > tr#item-'+ i +'-text').show();
       $('table#item-list-xs > tr#item-'+ i +'-btn').show();
       const visitor = output[i - 1];
       $('p#visitor-name-'+ i).text(visitor.vFirstName + " " + visitor.vLastName);
-      $('tr#item-'+ i +' > td.td-btn-primary').show();
-      $('tr#item-'+ i +'-btn > td.td-btn-primary').show();
+      $('tr#item-'+ i +' > td.td-btn-primary > span').show();
+      $('tr#item-'+ i +'-btn > td.td-btn-primary > span').show();
 
       $('p#visitor-name-'+ i).click(() => {
         this.clickInfo(visitor);
       })
 
       if(visitor.flags.length != 0){
-        $('tr#item-'+ i +' > td.td-btn-img img').show();
-        $('tr#item-'+ i +'-btn > td.td-btn-img img').show();
+        $('tr#item-'+ i +' > td.td-btn-img > span').show();
+        $('tr#item-'+ i +'-btn > td.td-btn-img > span').show();
+        $('tr#item-'+ i +' > td.td-btn-img > span').click(() => {
+          this.clickInfo(visitor);
+        })
+        $('tr#item-'+ i +'-btn > td.td-btn-img > span').click(() => {
+          this.clickInfo(visitor);
+        })
       }
 
       $('tr#item-'+ i +' > td.td-btn-primary > span').click(() => {

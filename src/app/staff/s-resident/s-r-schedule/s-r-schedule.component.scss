@@ -223,6 +223,7 @@ div#list-main {
                     display: inline-block;
                     font-weight: 600;
                     margin: auto 5px auto 25px;
+                    cursor: pointer;
 
                     @include lg-width-max {
                         margin: 5px;

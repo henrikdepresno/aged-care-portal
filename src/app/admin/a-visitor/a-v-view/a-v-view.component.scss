@@ -239,6 +239,7 @@ div#list-main {
                     font-weight: 400;
                     margin-right: 5px;
                     margin-left: 65px;
+                    cursor: pointer;
 
                     @include lg-width-max {
                         margin-left: 5px;
@@ -250,6 +251,7 @@ div#list-main {
                 text-align: center;
                 display: block;
                 width: 120px;
+                display: none;
 
                 @include xxs-width-max {
                     margin: 0 5px;
@@ -258,6 +260,7 @@ div#list-main {
 
             td.td-btn.td-btn-img span img {
                 height: 30px;
+                cursor: pointer;
             }
 
             td.td-btn.td-btn-primary span {

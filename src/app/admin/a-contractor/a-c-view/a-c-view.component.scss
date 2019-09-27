@@ -256,6 +256,7 @@ div#list-main {
                 text-transform: uppercase;
                 cursor: pointer;
                 user-select: none;
+                display: none;
 
                 @include xxs-width-max {
                     margin: 0 5px;
