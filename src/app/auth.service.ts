@@ -23,8 +23,8 @@ export class AuthService {
   ) { }
 
   checkUserType() {
-    this.afAuth.authState.toPromise()
-      .then(user => {
+    this.afAuth.authState
+      .subscribe(user => {
         if(user != null){
           this.afs.collection('users', ref => ref.where('email', '==', user.email)).get().toPromise()
             .then(snapshot => {
