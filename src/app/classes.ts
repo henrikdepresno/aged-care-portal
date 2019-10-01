@@ -21,6 +21,7 @@ export class Contractor {
     public email?: string,
     public companyName?: string,
     public field?: string,
+    public inFacility?: boolean,
     public justCheckOut?: boolean
   ) { }
 }

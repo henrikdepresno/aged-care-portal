@@ -25,6 +25,8 @@ export class S_FeedbackComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/staff', 'feedback']);
 
+    $('span#current-contractors').hide();
+
     this.validateUserType().then(res => {
       if(res) { 
         this.staffService.getFeedbacks().pipe(
@@ -39,11 +41,15 @@ export class S_FeedbackComponent implements OnInit {
             $('#rating-num-3').text(res.three);
             $('#rating-num-4').text(res.four);
             $('#rating-num-5').text(res.five);
+            return this.staffService.getCurrentContractors();
+          }),
+          mergeMap(cNumSnapshot => {
+            $('strong#current-contractors-num').text(cNumSnapshot.size);
+            $('strong#current-contractors-num').css("user-select", "none");
             return this.staffService.getCurrentVisitors();
           }))
-          .subscribe(snapshot => {
-            let current = snapshot.size;
-            $('strong#current-visitors-num').text(current);
+          .subscribe(vNumSnapshot => {
+            $('strong#current-visitors-num').text(vNumSnapshot.size);
             $('strong#current-visitors-num').css("user-select", "none");
           });
       }
@@ -55,6 +61,17 @@ export class S_FeedbackComponent implements OnInit {
       this.authService.checkUserType();
       resolve(this.router.url.includes("/staff/feedback"));
     })
+  }
+
+  switchCurrentNum(numType: string) {
+    if(numType == 'contractors') {
+      $('span#current-contractors').show();
+      $('span#current-visitors').hide();
+    }
+    else {
+      $('span#current-visitors').show();
+      $('span#current-contractors').hide();
+    }
   }
 
   loadComponent(feedbacks: Feedback[]) {

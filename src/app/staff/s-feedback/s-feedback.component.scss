@@ -30,7 +30,7 @@ $lg-width: 1200px;
 section#staff-headings {
     text-align: center;
 
-    span#current-visitors {
+    span.current {
         text-transform: uppercase;
         position: absolute;
         top: 250px;
@@ -42,6 +42,7 @@ section#staff-headings {
         padding: 30px 15px;
         background-color: #FFFFFF;
         border-radius: 50%;
+        cursor: pointer;
 
         @include lg-width-max {
             position: static;
@@ -54,7 +55,7 @@ section#staff-headings {
             padding: 20px 10px;
         }
         
-        strong#current-visitors-num {
+        strong.current-num {
             display: block;
             width: 120px;
             height: 90px;
@@ -70,13 +71,13 @@ section#staff-headings {
         }
 
         p {
-            font-size: 20px;
+            font-size: 15px;
             font-weight: 300;
             font-style: italic;
             margin-top: 40px;
 
             @include lg-width-max {
-                font-size: 15px;
+                font-size: 10px;
                 margin-top: 25px;
             }
         }

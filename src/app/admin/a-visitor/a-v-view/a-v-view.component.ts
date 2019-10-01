@@ -25,16 +25,22 @@ export class A_V_ViewComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/admin', 'visitor-view']);
 
+    $('span#current-contractors').hide();
+
     this.validateUserType().then(res => {
       if(res) {
         this.adminService.getVisitors().pipe(
           mergeMap(res => {
             this.loadComponent(res);
+            return this.adminService.getCurrentContractors();
+          }),
+          mergeMap(cNumSnapshot => {
+            $('strong#current-contractors-num').text(cNumSnapshot.size);
+            $('strong#current-contractors-num').css("user-select", "none");
             return this.adminService.getCurrentVisitors();
           }))
-          .subscribe(snapshot => {
-            let current = snapshot.size;
-            $('strong#current-visitors-num').text(current);
+          .subscribe(vNumSnapshot => {
+            $('strong#current-visitors-num').text(vNumSnapshot.size);
             $('strong#current-visitors-num').css("user-select", "none");
           });
       }
@@ -46,6 +52,17 @@ export class A_V_ViewComponent implements OnInit {
       this.authService.checkUserType();
       resolve(this.router.url.includes("/admin/visitor-view"));
     })
+  }
+
+  switchCurrentNum(numType: string) {
+    if(numType == 'contractors') {
+      $('span#current-contractors').show();
+      $('span#current-visitors').hide();
+    }
+    else {
+      $('span#current-visitors').show();
+      $('span#current-contractors').hide();
+    }
   }
 
   loadComponent(visitors: Visitor[]) {

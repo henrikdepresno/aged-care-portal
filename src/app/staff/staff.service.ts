@@ -22,6 +22,10 @@ export class StaffService {
     return this.afs.collection('visitors', ref => ref.where('inFacility', '==', true)).get();
   }
 
+  getCurrentContractors() {
+    return this.afs.collection('contractors', ref => ref.where('inFacility', '==', true)).get();
+  }
+
   private residentIdSource = new BehaviorSubject<string>("");
   residentId = this.residentIdSource.asObservable();
 

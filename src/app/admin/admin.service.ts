@@ -25,6 +25,10 @@ export class AdminService {
     return this.afs.collection('visitors', ref => ref.where('inFacility', '==', true)).get();
   }
 
+  getCurrentContractors() {
+    return this.afs.collection('contractors', ref => ref.where('inFacility', '==', true)).get();
+  }
+
   private updateIdSource = new BehaviorSubject<string>("");
   updateId = this.updateIdSource.asObservable();
 
@@ -77,7 +81,7 @@ export class AdminService {
         if(!emails.includes(email)) {
           const newID = randomUniqueID(idSnapshot);
           this.contractorsCollection = this.afs.collection('contractors');
-          const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field, false)
+          const contractor = new Contractor(newID, cFirstName, cLastName, phone, email, companyName, field, false, false)
           this.contractorsCollection.doc(newID).set(Object.assign({}, contractor));
           this.authService.addUser(newID, email, 'contractor', cFirstName);
           this.successAddUser('contractor');

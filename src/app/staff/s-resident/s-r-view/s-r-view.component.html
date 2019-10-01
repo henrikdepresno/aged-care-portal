@@ -5,9 +5,13 @@
     </form>
 
     <section id="staff-utility">
-        <span id="current-visitors">
-            <strong id="current-visitors-num"></strong>
-            <p>Current<br>visitors</p>
+        <span class="current" id="current-visitors" (click)="switchCurrentNum('contractors')">
+            <strong class="current-num" id="current-visitors-num"></strong>
+            <p>Current visitors</p>
+        </span>
+        <span class="current" id="current-contractors" (click)="switchCurrentNum('visitors')">
+            <strong class="current-num" id="current-contractors-num"></strong>
+            <p>Current contractors</p>
         </span>
         <div class="div-btn-feedback" [routerLink]="['../feedback']"><span>Feedback</span></div>
     </section>
