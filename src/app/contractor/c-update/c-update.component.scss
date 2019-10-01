@@ -135,11 +135,19 @@ form#user-info {
 div#qr-container {
     display: none;
     position: absolute;
-    height: 80vh;
+    height: 90vh;
     width: 100vw;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
     text-align: center;
+
+    @include xs-width-max {
+        margin-top: -30px;
+    }
+
+    @include lg-width-max {
+        padding-top: 80px;
+    }
 
     canvas#qrcode {
         margin-top: 100px;
