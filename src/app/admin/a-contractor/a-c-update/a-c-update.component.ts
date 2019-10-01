@@ -56,7 +56,7 @@ export class A_C_UpdateComponent implements OnInit {
     
     const updates = this.showUpdates(cFirstName, cLastName, phone, companyName, field)
     if(updates != "") {
-      if(isNumeric(phone)) {
+      if(isNumeric(phone) || phone == "") {
         swal({
           title: "New updates:",
           text: updates,

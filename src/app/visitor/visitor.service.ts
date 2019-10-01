@@ -192,19 +192,31 @@ export class VisitorService {
           const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
           visitorDoc.valueChanges().pipe(take(1)).subscribe(visitor => {
             let residentIds = visitor.residentIds;
-            residentIds.push(snapshot.docs[0].id);
-            visitorDoc.update({residentIds: residentIds});
-            swal({
-              title: "Success!",
-              text: "Resident added",
-              icon: "success",
-              buttons: {
-                ok: "OK"
-              }
-            } as any)
-            .then(() => {
-              this.router.navigate(['/visitor', 'resident-view']);
-            })
+            if(!residentIds.includes(snapshot.docs[0].id)) {
+              residentIds.push(snapshot.docs[0].id);
+              visitorDoc.update({residentIds: residentIds});
+              swal({
+                title: "Success!",
+                text: "Resident added",
+                icon: "success",
+                buttons: {
+                  ok: "OK"
+                }
+              } as any)
+              .then(() => {
+                this.router.navigate(['/visitor', 'resident-view']);
+              })
+            }
+            else {
+              swal({
+                title: "Error!",
+                text: "Resident already added!",
+                icon: "error",
+                buttons: {
+                  ok: "OK"
+                }
+              } as any); 
+            }
           })
         }
         else {
@@ -222,16 +234,25 @@ export class VisitorService {
 
   deleteResident(visitorId: string, residentId: string) {
     const visitorDoc: AngularFirestoreDocument<Visitor> = this.afs.collection('visitors').doc(visitorId);
-    visitorDoc.valueChanges().toPromise()
-      .then(visitor => {
+    visitorDoc.valueChanges().pipe(take(1))
+      .subscribe(visitor => {
         let residentIds = visitor.residentIds;
         residentIds = residentIds.filter((value) => {return value != residentId});
-        visitorDoc.update({residentIds: residentIds});
-      })
-      .then(() => {
-        swal("Resident deleted!", {
-          icon: "success",
-        })
+        this.afs.collection('bookings', ref => ref.where('residentId', '==', residentId)).get().toPromise()
+        .then(bookingSnapshots => {
+          let bookingIds = visitor.bookingIds;
+          bookingSnapshots.forEach(doc => {
+            bookingIds = bookingIds.filter((value) => {return value != doc.id});
+            this.afs.collection('bookings').doc(doc.id).delete();
+          })
+          visitorDoc.update({
+            residentIds: residentIds,
+            bookingIds: bookingIds
+          });
+          swal("Resident deleted!", {
+            icon: "success",
+          })
+        });
       })
   }
 

@@ -198,20 +198,32 @@ export class S_V_ViewComponent implements OnInit {
           },
         })
         .then((reason) => {
-          swal({
-            text: `Reason: ${reason}`,
-            icon: "info",
-            dangerMode: true,
-            buttons: {
-              cancel: "Cancel",
-              ok: "Flag"
-            }
-          } as any)
-          .then((confirmFlag) => {
-            if(confirmFlag) {
-              this.staffService.flagVisitor(id, reason);
-            }
-          });
+          if(reason != "") {
+            swal({
+              text: `Reason: ${reason}`,
+              icon: "info",
+              dangerMode: true,
+              buttons: {
+                cancel: "Cancel",
+                ok: "Flag"
+              }
+            } as any)
+            .then((confirmFlag) => {
+              if(confirmFlag) {
+                this.staffService.flagVisitor(id, reason);
+              }
+            });
+          }
+          else {
+            swal({
+              title: "Error!",
+              text: "Please give a reason!",
+              icon: "error",
+              buttons: {
+                ok: "OK"
+              }
+            } as any)
+          }
         });
       }
     });

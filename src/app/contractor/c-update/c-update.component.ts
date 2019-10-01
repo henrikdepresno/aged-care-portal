@@ -88,7 +88,7 @@ export class C_UpdateComponent implements OnInit {
     
     const updates = this.showUpdates(phone)
     if(updates != "") {
-      if(isNumeric(phone)) {
+      if(isNumeric(phone) || phone == "") {
         swal({
           title: "New updates:",
           text: updates,

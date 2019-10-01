@@ -54,7 +54,7 @@ export class A_R_UpdateComponent implements OnInit {
     
     const updates = this.showUpdates(rFirstName, rLastName, phone)
     if(updates != "") {
-      if(isNumeric(phone)) {
+      if(isNumeric(phone) || phone == "") {
         swal({
           title: "New updates:",
           text: updates,

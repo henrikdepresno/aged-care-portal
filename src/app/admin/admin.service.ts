@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Resident, Contractor, Staff, IDList, Visitor, Flag, Rating, Feedback, ResidentAdd } from '../classes';
 import { capitalize, randomUniqueID } from '../functions';
 
@@ -248,6 +249,26 @@ export class AdminService {
   deleteResident(id: string) {
     this.afs.collection('residents').doc(id).delete();
     this.afs.collection('id-list').doc(id).delete();
+
+    const visitorCollection: AngularFirestoreCollection<Visitor> = this.afs.collection('visitors');
+    visitorCollection.valueChanges().pipe(take(1))
+    .subscribe(visitors => {
+      visitors.forEach(visitor => {
+        let residentIds = visitor.residentIds.filter((value) => {return value != id});
+        this.afs.collection('bookings', ref => ref.where('residentId', '==', id)).get().toPromise()
+        .then(bookingSnapshots => {
+          let bookingIds = visitor.bookingIds;
+          bookingSnapshots.forEach(doc => {
+            bookingIds = bookingIds.filter((value) => {return value != doc.id});
+            this.afs.collection('bookings').doc(doc.id).delete();
+          })
+          this.afs.collection('visitors').doc(visitor.id).update({
+            residentIds: residentIds,
+            bookingIds: bookingIds
+          });
+        })
+      })
+    })
   }
 
   // Visitor Functions

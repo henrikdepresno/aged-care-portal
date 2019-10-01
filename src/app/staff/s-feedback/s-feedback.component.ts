@@ -166,6 +166,7 @@ export class S_FeedbackComponent implements OnInit {
       text:
       `${feedback.context}
       Author: ${feedback.author} - ${feedback.role}
+      < ${feedback.authorEmail} >
       Date: ${feedback.date}`,
       icon: "info",
     });

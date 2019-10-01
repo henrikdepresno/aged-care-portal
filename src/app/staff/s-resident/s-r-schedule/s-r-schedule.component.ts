@@ -280,7 +280,7 @@ export class S_R_ScheduleComponent implements OnInit {
     for(let i = 7; i <= 22; i++) {
       if(daySchedule[i - 7].hour == i){
         $(this.jW + 'div#task-div-'+ i +" > span").off('click');
-        if(daySchedule[i - 7].available || daySchedule[i - 7].activity == ""){
+        if(daySchedule[i - 7].available){
           $(this.jW + 'p#task-'+ i).text("Available");
           $(this.jW + 'div#task-div-'+ i +" > span").css({
             'background-color': '#C4DBB3',

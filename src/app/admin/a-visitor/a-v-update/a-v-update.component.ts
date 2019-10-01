@@ -106,7 +106,7 @@ export class A_V_UpdateComponent implements OnInit {
     
     const updates = this.showUpdates(vFirstName, vLastName, phone)
     if(updates != "") {
-      if(isNumeric(phone)) {
+      if(isNumeric(phone) || phone == "") {
         swal({
           title: "New updates:",
           text: updates,

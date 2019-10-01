@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import swal from 'sweetalert';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Resident, Visitor, Flag, Rating, Feedback, WeeklySchedules, ScheduleSlot, Booking } from '../classes';
@@ -13,7 +14,8 @@ export class StaffService {
 
   constructor(
     private afs: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private router: Router
   ) { }
 
   getCurrentVisitors() {
@@ -66,13 +68,19 @@ export class StaffService {
 
 
   addBooking(residentId: string, rName: string, date: string, timeSlots: number[]) {
-    this.bookingsCollection = this.afs.collection('bookings');
+    this.bookingsCollection = this.afs.collection('bookings', ref => ref.where('date', '==', date));
     this.bookingsCollection.get().toPromise().then(bookingSnapshot => {
-      const latestId = bookingSnapshot.docs[bookingSnapshot.docs.length - 1].id;
-      const newIdentifier = parseInt(latestId.substring(8)) + 1;
-      const id = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + ((newIdentifier < 10) ? "0" + newIdentifier.toString() : newIdentifier.toString());
-      const booking = new Booking(id, residentId, rName, date, timeSlots, false);
-      this.bookingsCollection.doc(id).set(Object.assign({}, booking))
+      let bookingId = "";
+      if(bookingSnapshot.docs.length != 0) {
+        const latestId = bookingSnapshot.docs[bookingSnapshot.docs.length - 1].id;
+        const newIdentifier = parseInt(latestId.substring(8)) + 1;
+        bookingId = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + ((newIdentifier < 10) ? "0" + newIdentifier.toString() : newIdentifier.toString());
+      }
+      else {
+        bookingId = date.substring(6) + date.substring(3, 5) + date.substring(0, 2) + "01";
+      }
+      const booking = new Booking(bookingId, residentId, rName, date, timeSlots, false);
+      this.bookingsCollection.doc(bookingId).set(Object.assign({}, booking))
         .then(() => {
           swal({
             title: "Success!",
@@ -82,6 +90,7 @@ export class StaffService {
               ok: "OK"
             }
           } as any)
+          this.router.navigate(['/staff', 'resident-view'])
         });
     })
   }
@@ -91,7 +100,7 @@ export class StaffService {
     const update = {};
     update[`schedule.${day}.${hour}`] = {
       activity: activity,
-      isAvailable: (activity == "")
+      available: (activity == "")
     }
     this.afs.collection('residents').doc(residentId).update(update)
       .then(() => {

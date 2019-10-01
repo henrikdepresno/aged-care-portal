@@ -55,7 +55,7 @@ export class A_S_UpdateComponent implements OnInit {
     
     const updates = this.showUpdates(sFirstName, sLastName, phone, role)
     if(updates != "") {
-      if(isNumeric(phone)) {
+      if(isNumeric(phone) || phone == "") {
         swal({
           title: "New updates:",
           text: updates,
