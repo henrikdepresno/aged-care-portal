@@ -31,8 +31,8 @@ export class S_FeedbackComponent implements OnInit {
       if(res) { 
         this.staffService.getFeedbacks().pipe(
           mergeMap(res => {
-            this.loadComponent(res);
             res = res.reverse();
+            this.loadComponent(res);
             return this.staffService.getRatings();
           }),
           mergeMap(res => {
