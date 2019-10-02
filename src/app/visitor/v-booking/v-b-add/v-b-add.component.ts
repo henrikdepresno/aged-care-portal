@@ -165,7 +165,7 @@ export class V_B_AddComponent implements OnInit {
     const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
       + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
       + date.getFullYear();
-    this.visitorService.getBookingsByDate(dateStr).toPromise()
+    this.visitorService.getBookingsByDate(this.id, dateStr).toPromise()
     .then((snapshot) => {
       const bookedSlots = this.visitorService.getBookedSlots(snapshot);
       const daySchedule = this.weeklySchedules.schedules[date.getDay()];

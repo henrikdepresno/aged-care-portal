@@ -66,8 +66,11 @@ export class StaffService {
     return bookedSlots;
   }
 
-  getBookingsByDate(date: string) {
-    return this.afs.collection('bookings', ref => ref.where('date', '==', date).where('isCancelled', '==', false)).get();
+  getBookingsByDate(residentId: string, date: string) {
+    return this.afs.collection('bookings', ref => ref
+      .where('residentId', '==', residentId)
+      .where('date', '==', date)
+      .where('isCancelled', '==', false)).get();
   }
 
 

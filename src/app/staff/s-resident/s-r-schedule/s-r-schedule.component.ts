@@ -203,7 +203,7 @@ export class S_R_ScheduleComponent implements OnInit {
     const dateStr = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "/"
       + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1) + "/"
       + date.getFullYear();
-    this.staffService.getBookingsByDate(dateStr).toPromise()
+    this.staffService.getBookingsByDate(this.id, dateStr).toPromise()
     .then((snapshot) => {
       const bookedSlots = this.staffService.getBookedSlots(snapshot);
       const daySchedule = this.weeklySchedules.schedules[date.getDay()];
