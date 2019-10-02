@@ -154,48 +154,86 @@ export class C_UpdateComponent implements OnInit {
     } as any)
     .then((willProvide) => {
       if(willProvide) {
-        swal({
-          content: {
-            element: "input",
-            attributes: {
-              placeholder: "Feedback Title",
-              type: "text",
-            },
-          },
-        })
-        .then((title) => {
-          swal({
-            content: {
-              element: "input",
-              attributes: {
-                placeholder: "Please provide details of your visit",
-                type: "text",
-              },
-            },
-          })
-          .then((context) => {
-            swal({
-              text: `Feedback: ${title}
-              Details: ${context}`,
-              icon: "info",
-              buttons: {
-                cancel: "Cancel",
-                ok: "Submit"
-              }
-            } as any)
-            .then((confirmFeedback) => {
-              if(confirmFeedback) {
-                this.contractorService.provideFeedback(this.id, true, this.cName, this.email, title, context)
-              }
-              else {
-                this.contractorService.provideFeedback(this.id, false)
-              }
-            });
-          });
-        });
+        this.provideTitle();
       }
       else {
         this.contractorService.provideFeedback(this.id, false)
+      }
+    });
+  }
+
+  private provideTitle() {
+    swal({
+      content: {
+        element: "input",
+        attributes: {
+          placeholder: "Feedback Title",
+          type: "text",
+        },
+      },
+    })
+    .then((title) => {
+      if(title != '') {
+        this.provideContext(title)
+      }
+      else {
+        swal({
+          title: "Error!",
+          text: "Please provide a title!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+        .then(() => {
+          this.provideTitle();
+        })
+      }
+    });
+  }
+
+  private provideContext(title: string) {
+    swal({
+      content: {
+        element: "input",
+        attributes: {
+          placeholder: "Please provide details of your visit",
+          type: "text",
+        },
+      },
+    })
+    .then((context) => {
+      if(context != '') {
+        swal({
+          text: `Feedback: ${title}
+          Details: ${context}`,
+          icon: "info",
+          buttons: {
+            cancel: "Cancel",
+            ok: "Submit"
+          }
+        } as any)
+        .then((confirmFeedback) => {
+          if(confirmFeedback) {
+            this.contractorService.provideFeedback(this.id, true, this.cName, this.email, title, context)
+          }
+          else {
+            this.provideFeedback();
+          }
+        });
+      }
+      else {
+        swal({
+          title: "Error!",
+          text: "Please do not leave the context empty!",
+          icon: "error",
+          buttons: {
+            ok: "OK"
+          }
+        } as any)
+        .then(() => {
+          this.provideContext(title);
+        })
       }
     });
   }
