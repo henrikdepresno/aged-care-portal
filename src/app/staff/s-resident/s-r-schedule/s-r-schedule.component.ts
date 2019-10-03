@@ -107,6 +107,19 @@ export class S_R_ScheduleComponent implements OnInit {
     else {
       $('section#list-booking').hide();
       $('section#list-weekly').show();
+      for(let i = 0; i < 7; i++) {
+        let day = ""
+        switch(i) {
+          case 0: day = "Sun"; break;
+          case 1: day = "Mon"; break;
+          case 2: day = "Tue"; break;
+          case 3: day = "Wed"; break;
+          case 4: day = "Thu"; break;
+          case 5: day = "Fri"; break;
+          default: day = "Sat"; break;
+        }
+        $(this.jW + 'p#p-day-' + i).text(day);
+      }
     }
   }
 
