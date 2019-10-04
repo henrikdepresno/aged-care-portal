@@ -2,7 +2,7 @@ import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import QRCode from 'qrcode';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../auth.service';
 import { ContractorService } from '../contractor.service';
 import { isNumeric } from 'src/app/functions';
@@ -89,50 +89,41 @@ export class C_UpdateComponent implements OnInit {
     const updates = this.showUpdates(phone)
     if(updates != "") {
       if(isNumeric(phone) || phone == "") {
-        swal({
+        Swal.fire({
           title: "New updates:",
           text: updates,
-          icon: "info",
-          dangerMode: true,
-          buttons: {
-            cancel: "Cancel",
-            ok: "Update"
-          }
-        } as any)
+          type: 'question',
+          showCancelButton: true,
+          reverseButtons: true,
+          focusCancel: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Update"
+        })
         .then((willUpdate) => {
-          if(willUpdate) {
+          if(willUpdate.value) {
             this.contractorService.updateDetails(this.id, phone);
-            swal({
+            Swal.fire({
               title: "Success!",
               text: "Details updated!",
-              icon: "success",
-              buttons: {
-                ok: "OK"
-              }
-            } as any)
+              type: 'success'
+            })
           }
         });
       }
       else {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "The provided phone number can only be digits!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'error'
+        })
       }
     }
     else {
-      swal({
+      Swal.fire({
         title: "Error!",
         text: "Please update at least one field!",
-        icon: "error",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'error'
+      })
     }
   }
 
@@ -142,19 +133,19 @@ export class C_UpdateComponent implements OnInit {
   }
 
   provideFeedback() {
-    swal({
+    Swal.fire({
       title: "Hi!",
       text: `Since you recently visited our facility,
       do you want to provide feedback about the visit?`,
-      icon: "info",
-      buttons: {
-        cancel: "No",
-        ok: "Yes"
-      }
-    } as any)
+      type: 'question',
+      showCancelButton: true,
+      reverseButtons: true,
+      cancelButtonText: "No",
+      confirmButtonText: "Yes"
+    })
     .then((willProvide) => {
-      if(willProvide) {
-        this.provideTitle();
+      if(willProvide.value) {
+        this.provideContext();
       }
       else {
         this.contractorService.provideFeedback(this.id, false)
@@ -162,80 +153,55 @@ export class C_UpdateComponent implements OnInit {
     });
   }
 
-  private provideTitle() {
-    swal({
-      content: {
-        element: "input",
-        attributes: {
-          placeholder: "Feedback Title",
-          type: "text",
-        },
-      },
-    })
-    .then((title) => {
-      if(title != '') {
-        this.provideContext(title)
+  private provideContext(inputTitle?: string, inputContext?: string) {
+    inputTitle = (inputTitle == undefined) ? '' : inputTitle;
+    inputContext = (inputContext == undefined)? '' : inputContext;
+    Swal.fire({
+      title: 'Please provide details of your visit',
+      html:
+        '<input id="swal-title" class="swal2-input" placeholder="Title" value="'+ inputTitle +'">' +
+        '<input id="swal-context" class="swal2-input" placeholder="Context" value="'+ inputContext +'">',
+      focusConfirm: false,
+      preConfirm: () => {
+        return {
+          title: (<HTMLInputElement>document.getElementById('swal-title')).value,
+          context: (<HTMLInputElement>document.getElementById('swal-context')).value
+        }
       }
-      else {
-        swal({
-          title: "Error!",
-          text: "Please provide a title!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
-        .then(() => {
-          this.provideTitle();
-        })
-      }
-    });
-  }
-
-  private provideContext(title: string) {
-    swal({
-      content: {
-        element: "input",
-        attributes: {
-          placeholder: "Please provide details of your visit",
-          type: "text",
-        },
-      },
     })
-    .then((context) => {
-      if(context != '') {
-        swal({
+    .then((values) => {
+      const title = values.value.title;
+      const context = values.value.context;
+      if(title != '' && context != '') {
+        Swal.fire({
           text: `Feedback: ${title}
           Details: ${context}`,
-          icon: "info",
-          buttons: {
-            cancel: "Cancel",
-            ok: "Submit"
-          }
-        } as any)
+          type: 'info',
+          showCancelButton: true,
+          reverseButtons: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Submit Feedback"
+        })
         .then((confirmFeedback) => {
-          if(confirmFeedback) {
+          if(confirmFeedback.value) {
             this.contractorService.provideFeedback(this.id, true, this.cName, this.email, title, context)
           }
           else {
             this.provideFeedback();
           }
-        });
-      }
-      else {
-        swal({
-          title: "Error!",
-          text: "Please do not leave the context empty!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
-        .then(() => {
-          this.provideContext(title);
         })
       }
-    });
+      else {
+        Swal.fire({
+          title: "Error!",
+          text: "Please do not leave the fields empty!",
+          type: "error"
+        })
+        .then(() => {
+          this.provideContext(title, context);
+        })
+      }
+    })
   }
 
   logOut() {

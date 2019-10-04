@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth'
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { EmailService } from './email.service';
 import { randomUniqueID, randomPassword } from './functions';
 import { User, IDList, Visitor } from './classes';
@@ -90,14 +90,11 @@ export class AuthService {
   }
 
   private swalWrongIdOrPassword() {
-    swal({
+    Swal.fire({
       title: "Error!",
       text: "Wrong ID or Password!",
-      icon: "error",
-      buttons: {
-        ok: "OK"
-      }
-    } as any);
+      type: 'error'
+    });
   }
 
   logOut() {
@@ -131,40 +128,32 @@ export class AuthService {
                 const visitor = new Visitor(newID, vFirstName, vLastName, email, phone, [snapshot.docs[0].id], [], [], false, false);
                 this.afs.collection('visitors').doc(newID).set(Object.assign({}, visitor));
                 this.addUser(newID, email, 'visitor', vFirstName, password);
-                swal({
+                Swal.fire({
                   title: "Account created!",
                   text: "Your new ID has been sent to your email!",
-                  icon: "success",
-                  buttons: {
-                    ok: "Login"
-                  }
-                } as any)
+                  type: 'success',
+                  confirmButtonText: "Login now!"
+                })
                 .then(() => {
                   this.router.navigate(['/login', 'login-v'])
                 });
               }
               else {
-                swal({
+                Swal.fire({
                   title: "Error!",
                   text: "Email is already in use!",
-                  icon: "error",
-                  buttons: {
-                    ok: "OK"
-                  }
-                } as any)
+                  type: 'error'
+                })
               }
             })
           })
         }
         else {
-          swal({
+          Swal.fire({
             title: "Error!",
             text: "No residents found!",
-            icon: "error",
-            buttons: {
-              ok: "OK"
-            }
-          } as any);
+            type: 'error'
+          })
         }
       })
   }

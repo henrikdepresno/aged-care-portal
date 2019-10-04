@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { capitalize, isNumeric, isEmail } from 'src/app/functions';
@@ -62,14 +62,11 @@ export class A_S_AddComponent implements OnInit {
   }
 
   private swalError(errorText: string) {
-    swal({
+    Swal.fire({
       title: "Error!",
       text: errorText,
-      icon: "error",
-      buttons: {
-        ok: "OK"
-      }
-    } as any)
+      type: 'error'
+    })
   }
 
 }

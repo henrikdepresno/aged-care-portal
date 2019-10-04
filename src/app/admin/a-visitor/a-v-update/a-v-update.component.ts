@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { capitalize, isNumeric } from 'src/app/functions';
@@ -68,35 +68,36 @@ export class A_V_UpdateComponent implements OnInit {
   }
 
   viewFlag(flag: Flag, flags: Flag[], index: number, visitorId: string) {
-    swal({
+    Swal.fire({
       text: `Date flagged: ${flag.date}
       Flagged by: ${flag.staff}
       Reason: ${flag.reason}`,
-      icon: "info",
-      buttons: {
-        cancel: "Clear flag",
-        ok: "OK"
-      }
-    } as any)
+      type: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      reverseButtons: true,
+      cancelButtonText: "Clear flag",
+      confirmButtonText: "OK"
+    })
     .then((pressOk) => {
-      if(!pressOk) {
-        swal({
+      if(pressOk.dismiss) {
+        Swal.fire({
           title: "Clear flag?",
           text: "Are you sure you want to clear this flag?",
-          icon: "warning",
-          dangerMode: true,
-          buttons: {
-            cancel: "Cancel",
-            ok: "Yes"
-          }
-        } as any)
+          type: 'warning',
+          showCancelButton: true,
+          reverseButtons: true,
+          focusCancel: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Yes"
+        })
         .then((willClear) => {
-          if(willClear) {
+          if(willClear.value) {
             this.adminService.clearFlag(flags, index, visitorId);
           }
-        });
+        })
       }
-    });
+    })
   }
 
   updateVisitor(){
@@ -107,50 +108,41 @@ export class A_V_UpdateComponent implements OnInit {
     const updates = this.showUpdates(vFirstName, vLastName, phone)
     if(updates != "") {
       if(isNumeric(phone) || phone == "") {
-        swal({
+        Swal.fire({
           title: "New updates:",
           text: updates,
-          icon: "info",
-          dangerMode: true,
-          buttons: {
-            cancel: "Cancel",
-            ok: "Update"
-          }
-        } as any)
+          type: 'question',
+          showCancelButton: true,
+          reverseButtons: true,
+          focusCancel: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Update"
+        })
         .then((willUpdate) => {
-          if(willUpdate) {
+          if(willUpdate.value) {
             this.adminService.updateVisitor(this.id, vFirstName, vLastName, phone);
-            swal({
+            Swal.fire({
               title: "Success!",
               text: "Details updated!",
-              icon: "success",
-              buttons: {
-                ok: "OK"
-              }
-            } as any)
+              type: 'success'
+            })
           }
         });
       }
       else {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "The provided phone number can only be digits!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: "error"
+        })
       }
     }
     else {
-      swal({
+      Swal.fire({
         title: "Error!",
         text: "Please update at least one field!",
-        icon: "error",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'error'
+      })
     }
   }
 

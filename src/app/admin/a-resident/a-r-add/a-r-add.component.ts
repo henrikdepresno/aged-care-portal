@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { capitalize, isNumeric } from 'src/app/functions';
@@ -43,14 +43,11 @@ export class A_R_AddComponent implements OnInit {
     const phone = $('#inputPhone').val();
     if(rFirstName != "" && rLastName != "" && phone != "") {
       if(isNumeric(phone)) {
-        swal({
+        Swal.fire({
           title: "Success!",
           text: "Resident added",
-          icon: "success",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'success'
+        })
         .then(() => {
           this.adminService.addResident(rFirstName, rLastName, phone);
         });
@@ -65,14 +62,11 @@ export class A_R_AddComponent implements OnInit {
   }
 
   private swalError(errorText: string) {
-    swal({
+    Swal.fire({
       title: "Error!",
       text: errorText,
-      icon: "error",
-      buttons: {
-        ok: "OK"
-      }
-    } as any)
+      type: 'error'
+    })
   }
 
 }

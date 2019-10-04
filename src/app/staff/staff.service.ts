@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Resident, Visitor, Flag, Rating, Feedback, WeeklySchedules, ScheduleSlot, Booking } from '../classes';
 import { take } from 'rxjs/operators'
@@ -89,16 +89,13 @@ export class StaffService {
       const booking = new Booking(bookingId, residentId, rName, date, timeSlots, false);
       this.bookingsCollection.doc(bookingId).set(Object.assign({}, booking))
         .then(() => {
-          swal({
+          Swal.fire({
             title: "Success!",
             text: "Booking added successfully!",
-            icon: "success",
-            buttons: {
-              ok: "OK"
-            }
-          } as any)
+            type: 'success'
+          })
           this.router.navigate(['/staff', 'resident-view'])
-        });
+        })
     })
   }
 
@@ -111,15 +108,12 @@ export class StaffService {
     }
     this.afs.collection('residents').doc(residentId).update(update)
       .then(() => {
-        swal({
+        Swal.fire({
           title: "Success!",
           text: "Change made!",
-          icon: "success",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
-      });
+          type: 'success'
+        })
+      })
   }
 
   visitors: Observable<Visitor[]>;
@@ -148,10 +142,12 @@ export class StaffService {
                   + date.getFullYear();
                 flags.unshift(new Flag(dateStr, staffName, reason));
                 this.afs.collection('visitors').doc(id).update({flags: JSON.parse(JSON.stringify(flags))});
-                swal("Visitor flagged!", {
-                  icon: "success",
+                Swal.fire({
+                  title: "Success!",
+                  text: "Visitor flagged!",
+                  type: 'success'
                 })
-              });
+              })
             })
           })
       })

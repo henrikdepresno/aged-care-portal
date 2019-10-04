@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import QRCode from 'qrcode';
 import { AuthService } from 'src/app/auth.service';
 import { VisitorService } from '../../visitor.service';
@@ -231,13 +231,13 @@ export class V_B_ViewComponent implements OnInit {
   }
 
   clickInfo(booking: Booking, status: string) {
-    swal({
+    Swal.fire({
       title: `Booking for: ${booking.rName}`,
       text:
       `Time: ${booking.timeSlots[0]}:00 ${booking.date}
       Status: ${status}`,
-      icon: "info",
-    });
+      type: 'info'
+    })
   }
 
   clickModify(residentId, bookingId) {
@@ -247,37 +247,37 @@ export class V_B_ViewComponent implements OnInit {
   }
 
   clickCancel(id: string) {
-    swal({
+    Swal.fire({
       title: "Cancel?",
       text: "Are you sure you want to cancel this booking?",
-      icon: "warning",
-      dangerMode: true,
-      buttons: {
-        cancel: "Cancel",
-        ok: "Yes"
-      }
-    } as any)
+      type: "warning",
+      showCancelButton: true,
+      reverseButtons: true,
+      focusCancel: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Yes"
+    })
     .then((willCancel) => {
-      if(willCancel) {
+      if(willCancel.value) {
         this.visitorService.cancelBooking(id);
       }
-    });
+    })
   }
 
   provideFeedback() {
-    swal({
+    Swal.fire({
       title: "Hi!",
       text: `Since you recently visited our facility,
       do you want to provide feedback about the visit?`,
-      icon: "info",
-      buttons: {
-        cancel: "No",
-        ok: "Yes"
-      }
-    } as any)
+      type: 'question',
+      showCancelButton: true,
+      reverseButtons: true,
+      cancelButtonText: "No",
+      confirmButtonText: "Yes"
+    })
     .then((willProvide) => {
-      if(willProvide) {
-        this.provideTitle();
+      if(willProvide.value) {
+        this.provideContext();
       }
       else {
         this.visitorService.provideFeedback(this.id, false)
@@ -285,80 +285,55 @@ export class V_B_ViewComponent implements OnInit {
     });
   }
 
-  private provideTitle() {
-    swal({
-      content: {
-        element: "input",
-        attributes: {
-          placeholder: "Feedback Title",
-          type: "text",
-        },
-      },
-    })
-    .then((title) => {
-      if(title != '') {
-        this.provideContext(title)
+  private provideContext(inputTitle?: string, inputContext?: string) {
+    inputTitle = (inputTitle == undefined) ? '' : inputTitle;
+    inputContext = (inputContext == undefined)? '' : inputContext;
+    Swal.fire({
+      title: 'Please provide details of your visit',
+      html:
+        '<input id="swal-title" class="swal2-input" placeholder="Title" value="'+ inputTitle +'">' +
+        '<input id="swal-context" class="swal2-input" placeholder="Context" value="'+ inputContext +'">',
+      focusConfirm: false,
+      preConfirm: () => {
+        return {
+          title: (<HTMLInputElement>document.getElementById('swal-title')).value,
+          context: (<HTMLInputElement>document.getElementById('swal-context')).value
+        }
       }
-      else {
-        swal({
-          title: "Error!",
-          text: "Please provide a title!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
-        .then(() => {
-          this.provideTitle();
-        })
-      }
-    });
-  }
-
-  private provideContext(title: string) {
-    swal({
-      content: {
-        element: "input",
-        attributes: {
-          placeholder: "Please provide details of your visit",
-          type: "text",
-        },
-      },
     })
-    .then((context) => {
-      if(context != '') {
-        swal({
+    .then((values) => {
+      const title = values.value.title;
+      const context = values.value.context;
+      if(title != '' && context != '') {
+        Swal.fire({
           text: `Feedback: ${title}
           Details: ${context}`,
-          icon: "info",
-          buttons: {
-            cancel: "Cancel",
-            ok: "Submit"
-          }
-        } as any)
+          type: 'info',
+          showCancelButton: true,
+          reverseButtons: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Submit Feedback"
+        })
         .then((confirmFeedback) => {
-          if(confirmFeedback) {
+          if(confirmFeedback.value) {
             this.visitorService.provideFeedback(this.id, true, this.vName, this.email, title, context)
           }
           else {
             this.provideFeedback();
           }
-        });
-      }
-      else {
-        swal({
-          title: "Error!",
-          text: "Please do not leave the context empty!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
-        .then(() => {
-          this.provideContext(title);
         })
       }
-    });
+      else {
+        Swal.fire({
+          title: "Error!",
+          text: "Please do not leave the fields empty!",
+          type: "error"
+        })
+        .then(() => {
+          this.provideContext(title, context);
+        })
+      }
+    })
   }
 
   logOut() {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Resident, Contractor, Staff, IDList, Visitor, Flag, Rating, Feedback, ResidentAdd } from '../classes';
@@ -37,28 +37,22 @@ export class AdminService {
   }
 
   successAddUser(userType: string) {
-    swal({
+    Swal.fire({
       title: "Success!",
       text: `${capitalize(userType)} added`,
-      icon: "success",
-      buttons: {
-        ok: "OK"
-      }
-    } as any)
+      type: 'success'
+    })
     .then(() => {
       this.router.navigate(['/admin', `${userType}-view`]);
     })
   }
 
   emailInUse() {
-    swal({
+    Swal.fire({
       title: "Error!",
       text: "Email is already in use!",
-      icon: "error",
-      buttons: {
-        ok: "OK"
-      }
-    } as any)
+      type: 'error'
+    })
   }
 
   // Contractor Functions
@@ -295,8 +289,10 @@ export class AdminService {
     flags.splice(index, 1);
     this.afs.collection('visitors').doc(id).update({flags: JSON.parse(JSON.stringify(flags))})
     .then(() => {
-      swal("Flag cleared!", {
-        icon: "success",
+      Swal.fire({
+        title: "Success!",
+        text: "Flag cleared!",
+        type: 'success'
       })
       this.router.navigate(['/admin', 'visitor-view'])
     });

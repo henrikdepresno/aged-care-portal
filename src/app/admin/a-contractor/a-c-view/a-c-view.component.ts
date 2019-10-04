@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { Contractor } from 'src/app/classes';
@@ -177,15 +177,15 @@ export class A_C_ViewComponent implements OnInit {
   }
 
   clickInfo(contractor: Contractor) {
-    swal({
+    Swal.fire({
       title: `Contractor: ${contractor.cFirstName} ${contractor.cLastName}`,
       text:
       `Email: ${contractor.email}
       Phone: ${contractor.phone}
       Company Name: ${contractor.companyName}
       Field: ${contractor.field}`,
-      icon: "info",
-    });
+      type: "info"
+    })
   }
 
   clickUpdate(id: string) {
@@ -194,24 +194,26 @@ export class A_C_ViewComponent implements OnInit {
   }
 
   clickDelete(id: string) {
-    swal({
+    Swal.fire({
       title: "Delete?",
       text: "Are you sure you want to delete this contractor?",
-      icon: "warning",
-      dangerMode: true,
-      buttons: {
-        cancel: "Cancel",
-        ok: "Yes"
-      }
-    } as any)
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      focusCancel: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Yes",
+    })
     .then((willDelete) => {
-      if(willDelete) {
+      if(willDelete.value) {
         this.adminService.deleteContractor(id);
-        swal("Contractor deleted!", {
-          icon: "success",
+        Swal.fire({
+          title: "Success!",
+          text: "Contractor deleted!",
+          type: 'success'
         })
       }
-    });
+    })
   }
 
   logOut() {

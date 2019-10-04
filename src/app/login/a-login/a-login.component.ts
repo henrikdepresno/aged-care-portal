@@ -3,7 +3,6 @@ import $ from 'jquery';
 import { Router } from '@angular/router';
 import { LoginComponent } from '../login.component';
 import { AuthService } from '../../auth.service';
-import swal from 'sweetalert';
 
 @Component({
   selector: 'app-a-login',

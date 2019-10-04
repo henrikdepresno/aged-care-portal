@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth.service';
 import { VisitorService } from '../../visitor.service';
 import { capitalize } from 'src/app/functions';
@@ -57,14 +57,11 @@ export class V_R_AddComponent implements OnInit {
       this.visitorService.addResident(this.id, rFirstName, rLastName);
     }
     else {
-      swal({
+      Swal.fire({
         title: "Error!",
         text: "Some fields are left empty!",
-        icon: "error",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'error'
+      })
     }
   }
 

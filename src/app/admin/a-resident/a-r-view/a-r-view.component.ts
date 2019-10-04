@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { Resident } from 'src/app/classes';
@@ -177,11 +177,11 @@ export class A_R_ViewComponent implements OnInit {
   }
 
   clickInfo(resident: Resident) {
-    swal({
+    Swal.fire({
       title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
       text:
       `Phone: ${resident.phone}`,
-      icon: "info",
+      type: 'info'
     });
   }
 
@@ -191,21 +191,23 @@ export class A_R_ViewComponent implements OnInit {
   }
 
   clickDelete(id: string) {
-    swal({
+    Swal.fire({
       title: "Delete?",
       text: "Are you sure you want to delete this resident?",
-      icon: "warning",
-      dangerMode: true,
-      buttons: {
-        cancel: "Cancel",
-        ok: "Yes"
-      }
-    } as any)
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      focusCancel: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Yes"
+    })
     .then((willDelete) => {
-      if(willDelete) {
+      if(willDelete.value) {
         this.adminService.deleteResident(id);
-        swal("Resident deleted!", {
-          icon: "success",
+        Swal.fire({
+          title: "Success!",
+          text: "Resident deleted!",
+          type: 'success'
         })
       }
     });

@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth.service';
 import { AdminService } from '../admin.service';
 import { Feedback } from '../../classes';
@@ -178,15 +178,15 @@ export class A_FeedbackComponent implements OnInit {
   }
 
   clickView(feedback: Feedback) {
-    swal({
+    Swal.fire({
       title: feedback.title,
       text:
       `${feedback.context}
       Author: ${feedback.author} - ${feedback.role}
       < ${feedback.authorEmail} >
       Date: ${feedback.date}`,
-      icon: "info",
-    });
+      type: 'info'
+    })
   }
 
 }

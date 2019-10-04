@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -61,25 +61,21 @@ export class EmailService {
   emailResetPassword(email: string) {
     this.afAuth.auth.sendPasswordResetEmail(email)
       .then(() => {
-        swal({
+        Swal.fire({
           title: "Reset Password Email Sent!",
           text: "Please check your inbox for a reset email!",
-          icon: "success",
-          buttons: {
-            ok: "Login"
-          }
-        } as any)
-        .then(() => {this.router.navigate(['/login'])});
+          type: 'success'
+        })
+        .then(() => {
+          this.router.navigate(['/login'])
+        })
       })
       .catch(() => {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "Email does not exist in ACP!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'error'
+        })
       })
   }
 }

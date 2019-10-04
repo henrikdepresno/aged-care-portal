@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth.service';
 import { StaffService } from '../../staff.service';
 import { WeeklySchedules } from '../../../classes';
@@ -263,14 +263,11 @@ export class S_R_ScheduleComponent implements OnInit {
         this.selectedSlots = this.selectedSlots.filter((value) => {return value != hour});
       }
       else {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "Time slots must be next to each other!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'error'
+        })
       }
     }
     else {
@@ -284,14 +281,11 @@ export class S_R_ScheduleComponent implements OnInit {
         sortNumArray(this.selectedSlots);
       }
       else {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "Time slots must be next to each other!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'error'
+        })
       }
     }
   }
@@ -344,32 +338,29 @@ export class S_R_ScheduleComponent implements OnInit {
   addNewBooking() {
     const dateStr = $(this.jB + 'p.p-date').text();
     if(this.selectedSlots.length != 0) {
-      swal({
+      Swal.fire({
         title: "Add?",
         text: `Are you sure you want to add this booking?
         Visiting time: ${this.selectedSlots[0]}:00 ${dateStr}`,
-        icon: "warning",
-        dangerMode: true,
-        buttons: {
-          cancel: "Cancel",
-          ok: "Yes"
-        }
-      } as any)
+        type: 'question',
+        showCancelButton: true,
+        reverseButtons: true,
+        focusCancel: true,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Yes"
+      })
       .then((willAdd) => {
-        if(willAdd) {
+        if(willAdd.value) {
           this.staffService.addBooking(this.id, this.weeklySchedules.rName, dateStr, this.selectedSlots);
         }
       })
     }
     else {
-      swal({
+      Swal.fire({
         title: "Error!",
         text: "Please select at least one booking slot!",
-        icon: "error",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'error'
+      })
     }
   }
 
@@ -384,33 +375,29 @@ export class S_R_ScheduleComponent implements OnInit {
       case 5: dayStr = "Friday"; break;
       case 6: dayStr = "Saturday"; break;
     }
-    swal({
-      text: `Change activity on ${dayStr} at ${hour}:00
-      (Leave the field empty or type "Available"
+    Swal.fire({
+      title: `Change activity on ${dayStr} at ${hour}:00`,
+      text:
+      `(Leave the field empty or type "Available"
       if you want to make the slot vacant)`,
-      content: {
-        element: "input",
-        attributes: {
-          placeholder: "New activity",
-          type: "text",
-        },
-      },
+      input: 'text',
+      inputPlaceholder: 'Activity'
     })
     .then((inputActivity) => {
-      const activity = (inputActivity == "") ? "Available" : inputActivity.charAt(0).toUpperCase() + inputActivity.toLowerCase().slice(1);
-      swal({
+      const activity = (inputActivity.value == "") ? "Available" : inputActivity.value.charAt(0).toUpperCase() + inputActivity.value.toLowerCase().slice(1);
+      Swal.fire({
         title: "Make changes?",
         text: `${oldActivity} → ${activity}
         on ${dayStr} at ${hour}:00?`,
-        icon: "info",
-        dangerMode: true,
-        buttons: {
-          cancel: "Cancel",
-          ok: "Change"
-        }
-      } as any)
+        type: 'question',
+        showCancelButton: true,
+        reverseButtons: true,
+        focusCancel: true,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Change"
+      })
       .then((willChange) => {
-        if(willChange) {
+        if(willChange.value) {
           this.staffService.makeScheduleChange(this.id, activity, day, hour);
         }
       });

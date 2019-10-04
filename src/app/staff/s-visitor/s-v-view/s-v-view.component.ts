@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { StaffService } from '../../staff.service';
 import { Visitor } from 'src/app/classes';
@@ -182,68 +182,61 @@ export class S_V_ViewComponent implements OnInit {
   }
 
   clickInfo(visitor: Visitor) {
-    swal({
+    Swal.fire({
       title: `Visitor: ${visitor.vFirstName} ${visitor.vLastName}`,
       text:
       `Email: ${visitor.email}
       Phone: ${visitor.phone}
       Flagged: ${(visitor.flags.length != 0) ? "Yes" : "No"}`,
-      icon: "info",
-    });
+      type: 'info'
+    })
   }
 
   clickFlag(id: string){
-    swal({
+    Swal.fire({
       title: "Flag?",
       text: "Are you sure you want to flag this visitor?",
-      icon: "warning",
-      dangerMode: true,
-      buttons: {
-        cancel: "Cancel",
-        ok: "Yes"
-      }
-    } as any)
+      type: 'warning',
+      showCancelButton: true,
+      reverseButtons: true,
+      focusCancel: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Yes"
+    })
     .then((willFlag) => {
-      if(willFlag) {
-        swal({
-          content: {
-            element: "input",
-            attributes: {
-              placeholder: "Reason",
-              type: "text",
-            },
-          },
+      if(willFlag.value) {
+        Swal.fire({
+          input: 'text',
+          inputPlaceholder: 'Reason',
+          type: 'question'
         })
         .then((reason) => {
-          if(reason != "") {
-            swal({
+          if(reason.value != "") {
+            Swal.fire({
               text: `Reason: ${reason}`,
-              icon: "info",
-              dangerMode: true,
-              buttons: {
-                cancel: "Cancel",
-                ok: "Flag"
-              }
-            } as any)
+              type: 'warning',
+              showCancelButton: true,
+              reverseButtons: true,
+              focusCancel: true,
+              cancelButtonText: "Cancel",
+              confirmButtonText: "Flag"
+            })
             .then((confirmFlag) => {
-              if(confirmFlag) {
-                this.staffService.flagVisitor(id, reason);
+              if(confirmFlag.value) {
+                this.staffService.flagVisitor(id, reason.value);
               }
             });
           }
           else {
-            swal({
+            Swal.fire({
               title: "Error!",
               text: "Please give a reason!",
-              icon: "error",
-              buttons: {
-                ok: "OK"
-              }
-            } as any)
+              type: "error"
+            })
           }
-        });
+        })
       }
-    });
+    })
   }
 
   logOut() {

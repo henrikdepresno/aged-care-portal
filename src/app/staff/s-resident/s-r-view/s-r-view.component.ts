@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { StaffService } from '../../staff.service';
 import { Resident } from '../../../classes';
@@ -171,12 +171,12 @@ export class S_R_ViewComponent implements OnInit {
   }
 
   clickInfo(resident: Resident) {
-    swal({
+    Swal.fire({
       title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
       text:
       `Phone: ${resident.phone}`,
-      icon: "info",
-    });
+      type: 'info'
+    })
   }
 
   clickSchedule(id: string) {

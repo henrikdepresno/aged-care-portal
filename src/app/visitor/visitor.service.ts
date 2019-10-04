@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { Resident, Visitor, Booking, WeeklySchedules, ScheduleSlot, Feedback } from '../classes';
 import { mergeMap, take } from 'rxjs/operators';
@@ -120,14 +120,11 @@ export class VisitorService {
           let bookingIds = visitor.bookingIds;
           bookingIds.unshift(bookingId);
           this.afs.collection('visitors').doc(visitor.id).update({bookingIds: bookingIds});
-          swal({
+          Swal.fire({
             title: "Success!",
             text: "Booking added successfully!",
-            icon: "success",
-            buttons: {
-              ok: "OK"
-            }
-          } as any)
+            type: 'success'
+          })
           this.router.navigate(['/visitor', 'booking-view'])
         })
     })
@@ -139,14 +136,11 @@ export class VisitorService {
       timeSlots: timeSlots
     })
     .then(() => {
-      swal({
+      Swal.fire({
         title: "Success!",
         text: "Booking modified successfully!",
-        icon: "success",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'success'
+      })
       this.router.navigate(['/visitor', 'booking-view'])
     })
   }
@@ -154,14 +148,11 @@ export class VisitorService {
   cancelBooking(id: string) {
     this.afs.collection('bookings').doc(id).update({isCancelled: true})
     .then(() => {
-      swal({
+      Swal.fire({
         title: "Success!",
         text: "Booking cancelled!",
-        icon: "success",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'success'
+      })
     })
   }
 
@@ -198,39 +189,30 @@ export class VisitorService {
             if(!residentIds.includes(snapshot.docs[0].id)) {
               residentIds.push(snapshot.docs[0].id);
               visitorDoc.update({residentIds: residentIds});
-              swal({
+              Swal.fire({
                 title: "Success!",
-                text: "Resident added",
-                icon: "success",
-                buttons: {
-                  ok: "OK"
-                }
-              } as any)
+                text: "Resident added!",
+                type: 'success'
+              })
               .then(() => {
                 this.router.navigate(['/visitor', 'resident-view']);
               })
             }
             else {
-              swal({
+              Swal.fire({
                 title: "Error!",
                 text: "Resident already added!",
-                icon: "error",
-                buttons: {
-                  ok: "OK"
-                }
-              } as any); 
+                type: 'error'
+              })
             }
           })
         }
         else {
-          swal({
+          Swal.fire({
             title: "Error!",
             text: "No residents found!",
-            icon: "error",
-            buttons: {
-              ok: "OK"
-            }
-          } as any);
+            type: 'error'
+          })
         }
       })
   }
@@ -252,8 +234,10 @@ export class VisitorService {
             residentIds: residentIds,
             bookingIds: bookingIds
           });
-          swal("Resident deleted!", {
-            icon: "success",
+          Swal.fire({
+            title: "Success!",
+            text: "Resident deleted!",
+            type: 'success'
           })
         });
       })
@@ -280,14 +264,11 @@ export class VisitorService {
         const feedback = new Feedback(newId, title, vName, email, 'Visitor', dateStr, context);
         this.afs.collection('feedbacks').doc(newId).set(Object.assign({}, feedback))
       })
-      swal({
+      Swal.fire({
         title: "Submitted!",
         text: "Thanks for the feedback!",
-        icon: "success",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'success'
+      })
     }
     this.afs.collection('visitors').doc(visitorId).update({justCheckOut: false})
   }

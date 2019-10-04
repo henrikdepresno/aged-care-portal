@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/auth.service';
 import { VisitorService } from '../../visitor.service';
 import { WeeklySchedules, Booking } from '../../../classes';
@@ -235,14 +235,11 @@ export class V_B_ModifyComponent implements OnInit {
         this.selectedSlots = this.selectedSlots.filter((value) => {return value != hour});
       }
       else {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "Time slots must be next to each other!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'error'
+        })
       }
     }
     else {
@@ -256,14 +253,11 @@ export class V_B_ModifyComponent implements OnInit {
         sortNumArray(this.selectedSlots);
       }
       else {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "Time slots must be next to each other!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'error'
+        })
       }
     }
   }
@@ -272,43 +266,37 @@ export class V_B_ModifyComponent implements OnInit {
     const dateStr = $('p.p-date').text();
     if(this.oldBookingDate != dateStr || (this.oldBookingDate == dateStr && JSON.stringify(this.oldSelectedSlots) != JSON.stringify(this.selectedSlots))) {
       if(this.selectedSlots.length != 0) {
-        swal({
+        Swal.fire({
           title: "Modify?",
           text: `Are you sure you want to modify this booking?
           ${this.oldSelectedSlots[0]}:00 ${this.oldBookingDate} → ${this.selectedSlots[0]}:00 ${dateStr}`,
-          icon: "warning",
-          dangerMode: true,
-          buttons: {
-            cancel: "Cancel",
-            ok: "Yes"
-          }
-        } as any)
+          type: 'question',
+          showCancelButton: true,
+          reverseButtons: true,
+          focusCancel: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Yes"
+        })
         .then((willModify) => {
-          if(willModify) {
+          if(willModify.value) {
             this.visitorService.modifyBooking(this.bookingId, dateStr, this.selectedSlots);
           }
         })
       }
       else {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "Please select at least one booking slot!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'error'
+        })
       }
     }
     else {
-      swal({
+      Swal.fire({
         title: "Error!",
         text: "No changes made!",
-        icon: "error",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'error'
+      })
     }
   }
 

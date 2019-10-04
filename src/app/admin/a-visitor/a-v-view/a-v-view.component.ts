@@ -1,7 +1,7 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { Visitor } from 'src/app/classes';
@@ -182,14 +182,14 @@ export class A_V_ViewComponent implements OnInit {
   }
 
   clickInfo(visitor: Visitor) {
-    swal({
+    Swal.fire({
       title: `Visitor: ${visitor.vFirstName} ${visitor.vLastName}`,
       text:
       `Email: ${visitor.email}
       Phone: ${visitor.phone}
       Flagged: ${(visitor.flags.length != 0) ? "Yes" : "No"}`,
-      icon: "info",
-    });
+      type: 'info'
+    })
   }
 
   clickUpdate(id: string) {

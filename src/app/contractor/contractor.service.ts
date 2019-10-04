@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { BehaviorSubject } from 'rxjs';
 import { Contractor, Feedback } from '../classes';
 import { take } from 'rxjs/operators';
@@ -65,14 +65,11 @@ export class ContractorService {
         const feedback = new Feedback(newId, title, cName, email, 'Contractor', dateStr, context);
         this.afs.collection('feedbacks').doc(newId).set(Object.assign({}, feedback))
       })
-      swal({
+      Swal.fire({
         title: "Submitted!",
         text: "Thanks for the feedback!",
-        icon: "success",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'success'
+      })
     }
     this.afs.collection('contractors').doc(contractorId).update({justCheckOut: false})
   }

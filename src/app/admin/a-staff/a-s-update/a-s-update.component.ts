@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../auth.service';
 import { AdminService } from '../../admin.service';
 import { capitalize, isNumeric } from 'src/app/functions';
@@ -56,50 +56,41 @@ export class A_S_UpdateComponent implements OnInit {
     const updates = this.showUpdates(sFirstName, sLastName, phone, role)
     if(updates != "") {
       if(isNumeric(phone) || phone == "") {
-        swal({
+        Swal.fire({
           title: "New updates:",
           text: updates,
-          icon: "info",
-          dangerMode: true,
-          buttons: {
-            cancel: "Cancel",
-            ok: "Update"
-          }
-        } as any)
+          type: 'question',
+          showCancelButton: true,
+          reverseButtons: true,
+          focusCancel: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Update",
+        })
         .then((willUpdate) => {
-          if(willUpdate) {
+          if(willUpdate.value) {
             this.adminService.updateStaff(this.id, sFirstName, sLastName, phone, role);
-            swal({
+            Swal.fire({
               title: "Success!",
               text: "Details updated!",
-              icon: "success",
-              buttons: {
-                ok: "OK"
-              }
-            } as any)
+              type: 'success'
+            })
           }
-        });
+        })
       }
       else {
-        swal({
+        Swal.fire({
           title: "Error!",
           text: "The provided phone number can only be digits!",
-          icon: "error",
-          buttons: {
-            ok: "OK"
-          }
-        } as any)
+          type: 'error'
+        })
       }
     }
     else {
-      swal({
+      Swal.fire({
         title: "Error!",
         text: "Please update at least one field!",
-        icon: "error",
-        buttons: {
-          ok: "OK"
-        }
-      } as any)
+        type: 'error'
+      })
     }
   }
 
