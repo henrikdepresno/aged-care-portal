@@ -183,9 +183,9 @@ export class AuthService {
       email: email,
       password: password
     }
-    const addPost = this.http.post("http://localhost:3000/add-auth-user-fb", addData);
+    const addPost = this.http.post("http://localhost:8080/add-auth-user-fb", addData);
     const emailData = this.emailService.emailNewAccount(email, id, firstName, userType, password);
-    const emailPost = this.http.post("http://localhost:3000/send-email", emailData);
+    const emailPost = this.http.post("http://localhost:8080/send-email", emailData);
     forkJoin(addPost, emailPost).subscribe();
   }
 
@@ -195,7 +195,7 @@ export class AuthService {
         const data = {
           email: doc.data().email
         }
-        this.http.post("http://localhost:3000/delete-auth-user-fb", data).subscribe();
+        this.http.post("http://localhost:8080/delete-auth-user-fb", data).subscribe();
         this.afs.collection('users').doc(id).delete();
         this.afs.collection('id-list').doc(id).delete();
       })});

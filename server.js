@@ -20,9 +20,16 @@ admin.initializeApp({
 app.use(cors({origin: "*"}));
 app.use(bodyParser.json());
 
-//start application server on port 3000
-app.listen(3000, () => {
-  console.log("The server started on port 3000");
+// Serve only the static files form the dist directory
+app.use(express.static(__dirname + '/dist/aged-care-portal'));
+
+app.get('/*', (req, res) => {   
+  res.sendFile(path.join(__dirname +'/dist/aged-care-portal/index.html'));
+});
+
+//start application server on port 8080
+app.listen(process.env.PORT || 8080, () => {
+  console.log("The server started on port 8080");
 });
 
 // define a sendmail endpoint
