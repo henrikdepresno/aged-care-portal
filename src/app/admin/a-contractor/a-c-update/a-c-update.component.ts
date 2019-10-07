@@ -81,7 +81,7 @@ export class A_C_UpdateComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "The provided phone number can only be digits!",
+          text: "The phone number can only be digits!",
           type: 'error'
         })
       }
