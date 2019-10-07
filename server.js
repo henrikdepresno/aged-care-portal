@@ -1,33 +1,35 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-//import modules
+// import modules
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const admin = require('firebase-admin')
 
-//create a new Express app instance 
+// create a new Express app instance 
 const app = express();
 
-//initialize the Firebase Admin SDK using private key
+// initialize the Firebase Admin SDK using private key
 const serviceAccount = require('./serviceAccountKey.json')
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-//accept CORS requests and parse request body into JSON
+// accept CORS requests and parse request body into JSON
 app.use(cors({origin: "*"}));
 app.use(bodyParser.json());
 
-// Serve only the static files form the dist directory
+// serve only the static files form the dist directory
 app.use(express.static(__dirname + '/dist/aged-care-portal'));
 
+// define angular application endpoint
 app.get('/*', (req, res) => {   
   res.sendFile(path.join(__dirname +'/dist/aged-care-portal/index.html'));
 });
 
-//start application server on port 8080
+// start application server on port 8080
 app.listen(process.env.PORT || 8080, () => {
   console.log("The server started on port 8080");
 });

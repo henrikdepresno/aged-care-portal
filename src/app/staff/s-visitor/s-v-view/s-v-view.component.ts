@@ -184,9 +184,9 @@ export class S_V_ViewComponent implements OnInit {
   clickInfo(visitor: Visitor) {
     Swal.fire({
       title: `Visitor: ${visitor.vFirstName} ${visitor.vLastName}`,
-      text:
-      `Email: ${visitor.email}
-      Phone: ${visitor.phone}
+      html:
+      `Email: ${visitor.email}<br>
+      Phone: ${visitor.phone}<br>
       Flagged: ${(visitor.flags.length != 0) ? "Yes" : "No"}`,
       type: 'info'
     })
@@ -195,7 +195,7 @@ export class S_V_ViewComponent implements OnInit {
   clickFlag(id: string){
     Swal.fire({
       title: "Flag?",
-      text: "Are you sure you want to flag this visitor?",
+      html: "Are you sure you want to flag this visitor?",
       type: 'warning',
       showCancelButton: true,
       reverseButtons: true,
@@ -213,7 +213,7 @@ export class S_V_ViewComponent implements OnInit {
         .then((reason) => {
           if(reason.value != "") {
             Swal.fire({
-              text: `Reason: ${reason}`,
+              html: `Reason: ${reason.value}`,
               type: 'warning',
               showCancelButton: true,
               reverseButtons: true,
@@ -230,7 +230,7 @@ export class S_V_ViewComponent implements OnInit {
           else {
             Swal.fire({
               title: "Error!",
-              text: "Please give a reason!",
+              html: "Please give a reason!",
               type: "error"
             })
           }

@@ -179,7 +179,7 @@ export class A_R_ViewComponent implements OnInit {
   clickInfo(resident: Resident) {
     Swal.fire({
       title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
-      text:
+      html:
       `Phone: ${resident.phone}`,
       type: 'info'
     });
@@ -193,7 +193,7 @@ export class A_R_ViewComponent implements OnInit {
   clickDelete(id: string) {
     Swal.fire({
       title: "Delete?",
-      text: "Are you sure you want to delete this resident?",
+      html: "Are you sure you want to delete this resident?",
       type: 'warning',
       showCancelButton: true,
       reverseButtons: true,
@@ -206,7 +206,7 @@ export class A_R_ViewComponent implements OnInit {
         this.adminService.deleteResident(id);
         Swal.fire({
           title: "Success!",
-          text: "Resident deleted!",
+          html: "Resident deleted!",
           type: 'success'
         })
       }

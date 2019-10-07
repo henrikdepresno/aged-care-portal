@@ -45,7 +45,7 @@ export class A_R_AddComponent implements OnInit {
       if(isNumeric(phone)) {
         Swal.fire({
           title: "Success!",
-          text: "Resident added",
+          html: "Resident added",
           type: 'success'
         })
         .then(() => {
@@ -64,7 +64,7 @@ export class A_R_AddComponent implements OnInit {
   private swalError(errorText: string) {
     Swal.fire({
       title: "Error!",
-      text: errorText,
+      html: errorText,
       type: 'error'
     })
   }

@@ -91,7 +91,7 @@ export class C_UpdateComponent implements OnInit {
       if(isNumeric(phone) || phone == "") {
         Swal.fire({
           title: "New updates:",
-          text: updates,
+          html: updates,
           type: 'question',
           showCancelButton: true,
           reverseButtons: true,
@@ -104,7 +104,7 @@ export class C_UpdateComponent implements OnInit {
             this.contractorService.updateDetails(this.id, phone);
             Swal.fire({
               title: "Success!",
-              text: "Details updated!",
+              html: "Details updated!",
               type: 'success'
             })
           }
@@ -113,7 +113,7 @@ export class C_UpdateComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "The provided phone number can only be digits!",
+          html: "The provided phone number can only be digits!",
           type: 'error'
         })
       }
@@ -121,7 +121,7 @@ export class C_UpdateComponent implements OnInit {
     else {
       Swal.fire({
         title: "Error!",
-        text: "Please update at least one field!",
+        html: "Please update at least one field!",
         type: 'error'
       })
     }
@@ -135,7 +135,7 @@ export class C_UpdateComponent implements OnInit {
   provideFeedback() {
     Swal.fire({
       title: "Hi!",
-      text: `Since you recently visited our facility,
+      html: `Since you recently visited our facility,<br>
       do you want to provide feedback about the visit?`,
       type: 'question',
       showCancelButton: true,
@@ -174,7 +174,7 @@ export class C_UpdateComponent implements OnInit {
       const context = values.value.context;
       if(title != '' && context != '') {
         Swal.fire({
-          text: `Feedback: ${title}
+          html: `Feedback: ${title}<br>
           Details: ${context}`,
           type: 'info',
           showCancelButton: true,
@@ -194,7 +194,7 @@ export class C_UpdateComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "Please do not leave the fields empty!",
+          html: "Please do not leave the fields empty!",
           type: "error"
         })
         .then(() => {

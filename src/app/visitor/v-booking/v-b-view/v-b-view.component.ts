@@ -233,8 +233,7 @@ export class V_B_ViewComponent implements OnInit {
   clickInfo(booking: Booking, status: string) {
     Swal.fire({
       title: `Booking for: ${booking.rName}`,
-      text:
-      `Time: ${booking.timeSlots[0]}:00 ${booking.date}
+      html: `Time: ${booking.timeSlots[0]}:00 ${booking.date}<br>
       Status: ${status}`,
       type: 'info'
     })
@@ -249,7 +248,7 @@ export class V_B_ViewComponent implements OnInit {
   clickCancel(id: string) {
     Swal.fire({
       title: "Cancel?",
-      text: "Are you sure you want to cancel this booking?",
+      html: "Are you sure you want to cancel this booking?",
       type: "warning",
       showCancelButton: true,
       reverseButtons: true,
@@ -267,7 +266,7 @@ export class V_B_ViewComponent implements OnInit {
   provideFeedback() {
     Swal.fire({
       title: "Hi!",
-      text: `Since you recently visited our facility,
+      html: `Since you recently visited our facility,<br>
       do you want to provide feedback about the visit?`,
       type: 'question',
       showCancelButton: true,
@@ -306,7 +305,7 @@ export class V_B_ViewComponent implements OnInit {
       const context = values.value.context;
       if(title != '' && context != '') {
         Swal.fire({
-          text: `Feedback: ${title}
+          html: `Feedback: ${title}<br>
           Details: ${context}`,
           type: 'info',
           showCancelButton: true,
@@ -326,7 +325,7 @@ export class V_B_ViewComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "Please do not leave the fields empty!",
+          html: "Please do not leave the fields empty!",
           type: "error"
         })
         .then(() => {

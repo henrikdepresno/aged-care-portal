@@ -179,10 +179,10 @@ export class A_C_ViewComponent implements OnInit {
   clickInfo(contractor: Contractor) {
     Swal.fire({
       title: `Contractor: ${contractor.cFirstName} ${contractor.cLastName}`,
-      text:
-      `Email: ${contractor.email}
-      Phone: ${contractor.phone}
-      Company Name: ${contractor.companyName}
+      html:
+      `Email: ${contractor.email}<br>
+      Phone: ${contractor.phone}<br>
+      Company Name: ${contractor.companyName}<br>
       Field: ${contractor.field}`,
       type: "info"
     })
@@ -196,7 +196,7 @@ export class A_C_ViewComponent implements OnInit {
   clickDelete(id: string) {
     Swal.fire({
       title: "Delete?",
-      text: "Are you sure you want to delete this contractor?",
+      html: "Are you sure you want to delete this contractor?",
       type: 'warning',
       showCancelButton: true,
       reverseButtons: true,
@@ -209,7 +209,7 @@ export class A_C_ViewComponent implements OnInit {
         this.adminService.deleteContractor(id);
         Swal.fire({
           title: "Success!",
-          text: "Contractor deleted!",
+          html: "Contractor deleted!",
           type: 'success'
         })
       }

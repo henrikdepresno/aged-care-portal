@@ -184,9 +184,9 @@ export class A_V_ViewComponent implements OnInit {
   clickInfo(visitor: Visitor) {
     Swal.fire({
       title: `Visitor: ${visitor.vFirstName} ${visitor.vLastName}`,
-      text:
-      `Email: ${visitor.email}
-      Phone: ${visitor.phone}
+      html:
+      `Email: ${visitor.email}<br>
+      Phone: ${visitor.phone}<br>
       Flagged: ${(visitor.flags.length != 0) ? "Yes" : "No"}`,
       type: 'info'
     })

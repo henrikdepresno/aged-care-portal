@@ -180,11 +180,11 @@ export class S_FeedbackComponent implements OnInit {
   clickView(feedback: Feedback) {
     Swal.fire({
       title: feedback.title,
-      text:
-      `${feedback.context}
-      Author: ${feedback.author} - ${feedback.role}
-      < ${feedback.authorEmail} >
-      Date: ${feedback.date}`,
+      html:
+      `${feedback.context}<br><br>
+      Author: ${feedback.author} - ${feedback.role}<br>
+      &lt; ${feedback.authorEmail} &gt;<br>
+      Date: ${feedback.date}<br>`,
       type: 'info'
     })
   }

@@ -67,7 +67,7 @@ export class ContractorService {
       })
       Swal.fire({
         title: "Submitted!",
-        text: "Thanks for the feedback!",
+        html: "Thanks for the feedback!",
         type: 'success'
       })
     }

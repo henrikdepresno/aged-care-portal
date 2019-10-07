@@ -205,7 +205,7 @@ export class V_R_ViewComponent implements OnInit {
   clickInfo(resident: Resident) {
     Swal.fire({
       title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
-      text:
+      html:
       `Phone: ${resident.phone}`,
       type: 'info'
     })
@@ -219,7 +219,7 @@ export class V_R_ViewComponent implements OnInit {
   clickDelete(id: string) {
     Swal.fire({
       title: "Delete?",
-      text: "Are you sure you want to delete this resident?",
+      html: "Are you sure you want to delete this resident?",
       type: "warning",
       showCancelButton: true,
       reverseButtons: true,
@@ -237,7 +237,7 @@ export class V_R_ViewComponent implements OnInit {
   provideFeedback() {
     Swal.fire({
       title: "Hi!",
-      text: `Since you recently visited our facility,
+      html: `Since you recently visited our facility,<br>
       do you want to provide feedback about the visit?`,
       type: 'question',
       showCancelButton: true,
@@ -276,7 +276,7 @@ export class V_R_ViewComponent implements OnInit {
       const context = values.value.context;
       if(title != '' && context != '') {
         Swal.fire({
-          text: `Feedback: ${title}
+          html: `Feedback: ${title}<br>
           Details: ${context}`,
           type: 'info',
           showCancelButton: true,
@@ -296,7 +296,7 @@ export class V_R_ViewComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "Please do not leave the fields empty!",
+          html: "Please do not leave the fields empty!",
           type: "error"
         })
         .then(() => {

@@ -173,7 +173,7 @@ export class S_R_ViewComponent implements OnInit {
   clickInfo(resident: Resident) {
     Swal.fire({
       title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
-      text:
+      html:
       `Phone: ${resident.phone}`,
       type: 'info'
     })

@@ -59,7 +59,7 @@ export class V_R_AddComponent implements OnInit {
     else {
       Swal.fire({
         title: "Error!",
-        text: "Some fields are left empty!",
+        html: "Some fields are left empty!",
         type: 'error'
       })
     }

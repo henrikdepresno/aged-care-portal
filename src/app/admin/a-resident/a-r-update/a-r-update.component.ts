@@ -57,7 +57,7 @@ export class A_R_UpdateComponent implements OnInit {
       if(isNumeric(phone) || phone == "") {
         Swal.fire({
           title: "New updates:",
-          text: updates,
+          html: updates,
           type: 'question',
           showCancelButton: true,
           reverseButtons: true,
@@ -70,7 +70,7 @@ export class A_R_UpdateComponent implements OnInit {
             this.adminService.updateResident(this.id, rFirstName, rLastName, phone);
             Swal.fire({
               title: "Success!",
-              text: "Details updated!",
+              html: "Details updated!",
               type: 'success'
             })
           }
@@ -79,7 +79,7 @@ export class A_R_UpdateComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "The provided phone number can only be digits!",
+          html: "The provided phone number can only be digits!",
           type: 'error'
         })
       }
@@ -87,7 +87,7 @@ export class A_R_UpdateComponent implements OnInit {
     else {
       Swal.fire({
         title: "Error!",
-        text: "Please update at least one field!",
+        html: "Please update at least one field!",
         type: 'error'
       })
     }
@@ -95,8 +95,8 @@ export class A_R_UpdateComponent implements OnInit {
 
   private showUpdates(cFirstName, cLastName, phone) {
     let updates = "";
-    updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "\n";
-    updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "\n";
+    updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "<br>";
+    updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "<br>";
     updates += (phone == "") ? "" : "Phone: " + phone;
     return updates;
   }

@@ -59,7 +59,7 @@ export class A_C_UpdateComponent implements OnInit {
       if(isNumeric(phone) || phone == "") {
         Swal.fire({
           title: "New updates:",
-          text: updates,
+          html: updates,
           type: 'question',
           showCancelButton: true,
           reverseButtons: true,
@@ -72,7 +72,7 @@ export class A_C_UpdateComponent implements OnInit {
             this.adminService.updateContractor(this.id, cFirstName, cLastName, phone, companyName, field);
             Swal.fire({
               title: "Success!",
-              text: "Details updated!",
+              html: "Details updated!",
               type: 'success'
             })
           }
@@ -81,7 +81,7 @@ export class A_C_UpdateComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "The provided phone number can only be digits!",
+          html: "The provided phone number can only be digits!",
           type: 'error'
         })
       }
@@ -89,7 +89,7 @@ export class A_C_UpdateComponent implements OnInit {
     else {
       Swal.fire({
         title: "Error!",
-        text: "Please update at least one field!",
+        html: "Please update at least one field!",
         type: 'error'
       })
     }
@@ -97,10 +97,10 @@ export class A_C_UpdateComponent implements OnInit {
 
   private showUpdates(cFirstName, cLastName, phone, companyName, field) {
     let updates = "";
-    updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "\n";
-    updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "\n";
-    updates += (phone == "") ? "" : "Phone: " + phone + "\n";
-    updates += (companyName == "") ? "" : "Company Name: " + companyName + "\n";
+    updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "<br>";
+    updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "<br>";
+    updates += (phone == "") ? "" : "Phone: " + phone + "<br>";
+    updates += (companyName == "") ? "" : "Company Name: " + companyName + "<br>";
     updates += (field == "") ? "" : "Field: " + field;
     return updates;
   }

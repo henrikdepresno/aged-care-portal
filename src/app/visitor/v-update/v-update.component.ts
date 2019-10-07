@@ -60,7 +60,7 @@ export class V_UpdateComponent implements OnInit {
       if(isNumeric(phone) || phone == "") {
         Swal.fire({
           title: "New updates:",
-          text: updates,
+          html: updates,
           type: 'question',
           showCancelButton: true,
           reverseButtons: true,
@@ -73,7 +73,7 @@ export class V_UpdateComponent implements OnInit {
             this.visitorService.updateDetails(this.id, phone);
             Swal.fire({
               title: "Success!",
-              text: "Details updated!",
+              html: "Details updated!",
               type: 'success'
             })
           }
@@ -82,7 +82,7 @@ export class V_UpdateComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "The provided phone number can only be digits!",
+          html: "The provided phone number can only be digits!",
           type: 'error'
         })
       }
@@ -90,7 +90,7 @@ export class V_UpdateComponent implements OnInit {
     else {
       Swal.fire({
         title: "Error!",
-        text: "Please update at least one field!",
+        html: "Please update at least one field!",
         type: 'error'
       })
     }

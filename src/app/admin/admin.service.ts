@@ -39,7 +39,7 @@ export class AdminService {
   successAddUser(userType: string) {
     Swal.fire({
       title: "Success!",
-      text: `${capitalize(userType)} added`,
+      html: `${capitalize(userType)} added`,
       type: 'success'
     })
     .then(() => {
@@ -50,7 +50,7 @@ export class AdminService {
   emailInUse() {
     Swal.fire({
       title: "Error!",
-      text: "Email is already in use!",
+      html: "Email is already in use!",
       type: 'error'
     })
   }
@@ -291,7 +291,7 @@ export class AdminService {
     .then(() => {
       Swal.fire({
         title: "Success!",
-        text: "Flag cleared!",
+        html: "Flag cleared!",
         type: 'success'
       })
       this.router.navigate(['/admin', 'visitor-view'])

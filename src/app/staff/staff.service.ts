@@ -91,7 +91,7 @@ export class StaffService {
         .then(() => {
           Swal.fire({
             title: "Success!",
-            text: "Booking added successfully!",
+            html: "Booking added successfully!",
             type: 'success'
           })
           this.router.navigate(['/staff', 'resident-view'])
@@ -110,7 +110,7 @@ export class StaffService {
       .then(() => {
         Swal.fire({
           title: "Success!",
-          text: "Change made!",
+          html: "Change made!",
           type: 'success'
         })
       })
@@ -144,7 +144,7 @@ export class StaffService {
                 this.afs.collection('visitors').doc(id).update({flags: JSON.parse(JSON.stringify(flags))});
                 Swal.fire({
                   title: "Success!",
-                  text: "Visitor flagged!",
+                  html: "Visitor flagged!",
                   type: 'success'
                 })
               })

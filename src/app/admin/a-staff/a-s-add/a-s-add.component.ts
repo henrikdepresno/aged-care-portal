@@ -64,7 +64,7 @@ export class A_S_AddComponent implements OnInit {
   private swalError(errorText: string) {
     Swal.fire({
       title: "Error!",
-      text: errorText,
+      html: errorText,
       type: 'error'
     })
   }

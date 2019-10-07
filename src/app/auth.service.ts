@@ -92,7 +92,7 @@ export class AuthService {
   private swalWrongIdOrPassword() {
     Swal.fire({
       title: "Error!",
-      text: "Wrong ID or Password!",
+      html: "Wrong ID or Password!",
       type: 'error'
     });
   }
@@ -130,7 +130,7 @@ export class AuthService {
                 this.addUser(newID, email, 'visitor', vFirstName, password);
                 Swal.fire({
                   title: "Account created!",
-                  text: "Your new ID has been sent to your email!",
+                  html: "Your new ID has been sent to your email!",
                   type: 'success',
                   confirmButtonText: "Login now!"
                 })
@@ -141,7 +141,7 @@ export class AuthService {
               else {
                 Swal.fire({
                   title: "Error!",
-                  text: "Email is already in use!",
+                  html: "Email is already in use!",
                   type: 'error'
                 })
               }
@@ -151,7 +151,7 @@ export class AuthService {
         else {
           Swal.fire({
             title: "Error!",
-            text: "No residents found!",
+            html: "No residents found!",
             type: 'error'
           })
         }

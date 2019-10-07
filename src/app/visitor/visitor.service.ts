@@ -122,7 +122,7 @@ export class VisitorService {
           this.afs.collection('visitors').doc(visitor.id).update({bookingIds: bookingIds});
           Swal.fire({
             title: "Success!",
-            text: "Booking added successfully!",
+            html: "Booking added successfully!",
             type: 'success'
           })
           this.router.navigate(['/visitor', 'booking-view'])
@@ -138,7 +138,7 @@ export class VisitorService {
     .then(() => {
       Swal.fire({
         title: "Success!",
-        text: "Booking modified successfully!",
+        html: "Booking modified successfully!",
         type: 'success'
       })
       this.router.navigate(['/visitor', 'booking-view'])
@@ -150,7 +150,7 @@ export class VisitorService {
     .then(() => {
       Swal.fire({
         title: "Success!",
-        text: "Booking cancelled!",
+        html: "Booking cancelled!",
         type: 'success'
       })
     })
@@ -191,7 +191,7 @@ export class VisitorService {
               visitorDoc.update({residentIds: residentIds});
               Swal.fire({
                 title: "Success!",
-                text: "Resident added!",
+                html: "Resident added!",
                 type: 'success'
               })
               .then(() => {
@@ -201,7 +201,7 @@ export class VisitorService {
             else {
               Swal.fire({
                 title: "Error!",
-                text: "Resident already added!",
+                html: "Resident already added!",
                 type: 'error'
               })
             }
@@ -210,7 +210,7 @@ export class VisitorService {
         else {
           Swal.fire({
             title: "Error!",
-            text: "No residents found!",
+            html: "No residents found!",
             type: 'error'
           })
         }
@@ -236,7 +236,7 @@ export class VisitorService {
           });
           Swal.fire({
             title: "Success!",
-            text: "Resident deleted!",
+            html: "Resident deleted!",
             type: 'success'
           })
         });
@@ -266,7 +266,7 @@ export class VisitorService {
       })
       Swal.fire({
         title: "Submitted!",
-        text: "Thanks for the feedback!",
+        html: "Thanks for the feedback!",
         type: 'success'
       })
     }

@@ -69,8 +69,8 @@ export class A_V_UpdateComponent implements OnInit {
 
   viewFlag(flag: Flag, flags: Flag[], index: number, visitorId: string) {
     Swal.fire({
-      text: `Date flagged: ${flag.date}
-      Flagged by: ${flag.staff}
+      html: `Date flagged: ${flag.date}<br>
+      Flagged by: ${flag.staff}<br>
       Reason: ${flag.reason}`,
       type: 'info',
       showCancelButton: true,
@@ -83,7 +83,7 @@ export class A_V_UpdateComponent implements OnInit {
       if(pressOk.dismiss) {
         Swal.fire({
           title: "Clear flag?",
-          text: "Are you sure you want to clear this flag?",
+          html: "Are you sure you want to clear this flag?",
           type: 'warning',
           showCancelButton: true,
           reverseButtons: true,
@@ -110,7 +110,7 @@ export class A_V_UpdateComponent implements OnInit {
       if(isNumeric(phone) || phone == "") {
         Swal.fire({
           title: "New updates:",
-          text: updates,
+          html: updates,
           type: 'question',
           showCancelButton: true,
           reverseButtons: true,
@@ -123,7 +123,7 @@ export class A_V_UpdateComponent implements OnInit {
             this.adminService.updateVisitor(this.id, vFirstName, vLastName, phone);
             Swal.fire({
               title: "Success!",
-              text: "Details updated!",
+              html: "Details updated!",
               type: 'success'
             })
           }
@@ -132,7 +132,7 @@ export class A_V_UpdateComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "The provided phone number can only be digits!",
+          html: "The provided phone number can only be digits!",
           type: "error"
         })
       }
@@ -140,7 +140,7 @@ export class A_V_UpdateComponent implements OnInit {
     else {
       Swal.fire({
         title: "Error!",
-        text: "Please update at least one field!",
+        html: "Please update at least one field!",
         type: 'error'
       })
     }
@@ -148,8 +148,8 @@ export class A_V_UpdateComponent implements OnInit {
 
   private showUpdates(sFirstName, sLastName, phone) {
     let updates = "";
-    updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "\n";
-    updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "\n";
+    updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "<br>";
+    updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "<br>";
     updates += (phone == "") ? "" : "Phone: " + phone;
     return updates;
   }

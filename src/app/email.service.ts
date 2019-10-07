@@ -63,7 +63,7 @@ export class EmailService {
       .then(() => {
         Swal.fire({
           title: "Reset Password Email Sent!",
-          text: "Please check your inbox for a reset email!",
+          html: "Please check your inbox for a reset email!",
           type: 'success'
         })
         .then(() => {
@@ -73,7 +73,7 @@ export class EmailService {
       .catch(() => {
         Swal.fire({
           title: "Error!",
-          text: "Email does not exist in ACP!",
+          html: "Email does not exist in ACP!",
           type: 'error'
         })
       })

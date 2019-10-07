@@ -179,9 +179,9 @@ export class A_S_ViewComponent implements OnInit {
   clickInfo(staff: Staff) {
     Swal.fire({
       title: `Staff: ${staff.sFirstName} ${staff.sLastName}`,
-      text:
-      `Email: ${staff.email}
-      Phone: ${staff.phone}
+      html:
+      `Email: ${staff.email}<br>
+      Phone: ${staff.phone}<br>
       Role: ${staff.role}`,
       type: 'info'
     });
@@ -195,7 +195,7 @@ export class A_S_ViewComponent implements OnInit {
   clickDelete(id: string) {
     Swal.fire({
       title: "Delete?",
-      text: "Are you sure you want to delete this staff?",
+      html: "Are you sure you want to delete this staff?",
       type: 'warning',
       showCancelButton: true,
       reverseButtons: true,
@@ -208,7 +208,7 @@ export class A_S_ViewComponent implements OnInit {
         this.adminService.deleteStaff(id);
         Swal.fire({
           title: "Success!",
-          text: "Staff deleted!",
+          html: "Staff deleted!",
           type: 'success'
         })
       }

@@ -237,7 +237,7 @@ export class V_B_ModifyComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "Time slots must be next to each other!",
+          html: "Time slots must be next to each other!",
           type: 'error'
         })
       }
@@ -255,7 +255,7 @@ export class V_B_ModifyComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "Time slots must be next to each other!",
+          html: "Time slots must be next to each other!",
           type: 'error'
         })
       }
@@ -268,7 +268,7 @@ export class V_B_ModifyComponent implements OnInit {
       if(this.selectedSlots.length != 0) {
         Swal.fire({
           title: "Modify?",
-          text: `Are you sure you want to modify this booking?
+          html: `Are you sure you want to modify this booking?<br>
           ${this.oldSelectedSlots[0]}:00 ${this.oldBookingDate} → ${this.selectedSlots[0]}:00 ${dateStr}`,
           type: 'question',
           showCancelButton: true,
@@ -286,7 +286,7 @@ export class V_B_ModifyComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "Please select at least one booking slot!",
+          html: "Please select at least one booking slot!",
           type: 'error'
         })
       }
@@ -294,7 +294,7 @@ export class V_B_ModifyComponent implements OnInit {
     else {
       Swal.fire({
         title: "Error!",
-        text: "No changes made!",
+        html: "No changes made!",
         type: 'error'
       })
     }

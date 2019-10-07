@@ -265,7 +265,7 @@ export class S_R_ScheduleComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "Time slots must be next to each other!",
+          html: "Time slots must be next to each other!",
           type: 'error'
         })
       }
@@ -283,7 +283,7 @@ export class S_R_ScheduleComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          text: "Time slots must be next to each other!",
+          html: "Time slots must be next to each other!",
           type: 'error'
         })
       }
@@ -340,7 +340,7 @@ export class S_R_ScheduleComponent implements OnInit {
     if(this.selectedSlots.length != 0) {
       Swal.fire({
         title: "Add?",
-        text: `Are you sure you want to add this booking?
+        html: `Are you sure you want to add this booking?<br>
         Visiting time: ${this.selectedSlots[0]}:00 ${dateStr}`,
         type: 'question',
         showCancelButton: true,
@@ -358,7 +358,7 @@ export class S_R_ScheduleComponent implements OnInit {
     else {
       Swal.fire({
         title: "Error!",
-        text: "Please select at least one booking slot!",
+        html: "Please select at least one booking slot!",
         type: 'error'
       })
     }
@@ -377,8 +377,8 @@ export class S_R_ScheduleComponent implements OnInit {
     }
     Swal.fire({
       title: `Change activity on ${dayStr} at ${hour}:00`,
-      text:
-      `(Leave the field empty or type "Available"
+      html:
+      `(Leave the field empty or type "Available"<br>
       if you want to make the slot vacant)`,
       input: 'text',
       inputPlaceholder: 'Activity'
@@ -387,7 +387,7 @@ export class S_R_ScheduleComponent implements OnInit {
       const activity = (inputActivity.value == "") ? "Available" : inputActivity.value.charAt(0).toUpperCase() + inputActivity.value.toLowerCase().slice(1);
       Swal.fire({
         title: "Make changes?",
-        text: `${oldActivity} → ${activity}
+        html: `${oldActivity} → ${activity}<br>
         on ${dayStr} at ${hour}:00?`,
         type: 'question',
         showCancelButton: true,
