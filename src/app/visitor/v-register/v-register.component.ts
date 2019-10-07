@@ -49,7 +49,7 @@ export class V_RegisterComponent implements OnInit {
             }
           }
           else {
-            this.swalError("The provided phone number can only be digits!")
+            this.swalError("The phone number can only be digits!")
           }
         }
         else {

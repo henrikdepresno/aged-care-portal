@@ -82,7 +82,7 @@ export class V_UpdateComponent implements OnInit {
       else {
         Swal.fire({
           title: "Error!",
-          html: "The provided phone number can only be digits!",
+          html: "The phone number can only be digits!",
           type: 'error'
         })
       }
