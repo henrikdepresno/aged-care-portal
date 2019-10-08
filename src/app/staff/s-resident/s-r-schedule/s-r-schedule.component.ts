@@ -399,6 +399,7 @@ export class S_R_ScheduleComponent implements OnInit {
       .then((willChange) => {
         if(willChange.value) {
           this.staffService.makeScheduleChange(this.id, activity, day, hour);
+          this.switchSection('weekly');
         }
       });
     });

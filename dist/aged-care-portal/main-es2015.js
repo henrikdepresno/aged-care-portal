@@ -451,7 +451,7 @@ let A_C_AddComponent = class A_C_AddComponent {
                 }
             }
             else {
-                this.swalError("The provided phone number can only be digits!");
+                this.swalError("The phone number can only be digits!");
             }
         }
         else {
@@ -461,7 +461,7 @@ let A_C_AddComponent = class A_C_AddComponent {
     swalError(errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     }
@@ -561,7 +561,7 @@ let A_C_UpdateComponent = class A_C_UpdateComponent {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -574,7 +574,7 @@ let A_C_UpdateComponent = class A_C_UpdateComponent {
                         this.adminService.updateContractor(this.id, cFirstName, cLastName, phone, companyName, field);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -583,7 +583,7 @@ let A_C_UpdateComponent = class A_C_UpdateComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -591,17 +591,17 @@ let A_C_UpdateComponent = class A_C_UpdateComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
     }
     showUpdates(cFirstName, cLastName, phone, companyName, field) {
         let updates = "";
-        updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "\n";
-        updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "\n";
-        updates += (phone == "") ? "" : "Phone: " + phone + "\n";
-        updates += (companyName == "") ? "" : "Company Name: " + companyName + "\n";
+        updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "<br>";
+        updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "<br>";
+        updates += (phone == "") ? "" : "Phone: " + phone + "<br>";
+        updates += (companyName == "") ? "" : "Company Name: " + companyName + "<br>";
         updates += (field == "") ? "" : "Field: " + field;
         return updates;
     }
@@ -809,9 +809,9 @@ let A_C_ViewComponent = class A_C_ViewComponent {
     clickInfo(contractor) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Contractor: ${contractor.cFirstName} ${contractor.cLastName}`,
-            text: `Email: ${contractor.email}
-      Phone: ${contractor.phone}
-      Company Name: ${contractor.companyName}
+            html: `Email: ${contractor.email}<br>
+      Phone: ${contractor.phone}<br>
+      Company Name: ${contractor.companyName}<br>
       Field: ${contractor.field}`,
             type: "info"
         });
@@ -823,7 +823,7 @@ let A_C_ViewComponent = class A_C_ViewComponent {
     clickDelete(id) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Delete?",
-            text: "Are you sure you want to delete this contractor?",
+            html: "Are you sure you want to delete this contractor?",
             type: 'warning',
             showCancelButton: true,
             reverseButtons: true,
@@ -836,7 +836,7 @@ let A_C_ViewComponent = class A_C_ViewComponent {
                 this.adminService.deleteContractor(id);
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Success!",
-                    text: "Contractor deleted!",
+                    html: "Contractor deleted!",
                     type: 'success'
                 });
             }
@@ -1057,9 +1057,9 @@ let A_FeedbackComponent = class A_FeedbackComponent {
     clickView(feedback) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: feedback.title,
-            text: `${feedback.context}
-      Author: ${feedback.author} - ${feedback.role}
-      < ${feedback.authorEmail} >
+            html: `${feedback.context}<br><br>
+      Author: ${feedback.author} - ${feedback.role}<br>
+      &lt; ${feedback.authorEmail} &gt;<br>
       Date: ${feedback.date}`,
             type: 'info'
         });
@@ -1153,7 +1153,7 @@ let A_R_AddComponent = class A_R_AddComponent {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone)) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Success!",
-                    text: "Resident added",
+                    html: "Resident added",
                     type: 'success'
                 })
                     .then(() => {
@@ -1161,7 +1161,7 @@ let A_R_AddComponent = class A_R_AddComponent {
                 });
             }
             else {
-                this.swalError("The provided phone number can only be digits!");
+                this.swalError("The phone number can only be digits!");
             }
         }
         else {
@@ -1171,7 +1171,7 @@ let A_R_AddComponent = class A_R_AddComponent {
     swalError(errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     }
@@ -1269,7 +1269,7 @@ let A_R_UpdateComponent = class A_R_UpdateComponent {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -1282,7 +1282,7 @@ let A_R_UpdateComponent = class A_R_UpdateComponent {
                         this.adminService.updateResident(this.id, rFirstName, rLastName, phone);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -1291,7 +1291,7 @@ let A_R_UpdateComponent = class A_R_UpdateComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -1299,15 +1299,15 @@ let A_R_UpdateComponent = class A_R_UpdateComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
     }
     showUpdates(cFirstName, cLastName, phone) {
         let updates = "";
-        updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "\n";
-        updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "\n";
+        updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "<br>";
+        updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "<br>";
         updates += (phone == "") ? "" : "Phone: " + phone;
         return updates;
     }
@@ -1515,7 +1515,7 @@ let A_R_ViewComponent = class A_R_ViewComponent {
     clickInfo(resident) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
-            text: `Phone: ${resident.phone}`,
+            html: `Phone: ${resident.phone}`,
             type: 'info'
         });
     }
@@ -1526,7 +1526,7 @@ let A_R_ViewComponent = class A_R_ViewComponent {
     clickDelete(id) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Delete?",
-            text: "Are you sure you want to delete this resident?",
+            html: "Are you sure you want to delete this resident?",
             type: 'warning',
             showCancelButton: true,
             reverseButtons: true,
@@ -1539,7 +1539,7 @@ let A_R_ViewComponent = class A_R_ViewComponent {
                 this.adminService.deleteResident(id);
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Success!",
-                    text: "Resident deleted!",
+                    html: "Resident deleted!",
                     type: 'success'
                 });
             }
@@ -1646,7 +1646,7 @@ let A_S_AddComponent = class A_S_AddComponent {
                 }
             }
             else {
-                this.swalError("The provided phone number can only be digits!");
+                this.swalError("The phone number can only be digits!");
             }
         }
         else {
@@ -1656,7 +1656,7 @@ let A_S_AddComponent = class A_S_AddComponent {
     swalError(errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     }
@@ -1755,7 +1755,7 @@ let A_S_UpdateComponent = class A_S_UpdateComponent {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -1768,7 +1768,7 @@ let A_S_UpdateComponent = class A_S_UpdateComponent {
                         this.adminService.updateStaff(this.id, sFirstName, sLastName, phone, role);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -1777,7 +1777,7 @@ let A_S_UpdateComponent = class A_S_UpdateComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -1785,16 +1785,16 @@ let A_S_UpdateComponent = class A_S_UpdateComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
     }
     showUpdates(sFirstName, sLastName, phone, role) {
         let updates = "";
-        updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "\n";
-        updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "\n";
-        updates += (phone == "") ? "" : "Phone: " + phone + "\n";
+        updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "<br>";
+        updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "<br>";
+        updates += (phone == "") ? "" : "Phone: " + phone + "<br>";
         updates += (role == "") ? "" : "Role: " + role;
         return updates;
     }
@@ -2002,8 +2002,8 @@ let A_S_ViewComponent = class A_S_ViewComponent {
     clickInfo(staff) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Staff: ${staff.sFirstName} ${staff.sLastName}`,
-            text: `Email: ${staff.email}
-      Phone: ${staff.phone}
+            html: `Email: ${staff.email}<br>
+      Phone: ${staff.phone}<br>
       Role: ${staff.role}`,
             type: 'info'
         });
@@ -2015,20 +2015,20 @@ let A_S_ViewComponent = class A_S_ViewComponent {
     clickDelete(id) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Delete?",
-            text: "Are you sure you want to delete this staff?",
+            html: "Are you sure you want to delete this staff?",
             type: 'warning',
             showCancelButton: true,
             reverseButtons: true,
             focusCancel: true,
             cancelButtonText: "Cancel",
-            confirmButtonText: "Update",
+            confirmButtonText: "Yes",
         })
             .then((willDelete) => {
             if (willDelete.value) {
                 this.adminService.deleteStaff(id);
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Success!",
-                    text: "Staff deleted!",
+                    html: "Staff deleted!",
                     type: 'success'
                 });
             }
@@ -2146,8 +2146,8 @@ let A_V_UpdateComponent = class A_V_UpdateComponent {
     }
     viewFlag(flag, flags, index, visitorId) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-            text: `Date flagged: ${flag.date}
-      Flagged by: ${flag.staff}
+            html: `Date flagged: ${flag.date}<br>
+      Flagged by: ${flag.staff}<br>
       Reason: ${flag.reason}`,
             type: 'info',
             showCancelButton: true,
@@ -2160,7 +2160,7 @@ let A_V_UpdateComponent = class A_V_UpdateComponent {
             if (pressOk.dismiss) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Clear flag?",
-                    text: "Are you sure you want to clear this flag?",
+                    html: "Are you sure you want to clear this flag?",
                     type: 'warning',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -2185,7 +2185,7 @@ let A_V_UpdateComponent = class A_V_UpdateComponent {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -2198,7 +2198,7 @@ let A_V_UpdateComponent = class A_V_UpdateComponent {
                         this.adminService.updateVisitor(this.id, vFirstName, vLastName, phone);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -2207,7 +2207,7 @@ let A_V_UpdateComponent = class A_V_UpdateComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: "error"
                 });
             }
@@ -2215,15 +2215,15 @@ let A_V_UpdateComponent = class A_V_UpdateComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
     }
     showUpdates(sFirstName, sLastName, phone) {
         let updates = "";
-        updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "\n";
-        updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "\n";
+        updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "<br>";
+        updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "<br>";
         updates += (phone == "") ? "" : "Phone: " + phone;
         return updates;
     }
@@ -2436,8 +2436,8 @@ let A_V_ViewComponent = class A_V_ViewComponent {
     clickInfo(visitor) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Visitor: ${visitor.vFirstName} ${visitor.vLastName}`,
-            text: `Email: ${visitor.email}
-      Phone: ${visitor.phone}
+            html: `Email: ${visitor.email}<br>
+      Phone: ${visitor.phone}<br>
       Flagged: ${(visitor.flags.length != 0) ? "Yes" : "No"}`,
             type: 'info'
         });
@@ -2524,7 +2524,7 @@ let AdminService = class AdminService {
     successAddUser(userType) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
             title: "Success!",
-            text: `${Object(_functions__WEBPACK_IMPORTED_MODULE_9__["capitalize"])(userType)} added`,
+            html: `${Object(_functions__WEBPACK_IMPORTED_MODULE_9__["capitalize"])(userType)} added`,
             type: 'success'
         })
             .then(() => {
@@ -2534,7 +2534,7 @@ let AdminService = class AdminService {
     emailInUse() {
         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
             title: "Error!",
-            text: "Email is already in use!",
+            html: "Email is already in use!",
             type: 'error'
         });
     }
@@ -2750,7 +2750,7 @@ let AdminService = class AdminService {
             .then(() => {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Success!",
-                text: "Flag cleared!",
+                html: "Flag cleared!",
                 type: 'success'
             });
             this.router.navigate(['/admin', 'visitor-view']);
@@ -3270,7 +3270,7 @@ let AuthService = class AuthService {
     swalWrongIdOrPassword() {
         sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a.fire({
             title: "Error!",
-            text: "Wrong ID or Password!",
+            html: "Wrong ID or Password!",
             type: 'error'
         });
     }
@@ -3302,7 +3302,7 @@ let AuthService = class AuthService {
                             this.addUser(newID, email, 'visitor', vFirstName, password);
                             sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a.fire({
                                 title: "Account created!",
-                                text: "Your new ID has been sent to your email!",
+                                html: "Your new ID has been sent to your email!",
                                 type: 'success',
                                 confirmButtonText: "Login now!"
                             })
@@ -3313,7 +3313,7 @@ let AuthService = class AuthService {
                         else {
                             sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a.fire({
                                 title: "Error!",
-                                text: "Email is already in use!",
+                                html: "Email is already in use!",
                                 type: 'error'
                             });
                         }
@@ -3323,7 +3323,7 @@ let AuthService = class AuthService {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a.fire({
                     title: "Error!",
-                    text: "No residents found!",
+                    html: "No residents found!",
                     type: 'error'
                 });
             }
@@ -3720,7 +3720,7 @@ let C_UpdateComponent = class C_UpdateComponent {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -3733,7 +3733,7 @@ let C_UpdateComponent = class C_UpdateComponent {
                         this.contractorService.updateDetails(this.id, phone);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -3742,7 +3742,7 @@ let C_UpdateComponent = class C_UpdateComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -3750,7 +3750,7 @@ let C_UpdateComponent = class C_UpdateComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
@@ -3762,7 +3762,7 @@ let C_UpdateComponent = class C_UpdateComponent {
     provideFeedback() {
         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
             title: "Hi!",
-            text: `Since you recently visited our facility,
+            html: `Since you recently visited our facility,<br>
       do you want to provide feedback about the visit?`,
             type: 'question',
             showCancelButton: true,
@@ -3799,7 +3799,7 @@ let C_UpdateComponent = class C_UpdateComponent {
             const context = values.value.context;
             if (title != '' && context != '') {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
-                    text: `Feedback: ${title}
+                    html: `Feedback: ${title}<br>
           Details: ${context}`,
                     type: 'info',
                     showCancelButton: true,
@@ -3819,7 +3819,7 @@ let C_UpdateComponent = class C_UpdateComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Error!",
-                    text: "Please do not leave the fields empty!",
+                    html: "Please do not leave the fields empty!",
                     type: "error"
                 })
                     .then(() => {
@@ -3934,7 +3934,7 @@ let ContractorService = class ContractorService {
             });
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Submitted!",
-                text: "Thanks for the feedback!",
+                html: "Thanks for the feedback!",
                 type: 'success'
             });
         }
@@ -4030,7 +4030,7 @@ let EmailService = class EmailService {
             .then(() => {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Reset Password Email Sent!",
-                text: "Please check your inbox for a reset email!",
+                html: "Please check your inbox for a reset email!",
                 type: 'success'
             })
                 .then(() => {
@@ -4040,7 +4040,7 @@ let EmailService = class EmailService {
             .catch(() => {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Email does not exist in ACP!",
+                html: "Email does not exist in ACP!",
                 type: 'error'
             });
         });
@@ -4652,7 +4652,7 @@ let ResetPasswordComponent = class ResetPasswordComponent {
     swalError(errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     }
@@ -4862,10 +4862,10 @@ let S_FeedbackComponent = class S_FeedbackComponent {
     clickView(feedback) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: feedback.title,
-            text: `${feedback.context}
-      Author: ${feedback.author} - ${feedback.role}
-      < ${feedback.authorEmail} >
-      Date: ${feedback.date}`,
+            html: `${feedback.context}<br><br>
+      Author: ${feedback.author} - ${feedback.role}<br>
+      &lt; ${feedback.authorEmail} &gt;<br>
+      Date: ${feedback.date}<br>`,
             type: 'info'
         });
     }
@@ -5220,7 +5220,7 @@ let S_R_ScheduleComponent = class S_R_ScheduleComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -5238,7 +5238,7 @@ let S_R_ScheduleComponent = class S_R_ScheduleComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -5292,7 +5292,7 @@ let S_R_ScheduleComponent = class S_R_ScheduleComponent {
         if (this.selectedSlots.length != 0) {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Add?",
-                text: `Are you sure you want to add this booking?
+                html: `Are you sure you want to add this booking?<br>
         Visiting time: ${this.selectedSlots[0]}:00 ${dateStr}`,
                 type: 'question',
                 showCancelButton: true,
@@ -5310,7 +5310,7 @@ let S_R_ScheduleComponent = class S_R_ScheduleComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please select at least one booking slot!",
+                html: "Please select at least one booking slot!",
                 type: 'error'
             });
         }
@@ -5342,7 +5342,7 @@ let S_R_ScheduleComponent = class S_R_ScheduleComponent {
         }
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Change activity on ${dayStr} at ${hour}:00`,
-            text: `(Leave the field empty or type "Available"
+            html: `(Leave the field empty or type "Available"<br>
       if you want to make the slot vacant)`,
             input: 'text',
             inputPlaceholder: 'Activity'
@@ -5351,7 +5351,7 @@ let S_R_ScheduleComponent = class S_R_ScheduleComponent {
             const activity = (inputActivity.value == "") ? "Available" : inputActivity.value.charAt(0).toUpperCase() + inputActivity.value.toLowerCase().slice(1);
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Make changes?",
-                text: `${oldActivity} → ${activity}
+                html: `${oldActivity} → ${activity}<br>
         on ${dayStr} at ${hour}:00?`,
                 type: 'question',
                 showCancelButton: true,
@@ -5363,6 +5363,7 @@ let S_R_ScheduleComponent = class S_R_ScheduleComponent {
                 .then((willChange) => {
                 if (willChange.value) {
                     this.staffService.makeScheduleChange(this.id, activity, day, hour);
+                    this.switchSection('weekly');
                 }
             });
         });
@@ -5573,7 +5574,7 @@ let S_R_ViewComponent = class S_R_ViewComponent {
     clickInfo(resident) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
-            text: `Phone: ${resident.phone}`,
+            html: `Phone: ${resident.phone}`,
             type: 'info'
         });
     }
@@ -5798,8 +5799,8 @@ let S_V_ViewComponent = class S_V_ViewComponent {
     clickInfo(visitor) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Visitor: ${visitor.vFirstName} ${visitor.vLastName}`,
-            text: `Email: ${visitor.email}
-      Phone: ${visitor.phone}
+            html: `Email: ${visitor.email}<br>
+      Phone: ${visitor.phone}<br>
       Flagged: ${(visitor.flags.length != 0) ? "Yes" : "No"}`,
             type: 'info'
         });
@@ -5807,7 +5808,7 @@ let S_V_ViewComponent = class S_V_ViewComponent {
     clickFlag(id) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Flag?",
-            text: "Are you sure you want to flag this visitor?",
+            html: "Are you sure you want to flag this visitor?",
             type: 'warning',
             showCancelButton: true,
             reverseButtons: true,
@@ -5825,7 +5826,7 @@ let S_V_ViewComponent = class S_V_ViewComponent {
                     .then((reason) => {
                     if (reason.value != "") {
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-                            text: `Reason: ${reason}`,
+                            html: `Reason: ${reason.value}`,
                             type: 'warning',
                             showCancelButton: true,
                             reverseButtons: true,
@@ -5842,7 +5843,7 @@ let S_V_ViewComponent = class S_V_ViewComponent {
                     else {
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Error!",
-                            text: "Please give a reason!",
+                            html: "Please give a reason!",
                             type: "error"
                         });
                     }
@@ -5969,7 +5970,7 @@ let StaffService = class StaffService {
                 .then(() => {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Success!",
-                    text: "Booking added successfully!",
+                    html: "Booking added successfully!",
                     type: 'success'
                 });
                 this.router.navigate(['/staff', 'resident-view']);
@@ -5987,7 +5988,7 @@ let StaffService = class StaffService {
             .then(() => {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Success!",
-                text: "Change made!",
+                html: "Change made!",
                 type: 'success'
             });
         });
@@ -6017,7 +6018,7 @@ let StaffService = class StaffService {
                         this.afs.collection('visitors').doc(id).update({ flags: JSON.parse(JSON.stringify(flags)) });
                         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                             title: "Success!",
-                            text: "Visitor flagged!",
+                            html: "Visitor flagged!",
                             type: 'success'
                         });
                     });
@@ -6319,7 +6320,7 @@ let V_B_AddComponent = class V_B_AddComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -6337,7 +6338,7 @@ let V_B_AddComponent = class V_B_AddComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -6348,7 +6349,7 @@ let V_B_AddComponent = class V_B_AddComponent {
         if (this.selectedSlots.length != 0) {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Add?",
-                text: `Are you sure you want to add this booking?
+                html: `Are you sure you want to add this booking?<br>
         Visiting time: ${this.selectedSlots[0]}:00 ${dateStr}`,
                 type: 'question',
                 showCancelButton: true,
@@ -6366,7 +6367,7 @@ let V_B_AddComponent = class V_B_AddComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please select at least one booking slot!",
+                html: "Please select at least one booking slot!",
                 type: 'error'
             });
         }
@@ -6685,7 +6686,7 @@ let V_B_ModifyComponent = class V_B_ModifyComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -6703,7 +6704,7 @@ let V_B_ModifyComponent = class V_B_ModifyComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -6715,7 +6716,7 @@ let V_B_ModifyComponent = class V_B_ModifyComponent {
             if (this.selectedSlots.length != 0) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Modify?",
-                    text: `Are you sure you want to modify this booking?
+                    html: `Are you sure you want to modify this booking?<br>
           ${this.oldSelectedSlots[0]}:00 ${this.oldBookingDate} → ${this.selectedSlots[0]}:00 ${dateStr}`,
                     type: 'question',
                     showCancelButton: true,
@@ -6733,7 +6734,7 @@ let V_B_ModifyComponent = class V_B_ModifyComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Please select at least one booking slot!",
+                    html: "Please select at least one booking slot!",
                     type: 'error'
                 });
             }
@@ -6741,7 +6742,7 @@ let V_B_ModifyComponent = class V_B_ModifyComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "No changes made!",
+                html: "No changes made!",
                 type: 'error'
             });
         }
@@ -7019,7 +7020,7 @@ let V_B_ViewComponent = class V_B_ViewComponent {
     clickInfo(booking, status) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Booking for: ${booking.rName}`,
-            text: `Time: ${booking.timeSlots[0]}:00 ${booking.date}
+            html: `Time: ${booking.timeSlots[0]}:00 ${booking.date}<br>
       Status: ${status}`,
             type: 'info'
         });
@@ -7032,7 +7033,7 @@ let V_B_ViewComponent = class V_B_ViewComponent {
     clickCancel(id) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Cancel?",
-            text: "Are you sure you want to cancel this booking?",
+            html: "Are you sure you want to cancel this booking?",
             type: "warning",
             showCancelButton: true,
             reverseButtons: true,
@@ -7049,7 +7050,7 @@ let V_B_ViewComponent = class V_B_ViewComponent {
     provideFeedback() {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Hi!",
-            text: `Since you recently visited our facility,
+            html: `Since you recently visited our facility,<br>
       do you want to provide feedback about the visit?`,
             type: 'question',
             showCancelButton: true,
@@ -7086,7 +7087,7 @@ let V_B_ViewComponent = class V_B_ViewComponent {
             const context = values.value.context;
             if (title != '' && context != '') {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-                    text: `Feedback: ${title}
+                    html: `Feedback: ${title}<br>
           Details: ${context}`,
                     type: 'info',
                     showCancelButton: true,
@@ -7106,7 +7107,7 @@ let V_B_ViewComponent = class V_B_ViewComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Please do not leave the fields empty!",
+                    html: "Please do not leave the fields empty!",
                     type: "error"
                 })
                     .then(() => {
@@ -7209,37 +7210,37 @@ let V_RegisterComponent = class V_RegisterComponent {
         const phone = jquery__WEBPACK_IMPORTED_MODULE_3___default()('#inputPhone').val();
         const rFirstName = Object(_functions__WEBPACK_IMPORTED_MODULE_6__["capitalize"])(jquery__WEBPACK_IMPORTED_MODULE_3___default()('#inputResidentFirstName').val());
         const rLastName = Object(_functions__WEBPACK_IMPORTED_MODULE_6__["capitalize"])(jquery__WEBPACK_IMPORTED_MODULE_3___default()('#inputResidentLastName').val());
-        if (password.length >= 8) {
-            if (password == confirmPassword) {
-                if (email != "" && vFirstName != "" && vLastName != "" && phone != "" && rFirstName != "" && rLastName != "") {
-                    if (Object(_functions__WEBPACK_IMPORTED_MODULE_6__["isNumeric"])(phone)) {
-                        if (Object(_functions__WEBPACK_IMPORTED_MODULE_6__["isEmail"])(email)) {
+        if (Object(_functions__WEBPACK_IMPORTED_MODULE_6__["isEmail"])(email)) {
+            if (password.length >= 8) {
+                if (password == confirmPassword) {
+                    if (email != "" && vFirstName != "" && vLastName != "" && phone != "" && rFirstName != "" && rLastName != "") {
+                        if (Object(_functions__WEBPACK_IMPORTED_MODULE_6__["isNumeric"])(phone)) {
                             this.authService.registerVisitor(email, password, vFirstName, vLastName, phone, rFirstName, rLastName);
                         }
                         else {
-                            this.swalError("The provided email is not valid!");
+                            this.swalError("The phone number can only be digits!");
                         }
                     }
                     else {
-                        this.swalError("The provided phone number can only be digits!");
+                        this.swalError("Some fields are left empty!");
                     }
                 }
                 else {
-                    this.swalError("Some fields are left empty!");
+                    this.swalError("The password and confirmation password do not match!");
                 }
             }
             else {
-                this.swalError("The password and confirmation password do not match!");
+                this.swalError("Password must be at least 8 characters long!");
             }
         }
         else {
-            this.swalError("Password must be at least 8 characters long!");
+            this.swalError("The provided email is not valid!");
         }
     }
     swalError(errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     }
@@ -7340,7 +7341,7 @@ let V_R_AddComponent = class V_R_AddComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Some fields are left empty!",
+                html: "Some fields are left empty!",
                 type: 'error'
             });
         }
@@ -7576,7 +7577,7 @@ let V_R_ViewComponent = class V_R_ViewComponent {
     clickInfo(resident) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: `Resident: ${resident.rFirstName} ${resident.rLastName}`,
-            text: `Phone: ${resident.phone}`,
+            html: `Phone: ${resident.phone}`,
             type: 'info'
         });
     }
@@ -7587,7 +7588,7 @@ let V_R_ViewComponent = class V_R_ViewComponent {
     clickDelete(id) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Delete?",
-            text: "Are you sure you want to delete this resident?",
+            html: "Are you sure you want to delete this resident?",
             type: "warning",
             showCancelButton: true,
             reverseButtons: true,
@@ -7604,7 +7605,7 @@ let V_R_ViewComponent = class V_R_ViewComponent {
     provideFeedback() {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Hi!",
-            text: `Since you recently visited our facility,
+            html: `Since you recently visited our facility,<br>
       do you want to provide feedback about the visit?`,
             type: 'question',
             showCancelButton: true,
@@ -7641,7 +7642,7 @@ let V_R_ViewComponent = class V_R_ViewComponent {
             const context = values.value.context;
             if (title != '' && context != '') {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-                    text: `Feedback: ${title}
+                    html: `Feedback: ${title}<br>
           Details: ${context}`,
                     type: 'info',
                     showCancelButton: true,
@@ -7661,7 +7662,7 @@ let V_R_ViewComponent = class V_R_ViewComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Please do not leave the fields empty!",
+                    html: "Please do not leave the fields empty!",
                     type: "error"
                 })
                     .then(() => {
@@ -7783,7 +7784,7 @@ let V_UpdateComponent = class V_UpdateComponent {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -7796,7 +7797,7 @@ let V_UpdateComponent = class V_UpdateComponent {
                         this.visitorService.updateDetails(this.id, phone);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -7805,7 +7806,7 @@ let V_UpdateComponent = class V_UpdateComponent {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -7813,7 +7814,7 @@ let V_UpdateComponent = class V_UpdateComponent {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
@@ -7963,7 +7964,7 @@ let VisitorService = class VisitorService {
                 this.afs.collection('visitors').doc(visitor.id).update({ bookingIds: bookingIds });
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Success!",
-                    text: "Booking added successfully!",
+                    html: "Booking added successfully!",
                     type: 'success'
                 });
                 this.router.navigate(['/visitor', 'booking-view']);
@@ -7978,7 +7979,7 @@ let VisitorService = class VisitorService {
             .then(() => {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Success!",
-                text: "Booking modified successfully!",
+                html: "Booking modified successfully!",
                 type: 'success'
             });
             this.router.navigate(['/visitor', 'booking-view']);
@@ -7989,7 +7990,7 @@ let VisitorService = class VisitorService {
             .then(() => {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Success!",
-                text: "Booking cancelled!",
+                html: "Booking cancelled!",
                 type: 'success'
             });
         });
@@ -8020,7 +8021,7 @@ let VisitorService = class VisitorService {
                         visitorDoc.update({ residentIds: residentIds });
                         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                             title: "Success!",
-                            text: "Resident added!",
+                            html: "Resident added!",
                             type: 'success'
                         })
                             .then(() => {
@@ -8030,7 +8031,7 @@ let VisitorService = class VisitorService {
                     else {
                         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                             title: "Error!",
-                            text: "Resident already added!",
+                            html: "Resident already added!",
                             type: 'error'
                         });
                     }
@@ -8039,7 +8040,7 @@ let VisitorService = class VisitorService {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Error!",
-                    text: "No residents found!",
+                    html: "No residents found!",
                     type: 'error'
                 });
             }
@@ -8064,7 +8065,7 @@ let VisitorService = class VisitorService {
                 });
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Success!",
-                    text: "Resident deleted!",
+                    html: "Resident deleted!",
                     type: 'success'
                 });
             });
@@ -8093,7 +8094,7 @@ let VisitorService = class VisitorService {
             });
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Submitted!",
-                text: "Thanks for the feedback!",
+                html: "Thanks for the feedback!",
                 type: 'success'
             });
         }

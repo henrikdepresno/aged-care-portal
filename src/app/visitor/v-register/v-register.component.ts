@@ -37,31 +37,31 @@ export class V_RegisterComponent implements OnInit {
     const phone = $('#inputPhone').val();
     const rFirstName = capitalize($('#inputResidentFirstName').val());
     const rLastName = capitalize($('#inputResidentLastName').val());
-    if(password.length >= 8) {
-      if(password == confirmPassword) {
-        if(email != "" && vFirstName != "" && vLastName != "" && phone != "" && rFirstName != "" && rLastName != "") {
-          if(isNumeric(phone)) {
-            if(isEmail(email)) {
+    if(isEmail(email)) {
+      if(password.length >= 8) {
+        if(password == confirmPassword) {
+          if(email != "" && vFirstName != "" && vLastName != "" && phone != "" && rFirstName != "" && rLastName != "") {
+            if(isNumeric(phone)) {
               this.authService.registerVisitor(email, password, vFirstName, vLastName, phone, rFirstName, rLastName);
             }
             else {
-              this.swalError("The provided email is not valid!")
+              this.swalError("The phone number can only be digits!")
             }
           }
           else {
-            this.swalError("The phone number can only be digits!")
+            this.swalError("Some fields are left empty!")
           }
         }
         else {
-          this.swalError("Some fields are left empty!")
+          this.swalError("The password and confirmation password do not match!")
         }
       }
       else {
-        this.swalError("The password and confirmation password do not match!")
+        this.swalError("Password must be at least 8 characters long!")
       }
     }
     else {
-      this.swalError("Password must be at least 8 characters long!")
+      this.swalError("The provided email is not valid!")
     }
   }
 

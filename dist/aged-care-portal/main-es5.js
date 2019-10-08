@@ -453,7 +453,7 @@ var A_C_AddComponent = /** @class */ (function () {
                 }
             }
             else {
-                this.swalError("The provided phone number can only be digits!");
+                this.swalError("The phone number can only be digits!");
             }
         }
         else {
@@ -463,7 +463,7 @@ var A_C_AddComponent = /** @class */ (function () {
     A_C_AddComponent.prototype.swalError = function (errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     };
@@ -567,7 +567,7 @@ var A_C_UpdateComponent = /** @class */ (function () {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -580,7 +580,7 @@ var A_C_UpdateComponent = /** @class */ (function () {
                         _this.adminService.updateContractor(_this.id, cFirstName, cLastName, phone, companyName, field);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -589,7 +589,7 @@ var A_C_UpdateComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -597,17 +597,17 @@ var A_C_UpdateComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
     };
     A_C_UpdateComponent.prototype.showUpdates = function (cFirstName, cLastName, phone, companyName, field) {
         var updates = "";
-        updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "\n";
-        updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "\n";
-        updates += (phone == "") ? "" : "Phone: " + phone + "\n";
-        updates += (companyName == "") ? "" : "Company Name: " + companyName + "\n";
+        updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "<br>";
+        updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "<br>";
+        updates += (phone == "") ? "" : "Phone: " + phone + "<br>";
+        updates += (companyName == "") ? "" : "Company Name: " + companyName + "<br>";
         updates += (field == "") ? "" : "Field: " + field;
         return updates;
     };
@@ -826,7 +826,7 @@ var A_C_ViewComponent = /** @class */ (function () {
     A_C_ViewComponent.prototype.clickInfo = function (contractor) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Contractor: " + contractor.cFirstName + " " + contractor.cLastName,
-            text: "Email: " + contractor.email + "\n      Phone: " + contractor.phone + "\n      Company Name: " + contractor.companyName + "\n      Field: " + contractor.field,
+            html: "Email: " + contractor.email + "<br>\n      Phone: " + contractor.phone + "<br>\n      Company Name: " + contractor.companyName + "<br>\n      Field: " + contractor.field,
             type: "info"
         });
     };
@@ -838,7 +838,7 @@ var A_C_ViewComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Delete?",
-            text: "Are you sure you want to delete this contractor?",
+            html: "Are you sure you want to delete this contractor?",
             type: 'warning',
             showCancelButton: true,
             reverseButtons: true,
@@ -851,7 +851,7 @@ var A_C_ViewComponent = /** @class */ (function () {
                 _this.adminService.deleteContractor(id);
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Success!",
-                    text: "Contractor deleted!",
+                    html: "Contractor deleted!",
                     type: 'success'
                 });
             }
@@ -1083,7 +1083,7 @@ var A_FeedbackComponent = /** @class */ (function () {
     A_FeedbackComponent.prototype.clickView = function (feedback) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: feedback.title,
-            text: feedback.context + "\n      Author: " + feedback.author + " - " + feedback.role + "\n      < " + feedback.authorEmail + " >\n      Date: " + feedback.date,
+            html: feedback.context + "<br><br>\n      Author: " + feedback.author + " - " + feedback.role + "<br>\n      &lt; " + feedback.authorEmail + " &gt;<br>\n      Date: " + feedback.date,
             type: 'info'
         });
     };
@@ -1180,7 +1180,7 @@ var A_R_AddComponent = /** @class */ (function () {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone)) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Success!",
-                    text: "Resident added",
+                    html: "Resident added",
                     type: 'success'
                 })
                     .then(function () {
@@ -1188,7 +1188,7 @@ var A_R_AddComponent = /** @class */ (function () {
                 });
             }
             else {
-                this.swalError("The provided phone number can only be digits!");
+                this.swalError("The phone number can only be digits!");
             }
         }
         else {
@@ -1198,7 +1198,7 @@ var A_R_AddComponent = /** @class */ (function () {
     A_R_AddComponent.prototype.swalError = function (errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     };
@@ -1300,7 +1300,7 @@ var A_R_UpdateComponent = /** @class */ (function () {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -1313,7 +1313,7 @@ var A_R_UpdateComponent = /** @class */ (function () {
                         _this.adminService.updateResident(_this.id, rFirstName, rLastName, phone);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -1322,7 +1322,7 @@ var A_R_UpdateComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -1330,15 +1330,15 @@ var A_R_UpdateComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
     };
     A_R_UpdateComponent.prototype.showUpdates = function (cFirstName, cLastName, phone) {
         var updates = "";
-        updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "\n";
-        updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "\n";
+        updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "<br>";
+        updates += (cLastName == "") ? "" : "Last Name: " + cLastName + "<br>";
         updates += (phone == "") ? "" : "Phone: " + phone;
         return updates;
     };
@@ -1557,7 +1557,7 @@ var A_R_ViewComponent = /** @class */ (function () {
     A_R_ViewComponent.prototype.clickInfo = function (resident) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Resident: " + resident.rFirstName + " " + resident.rLastName,
-            text: "Phone: " + resident.phone,
+            html: "Phone: " + resident.phone,
             type: 'info'
         });
     };
@@ -1569,7 +1569,7 @@ var A_R_ViewComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Delete?",
-            text: "Are you sure you want to delete this resident?",
+            html: "Are you sure you want to delete this resident?",
             type: 'warning',
             showCancelButton: true,
             reverseButtons: true,
@@ -1582,7 +1582,7 @@ var A_R_ViewComponent = /** @class */ (function () {
                 _this.adminService.deleteResident(id);
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Success!",
-                    text: "Resident deleted!",
+                    html: "Resident deleted!",
                     type: 'success'
                 });
             }
@@ -1692,7 +1692,7 @@ var A_S_AddComponent = /** @class */ (function () {
                 }
             }
             else {
-                this.swalError("The provided phone number can only be digits!");
+                this.swalError("The phone number can only be digits!");
             }
         }
         else {
@@ -1702,7 +1702,7 @@ var A_S_AddComponent = /** @class */ (function () {
     A_S_AddComponent.prototype.swalError = function (errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     };
@@ -1805,7 +1805,7 @@ var A_S_UpdateComponent = /** @class */ (function () {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -1818,7 +1818,7 @@ var A_S_UpdateComponent = /** @class */ (function () {
                         _this.adminService.updateStaff(_this.id, sFirstName, sLastName, phone, role);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -1827,7 +1827,7 @@ var A_S_UpdateComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -1835,16 +1835,16 @@ var A_S_UpdateComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
     };
     A_S_UpdateComponent.prototype.showUpdates = function (sFirstName, sLastName, phone, role) {
         var updates = "";
-        updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "\n";
-        updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "\n";
-        updates += (phone == "") ? "" : "Phone: " + phone + "\n";
+        updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "<br>";
+        updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "<br>";
+        updates += (phone == "") ? "" : "Phone: " + phone + "<br>";
         updates += (role == "") ? "" : "Role: " + role;
         return updates;
     };
@@ -2063,7 +2063,7 @@ var A_S_ViewComponent = /** @class */ (function () {
     A_S_ViewComponent.prototype.clickInfo = function (staff) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Staff: " + staff.sFirstName + " " + staff.sLastName,
-            text: "Email: " + staff.email + "\n      Phone: " + staff.phone + "\n      Role: " + staff.role,
+            html: "Email: " + staff.email + "<br>\n      Phone: " + staff.phone + "<br>\n      Role: " + staff.role,
             type: 'info'
         });
     };
@@ -2075,20 +2075,20 @@ var A_S_ViewComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Delete?",
-            text: "Are you sure you want to delete this staff?",
+            html: "Are you sure you want to delete this staff?",
             type: 'warning',
             showCancelButton: true,
             reverseButtons: true,
             focusCancel: true,
             cancelButtonText: "Cancel",
-            confirmButtonText: "Update",
+            confirmButtonText: "Yes",
         })
             .then(function (willDelete) {
             if (willDelete.value) {
                 _this.adminService.deleteStaff(id);
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Success!",
-                    text: "Staff deleted!",
+                    html: "Staff deleted!",
                     type: 'success'
                 });
             }
@@ -2214,7 +2214,7 @@ var A_V_UpdateComponent = /** @class */ (function () {
     A_V_UpdateComponent.prototype.viewFlag = function (flag, flags, index, visitorId) {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-            text: "Date flagged: " + flag.date + "\n      Flagged by: " + flag.staff + "\n      Reason: " + flag.reason,
+            html: "Date flagged: " + flag.date + "<br>\n      Flagged by: " + flag.staff + "<br>\n      Reason: " + flag.reason,
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -2226,7 +2226,7 @@ var A_V_UpdateComponent = /** @class */ (function () {
             if (pressOk.dismiss) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Clear flag?",
-                    text: "Are you sure you want to clear this flag?",
+                    html: "Are you sure you want to clear this flag?",
                     type: 'warning',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -2252,7 +2252,7 @@ var A_V_UpdateComponent = /** @class */ (function () {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -2265,7 +2265,7 @@ var A_V_UpdateComponent = /** @class */ (function () {
                         _this.adminService.updateVisitor(_this.id, vFirstName, vLastName, phone);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -2274,7 +2274,7 @@ var A_V_UpdateComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: "error"
                 });
             }
@@ -2282,15 +2282,15 @@ var A_V_UpdateComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
     };
     A_V_UpdateComponent.prototype.showUpdates = function (sFirstName, sLastName, phone) {
         var updates = "";
-        updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "\n";
-        updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "\n";
+        updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "<br>";
+        updates += (sLastName == "") ? "" : "Last Name: " + sLastName + "<br>";
         updates += (phone == "") ? "" : "Phone: " + phone;
         return updates;
     };
@@ -2514,7 +2514,7 @@ var A_V_ViewComponent = /** @class */ (function () {
     A_V_ViewComponent.prototype.clickInfo = function (visitor) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Visitor: " + visitor.vFirstName + " " + visitor.vLastName,
-            text: "Email: " + visitor.email + "\n      Phone: " + visitor.phone + "\n      Flagged: " + ((visitor.flags.length != 0) ? "Yes" : "No"),
+            html: "Email: " + visitor.email + "<br>\n      Phone: " + visitor.phone + "<br>\n      Flagged: " + ((visitor.flags.length != 0) ? "Yes" : "No"),
             type: 'info'
         });
     };
@@ -2602,7 +2602,7 @@ var AdminService = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
             title: "Success!",
-            text: Object(_functions__WEBPACK_IMPORTED_MODULE_9__["capitalize"])(userType) + " added",
+            html: Object(_functions__WEBPACK_IMPORTED_MODULE_9__["capitalize"])(userType) + " added",
             type: 'success'
         })
             .then(function () {
@@ -2612,7 +2612,7 @@ var AdminService = /** @class */ (function () {
     AdminService.prototype.emailInUse = function () {
         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
             title: "Error!",
-            text: "Email is already in use!",
+            html: "Email is already in use!",
             type: 'error'
         });
     };
@@ -2833,7 +2833,7 @@ var AdminService = /** @class */ (function () {
             .then(function () {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Success!",
-                text: "Flag cleared!",
+                html: "Flag cleared!",
                 type: 'success'
             });
             _this.router.navigate(['/admin', 'visitor-view']);
@@ -3364,7 +3364,7 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.swalWrongIdOrPassword = function () {
         sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a.fire({
             title: "Error!",
-            text: "Wrong ID or Password!",
+            html: "Wrong ID or Password!",
             type: 'error'
         });
     };
@@ -3400,7 +3400,7 @@ var AuthService = /** @class */ (function () {
                             _this.addUser(newID, email, 'visitor', vFirstName, password);
                             sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a.fire({
                                 title: "Account created!",
-                                text: "Your new ID has been sent to your email!",
+                                html: "Your new ID has been sent to your email!",
                                 type: 'success',
                                 confirmButtonText: "Login now!"
                             })
@@ -3411,7 +3411,7 @@ var AuthService = /** @class */ (function () {
                         else {
                             sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a.fire({
                                 title: "Error!",
-                                text: "Email is already in use!",
+                                html: "Email is already in use!",
                                 type: 'error'
                             });
                         }
@@ -3421,7 +3421,7 @@ var AuthService = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a.fire({
                     title: "Error!",
-                    text: "No residents found!",
+                    html: "No residents found!",
                     type: 'error'
                 });
             }
@@ -3849,7 +3849,7 @@ var C_UpdateComponent = /** @class */ (function () {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -3862,7 +3862,7 @@ var C_UpdateComponent = /** @class */ (function () {
                         _this.contractorService.updateDetails(_this.id, phone);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -3871,7 +3871,7 @@ var C_UpdateComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -3879,7 +3879,7 @@ var C_UpdateComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
@@ -3892,7 +3892,7 @@ var C_UpdateComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
             title: "Hi!",
-            text: "Since you recently visited our facility,\n      do you want to provide feedback about the visit?",
+            html: "Since you recently visited our facility,<br>\n      do you want to provide feedback about the visit?",
             type: 'question',
             showCancelButton: true,
             reverseButtons: true,
@@ -3929,7 +3929,7 @@ var C_UpdateComponent = /** @class */ (function () {
             var context = values.value.context;
             if (title != '' && context != '') {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
-                    text: "Feedback: " + title + "\n          Details: " + context,
+                    html: "Feedback: " + title + "<br>\n          Details: " + context,
                     type: 'info',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -3948,7 +3948,7 @@ var C_UpdateComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Error!",
-                    text: "Please do not leave the fields empty!",
+                    html: "Please do not leave the fields empty!",
                     type: "error"
                 })
                     .then(function () {
@@ -4065,7 +4065,7 @@ var ContractorService = /** @class */ (function () {
             });
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Submitted!",
-                text: "Thanks for the feedback!",
+                html: "Thanks for the feedback!",
                 type: 'success'
             });
         }
@@ -4134,7 +4134,7 @@ var EmailService = /** @class */ (function () {
             .then(function () {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Reset Password Email Sent!",
-                text: "Please check your inbox for a reset email!",
+                html: "Please check your inbox for a reset email!",
                 type: 'success'
             })
                 .then(function () {
@@ -4144,7 +4144,7 @@ var EmailService = /** @class */ (function () {
             .catch(function () {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Email does not exist in ACP!",
+                html: "Email does not exist in ACP!",
                 type: 'error'
             });
         });
@@ -4770,7 +4770,7 @@ var ResetPasswordComponent = /** @class */ (function () {
     ResetPasswordComponent.prototype.swalError = function (errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     };
@@ -4991,7 +4991,7 @@ var S_FeedbackComponent = /** @class */ (function () {
     S_FeedbackComponent.prototype.clickView = function (feedback) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: feedback.title,
-            text: feedback.context + "\n      Author: " + feedback.author + " - " + feedback.role + "\n      < " + feedback.authorEmail + " >\n      Date: " + feedback.date,
+            html: feedback.context + "<br><br>\n      Author: " + feedback.author + " - " + feedback.role + "<br>\n      &lt; " + feedback.authorEmail + " &gt;<br>\n      Date: " + feedback.date + "<br>",
             type: 'info'
         });
     };
@@ -5358,7 +5358,7 @@ var S_R_ScheduleComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -5376,7 +5376,7 @@ var S_R_ScheduleComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -5440,7 +5440,7 @@ var S_R_ScheduleComponent = /** @class */ (function () {
         if (this.selectedSlots.length != 0) {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Add?",
-                text: "Are you sure you want to add this booking?\n        Visiting time: " + this.selectedSlots[0] + ":00 " + dateStr,
+                html: "Are you sure you want to add this booking?<br>\n        Visiting time: " + this.selectedSlots[0] + ":00 " + dateStr,
                 type: 'question',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -5457,7 +5457,7 @@ var S_R_ScheduleComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please select at least one booking slot!",
+                html: "Please select at least one booking slot!",
                 type: 'error'
             });
         }
@@ -5490,7 +5490,7 @@ var S_R_ScheduleComponent = /** @class */ (function () {
         }
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Change activity on " + dayStr + " at " + hour + ":00",
-            text: "(Leave the field empty or type \"Available\"\n      if you want to make the slot vacant)",
+            html: "(Leave the field empty or type \"Available\"<br>\n      if you want to make the slot vacant)",
             input: 'text',
             inputPlaceholder: 'Activity'
         })
@@ -5498,7 +5498,7 @@ var S_R_ScheduleComponent = /** @class */ (function () {
             var activity = (inputActivity.value == "") ? "Available" : inputActivity.value.charAt(0).toUpperCase() + inputActivity.value.toLowerCase().slice(1);
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Make changes?",
-                text: oldActivity + " \u2192 " + activity + "\n        on " + dayStr + " at " + hour + ":00?",
+                html: oldActivity + " \u2192 " + activity + "<br>\n        on " + dayStr + " at " + hour + ":00?",
                 type: 'question',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -5509,6 +5509,7 @@ var S_R_ScheduleComponent = /** @class */ (function () {
                 .then(function (willChange) {
                 if (willChange.value) {
                     _this.staffService.makeScheduleChange(_this.id, activity, day, hour);
+                    _this.switchSection('weekly');
                 }
             });
         });
@@ -5730,7 +5731,7 @@ var S_R_ViewComponent = /** @class */ (function () {
     S_R_ViewComponent.prototype.clickInfo = function (resident) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Resident: " + resident.rFirstName + " " + resident.rLastName,
-            text: "Phone: " + resident.phone,
+            html: "Phone: " + resident.phone,
             type: 'info'
         });
     };
@@ -5966,7 +5967,7 @@ var S_V_ViewComponent = /** @class */ (function () {
     S_V_ViewComponent.prototype.clickInfo = function (visitor) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Visitor: " + visitor.vFirstName + " " + visitor.vLastName,
-            text: "Email: " + visitor.email + "\n      Phone: " + visitor.phone + "\n      Flagged: " + ((visitor.flags.length != 0) ? "Yes" : "No"),
+            html: "Email: " + visitor.email + "<br>\n      Phone: " + visitor.phone + "<br>\n      Flagged: " + ((visitor.flags.length != 0) ? "Yes" : "No"),
             type: 'info'
         });
     };
@@ -5974,7 +5975,7 @@ var S_V_ViewComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Flag?",
-            text: "Are you sure you want to flag this visitor?",
+            html: "Are you sure you want to flag this visitor?",
             type: 'warning',
             showCancelButton: true,
             reverseButtons: true,
@@ -5992,7 +5993,7 @@ var S_V_ViewComponent = /** @class */ (function () {
                     .then(function (reason) {
                     if (reason.value != "") {
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-                            text: "Reason: " + reason,
+                            html: "Reason: " + reason.value,
                             type: 'warning',
                             showCancelButton: true,
                             reverseButtons: true,
@@ -6009,7 +6010,7 @@ var S_V_ViewComponent = /** @class */ (function () {
                     else {
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Error!",
-                            text: "Please give a reason!",
+                            html: "Please give a reason!",
                             type: "error"
                         });
                     }
@@ -6138,7 +6139,7 @@ var StaffService = /** @class */ (function () {
                 .then(function () {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Success!",
-                    text: "Booking added successfully!",
+                    html: "Booking added successfully!",
                     type: 'success'
                 });
                 _this.router.navigate(['/staff', 'resident-view']);
@@ -6156,7 +6157,7 @@ var StaffService = /** @class */ (function () {
             .then(function () {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Success!",
-                text: "Change made!",
+                html: "Change made!",
                 type: 'success'
             });
         });
@@ -6187,7 +6188,7 @@ var StaffService = /** @class */ (function () {
                         _this.afs.collection('visitors').doc(id).update({ flags: JSON.parse(JSON.stringify(flags)) });
                         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                             title: "Success!",
-                            text: "Visitor flagged!",
+                            html: "Visitor flagged!",
                             type: 'success'
                         });
                     });
@@ -6501,7 +6502,7 @@ var V_B_AddComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -6519,7 +6520,7 @@ var V_B_AddComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -6531,7 +6532,7 @@ var V_B_AddComponent = /** @class */ (function () {
         if (this.selectedSlots.length != 0) {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Add?",
-                text: "Are you sure you want to add this booking?\n        Visiting time: " + this.selectedSlots[0] + ":00 " + dateStr,
+                html: "Are you sure you want to add this booking?<br>\n        Visiting time: " + this.selectedSlots[0] + ":00 " + dateStr,
                 type: 'question',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -6548,7 +6549,7 @@ var V_B_AddComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please select at least one booking slot!",
+                html: "Please select at least one booking slot!",
                 type: 'error'
             });
         }
@@ -6893,7 +6894,7 @@ var V_B_ModifyComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -6911,7 +6912,7 @@ var V_B_ModifyComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Time slots must be next to each other!",
+                    html: "Time slots must be next to each other!",
                     type: 'error'
                 });
             }
@@ -6924,7 +6925,7 @@ var V_B_ModifyComponent = /** @class */ (function () {
             if (this.selectedSlots.length != 0) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Modify?",
-                    text: "Are you sure you want to modify this booking?\n          " + this.oldSelectedSlots[0] + ":00 " + this.oldBookingDate + " \u2192 " + this.selectedSlots[0] + ":00 " + dateStr,
+                    html: "Are you sure you want to modify this booking?<br>\n          " + this.oldSelectedSlots[0] + ":00 " + this.oldBookingDate + " \u2192 " + this.selectedSlots[0] + ":00 " + dateStr,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -6941,7 +6942,7 @@ var V_B_ModifyComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Please select at least one booking slot!",
+                    html: "Please select at least one booking slot!",
                     type: 'error'
                 });
             }
@@ -6949,7 +6950,7 @@ var V_B_ModifyComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "No changes made!",
+                html: "No changes made!",
                 type: 'error'
             });
         }
@@ -7238,7 +7239,7 @@ var V_B_ViewComponent = /** @class */ (function () {
     V_B_ViewComponent.prototype.clickInfo = function (booking, status) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Booking for: " + booking.rName,
-            text: "Time: " + booking.timeSlots[0] + ":00 " + booking.date + "\n      Status: " + status,
+            html: "Time: " + booking.timeSlots[0] + ":00 " + booking.date + "<br>\n      Status: " + status,
             type: 'info'
         });
     };
@@ -7251,7 +7252,7 @@ var V_B_ViewComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Cancel?",
-            text: "Are you sure you want to cancel this booking?",
+            html: "Are you sure you want to cancel this booking?",
             type: "warning",
             showCancelButton: true,
             reverseButtons: true,
@@ -7269,7 +7270,7 @@ var V_B_ViewComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Hi!",
-            text: "Since you recently visited our facility,\n      do you want to provide feedback about the visit?",
+            html: "Since you recently visited our facility,<br>\n      do you want to provide feedback about the visit?",
             type: 'question',
             showCancelButton: true,
             reverseButtons: true,
@@ -7306,7 +7307,7 @@ var V_B_ViewComponent = /** @class */ (function () {
             var context = values.value.context;
             if (title != '' && context != '') {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-                    text: "Feedback: " + title + "\n          Details: " + context,
+                    html: "Feedback: " + title + "<br>\n          Details: " + context,
                     type: 'info',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -7325,7 +7326,7 @@ var V_B_ViewComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Please do not leave the fields empty!",
+                    html: "Please do not leave the fields empty!",
                     type: "error"
                 })
                     .then(function () {
@@ -7430,37 +7431,37 @@ var V_RegisterComponent = /** @class */ (function () {
         var phone = jquery__WEBPACK_IMPORTED_MODULE_3___default()('#inputPhone').val();
         var rFirstName = Object(_functions__WEBPACK_IMPORTED_MODULE_6__["capitalize"])(jquery__WEBPACK_IMPORTED_MODULE_3___default()('#inputResidentFirstName').val());
         var rLastName = Object(_functions__WEBPACK_IMPORTED_MODULE_6__["capitalize"])(jquery__WEBPACK_IMPORTED_MODULE_3___default()('#inputResidentLastName').val());
-        if (password.length >= 8) {
-            if (password == confirmPassword) {
-                if (email != "" && vFirstName != "" && vLastName != "" && phone != "" && rFirstName != "" && rLastName != "") {
-                    if (Object(_functions__WEBPACK_IMPORTED_MODULE_6__["isNumeric"])(phone)) {
-                        if (Object(_functions__WEBPACK_IMPORTED_MODULE_6__["isEmail"])(email)) {
+        if (Object(_functions__WEBPACK_IMPORTED_MODULE_6__["isEmail"])(email)) {
+            if (password.length >= 8) {
+                if (password == confirmPassword) {
+                    if (email != "" && vFirstName != "" && vLastName != "" && phone != "" && rFirstName != "" && rLastName != "") {
+                        if (Object(_functions__WEBPACK_IMPORTED_MODULE_6__["isNumeric"])(phone)) {
                             this.authService.registerVisitor(email, password, vFirstName, vLastName, phone, rFirstName, rLastName);
                         }
                         else {
-                            this.swalError("The provided email is not valid!");
+                            this.swalError("The phone number can only be digits!");
                         }
                     }
                     else {
-                        this.swalError("The provided phone number can only be digits!");
+                        this.swalError("Some fields are left empty!");
                     }
                 }
                 else {
-                    this.swalError("Some fields are left empty!");
+                    this.swalError("The password and confirmation password do not match!");
                 }
             }
             else {
-                this.swalError("The password and confirmation password do not match!");
+                this.swalError("Password must be at least 8 characters long!");
             }
         }
         else {
-            this.swalError("Password must be at least 8 characters long!");
+            this.swalError("The provided email is not valid!");
         }
     };
     V_RegisterComponent.prototype.swalError = function (errorText) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Error!",
-            text: errorText,
+            html: errorText,
             type: 'error'
         });
     };
@@ -7564,7 +7565,7 @@ var V_R_AddComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Some fields are left empty!",
+                html: "Some fields are left empty!",
                 type: 'error'
             });
         }
@@ -7811,7 +7812,7 @@ var V_R_ViewComponent = /** @class */ (function () {
     V_R_ViewComponent.prototype.clickInfo = function (resident) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Resident: " + resident.rFirstName + " " + resident.rLastName,
-            text: "Phone: " + resident.phone,
+            html: "Phone: " + resident.phone,
             type: 'info'
         });
     };
@@ -7823,7 +7824,7 @@ var V_R_ViewComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Delete?",
-            text: "Are you sure you want to delete this resident?",
+            html: "Are you sure you want to delete this resident?",
             type: "warning",
             showCancelButton: true,
             reverseButtons: true,
@@ -7841,7 +7842,7 @@ var V_R_ViewComponent = /** @class */ (function () {
         var _this = this;
         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
             title: "Hi!",
-            text: "Since you recently visited our facility,\n      do you want to provide feedback about the visit?",
+            html: "Since you recently visited our facility,<br>\n      do you want to provide feedback about the visit?",
             type: 'question',
             showCancelButton: true,
             reverseButtons: true,
@@ -7878,7 +7879,7 @@ var V_R_ViewComponent = /** @class */ (function () {
             var context = values.value.context;
             if (title != '' && context != '') {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-                    text: "Feedback: " + title + "\n          Details: " + context,
+                    html: "Feedback: " + title + "<br>\n          Details: " + context,
                     type: 'info',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -7897,7 +7898,7 @@ var V_R_ViewComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "Please do not leave the fields empty!",
+                    html: "Please do not leave the fields empty!",
                     type: "error"
                 })
                     .then(function () {
@@ -8023,7 +8024,7 @@ var V_UpdateComponent = /** @class */ (function () {
             if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_7__["isNumeric"])(phone) || phone == "") {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "New updates:",
-                    text: updates,
+                    html: updates,
                     type: 'question',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -8036,7 +8037,7 @@ var V_UpdateComponent = /** @class */ (function () {
                         _this.visitorService.updateDetails(_this.id, phone);
                         sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                             title: "Success!",
-                            text: "Details updated!",
+                            html: "Details updated!",
                             type: 'success'
                         });
                     }
@@ -8045,7 +8046,7 @@ var V_UpdateComponent = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                     title: "Error!",
-                    text: "The provided phone number can only be digits!",
+                    html: "The phone number can only be digits!",
                     type: 'error'
                 });
             }
@@ -8053,7 +8054,7 @@ var V_UpdateComponent = /** @class */ (function () {
         else {
             sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
                 title: "Error!",
-                text: "Please update at least one field!",
+                html: "Please update at least one field!",
                 type: 'error'
             });
         }
@@ -8216,7 +8217,7 @@ var VisitorService = /** @class */ (function () {
                 _this.afs.collection('visitors').doc(visitor.id).update({ bookingIds: bookingIds });
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Success!",
-                    text: "Booking added successfully!",
+                    html: "Booking added successfully!",
                     type: 'success'
                 });
                 _this.router.navigate(['/visitor', 'booking-view']);
@@ -8232,7 +8233,7 @@ var VisitorService = /** @class */ (function () {
             .then(function () {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Success!",
-                text: "Booking modified successfully!",
+                html: "Booking modified successfully!",
                 type: 'success'
             });
             _this.router.navigate(['/visitor', 'booking-view']);
@@ -8243,7 +8244,7 @@ var VisitorService = /** @class */ (function () {
             .then(function () {
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Success!",
-                text: "Booking cancelled!",
+                html: "Booking cancelled!",
                 type: 'success'
             });
         });
@@ -8288,7 +8289,7 @@ var VisitorService = /** @class */ (function () {
                         visitorDoc_1.update({ residentIds: residentIds });
                         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                             title: "Success!",
-                            text: "Resident added!",
+                            html: "Resident added!",
                             type: 'success'
                         })
                             .then(function () {
@@ -8298,7 +8299,7 @@ var VisitorService = /** @class */ (function () {
                     else {
                         sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                             title: "Error!",
-                            text: "Resident already added!",
+                            html: "Resident already added!",
                             type: 'error'
                         });
                     }
@@ -8307,7 +8308,7 @@ var VisitorService = /** @class */ (function () {
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Error!",
-                    text: "No residents found!",
+                    html: "No residents found!",
                     type: 'error'
                 });
             }
@@ -8333,7 +8334,7 @@ var VisitorService = /** @class */ (function () {
                 });
                 sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                     title: "Success!",
-                    text: "Resident deleted!",
+                    html: "Resident deleted!",
                     type: 'success'
                 });
             });
@@ -8363,7 +8364,7 @@ var VisitorService = /** @class */ (function () {
             });
             sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
                 title: "Submitted!",
-                text: "Thanks for the feedback!",
+                html: "Thanks for the feedback!",
                 type: 'success'
             });
         }

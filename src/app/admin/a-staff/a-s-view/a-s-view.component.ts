@@ -201,7 +201,7 @@ export class A_S_ViewComponent implements OnInit {
       reverseButtons: true,
       focusCancel: true,
       cancelButtonText: "Cancel",
-      confirmButtonText: "Update",
+      confirmButtonText: "Yes",
     })
     .then((willDelete) => {
       if(willDelete.value) {
