@@ -29,7 +29,7 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname +'/dist/aged-care-portal/index.html'));
 });
 
-// start application server on port 8080
+// start application server on port 8080 (default Heroku port)
 app.listen(process.env.PORT || 8080, () => {
   console.log("The server started on port 8080");
 });
