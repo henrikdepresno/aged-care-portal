@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
@@ -19,14 +19,15 @@ export class V_B_AddComponent implements OnInit {
 
   lA = "table.list-add "
 
+  private initialClick: boolean;
+  private weeklySchedules: WeeklySchedules;
+  private today: Date;
+  private selectedSlots: number[];
+
   constructor(
     private router: Router,
     private authService: AuthService,
-    private visitorService: VisitorService,
-    @Optional() private initialClick: boolean,
-    @Optional() private weeklySchedules: WeeklySchedules,
-    @Optional() private today: Date,
-    @Optional() private selectedSlots: number[]
+    private visitorService: VisitorService
   ) { }
 
   ngOnInit() {

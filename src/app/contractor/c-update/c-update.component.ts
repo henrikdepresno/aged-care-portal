@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import QRCode from 'qrcode';
@@ -17,13 +17,14 @@ export class C_UpdateComponent implements OnInit {
 
   id: string;
 
+  private justCheckOut: boolean;
+  private cName: string;
+  private email: string;
+
   constructor(
     private router: Router,
     private authService: AuthService,
-    private contractorService: ContractorService,
-    @Optional() private justCheckOut: boolean,
-    @Optional() private cName: string,
-    @Optional() private email: string
+    private contractorService: ContractorService
   ) { }
 
   ngOnInit() {

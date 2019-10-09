@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
@@ -16,15 +16,16 @@ import { arrayConsecutive, sortNumArray } from 'src/app/functions';
 export class S_R_ScheduleComponent implements OnInit {
 
   id: string;
+  
+  private initialClick: boolean;
+  private weeklySchedules: WeeklySchedules;
+  private today: Date;
+  private selectedSlots: number[];
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private staffService: StaffService,
-    @Optional() private initialClick: boolean,
-    @Optional() private weeklySchedules: WeeklySchedules,
-    @Optional() private today: Date,
-    @Optional() private selectedSlots: number[]
+    private staffService: StaffService
   ) { }
 
   jB = "section#list-booking ";

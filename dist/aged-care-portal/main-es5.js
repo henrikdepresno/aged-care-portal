@@ -670,12 +670,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var A_C_ViewComponent = /** @class */ (function () {
-    function A_C_ViewComponent(router, authService, adminService, pagesNum, outputContractors) {
+    function A_C_ViewComponent(router, authService, adminService) {
         this.router = router;
         this.authService = authService;
         this.adminService = adminService;
-        this.pagesNum = pagesNum;
-        this.outputContractors = outputContractors;
     }
     A_C_ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -864,18 +862,14 @@ var A_C_ViewComponent = /** @class */ (function () {
     A_C_ViewComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] }
     ]; };
     A_C_ViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-a-c-view',
             template: __webpack_require__(/*! raw-loader!./a-c-view.component.html */ "./node_modules/raw-loader/index.js!./src/app/admin/a-contractor/a-c-view/a-c-view.component.html"),
             styles: [__webpack_require__(/*! ./a-c-view.component.scss */ "./src/app/admin/a-contractor/a-c-view/a-c-view.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], A_C_ViewComponent);
     return A_C_ViewComponent;
 }());
@@ -924,12 +918,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var A_FeedbackComponent = /** @class */ (function () {
-    function A_FeedbackComponent(router, authService, adminService, pagesNum, outputfeedbacks) {
+    function A_FeedbackComponent(router, authService, adminService) {
         this.router = router;
         this.authService = authService;
         this.adminService = adminService;
-        this.pagesNum = pagesNum;
-        this.outputfeedbacks = outputfeedbacks;
     }
     A_FeedbackComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1090,18 +1082,14 @@ var A_FeedbackComponent = /** @class */ (function () {
     A_FeedbackComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: src_app_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] }
     ]; };
     A_FeedbackComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-a-feedback',
             template: __webpack_require__(/*! raw-loader!./a-feedback.component.html */ "./node_modules/raw-loader/index.js!./src/app/admin/a-feedback/a-feedback.component.html"),
             styles: [__webpack_require__(/*! ./a-feedback.component.scss */ "./src/app/admin/a-feedback/a-feedback.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], A_FeedbackComponent);
     return A_FeedbackComponent;
 }());
@@ -1401,12 +1389,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var A_R_ViewComponent = /** @class */ (function () {
-    function A_R_ViewComponent(router, authService, adminService, pagesNum, outputResidents) {
+    function A_R_ViewComponent(router, authService, adminService) {
         this.router = router;
         this.authService = authService;
         this.adminService = adminService;
-        this.pagesNum = pagesNum;
-        this.outputResidents = outputResidents;
     }
     A_R_ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1595,18 +1581,14 @@ var A_R_ViewComponent = /** @class */ (function () {
     A_R_ViewComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] }
     ]; };
     A_R_ViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-a-r-view',
             template: __webpack_require__(/*! raw-loader!./a-r-view.component.html */ "./node_modules/raw-loader/index.js!./src/app/admin/a-resident/a-r-view/a-r-view.component.html"),
             styles: [__webpack_require__(/*! ./a-r-view.component.scss */ "./src/app/admin/a-resident/a-r-view/a-r-view.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], A_R_ViewComponent);
     return A_R_ViewComponent;
 }());
@@ -1907,12 +1889,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var A_S_ViewComponent = /** @class */ (function () {
-    function A_S_ViewComponent(router, authService, adminService, pagesNum, outputStaffs) {
+    function A_S_ViewComponent(router, authService, adminService) {
         this.router = router;
         this.authService = authService;
         this.adminService = adminService;
-        this.pagesNum = pagesNum;
-        this.outputStaffs = outputStaffs;
     }
     A_S_ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -2101,18 +2081,14 @@ var A_S_ViewComponent = /** @class */ (function () {
     A_S_ViewComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] }
     ]; };
     A_S_ViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-a-s-view',
             template: __webpack_require__(/*! raw-loader!./a-s-view.component.html */ "./node_modules/raw-loader/index.js!./src/app/admin/a-staff/a-s-view/a-s-view.component.html"),
             styles: [__webpack_require__(/*! ./a-s-view.component.scss */ "./src/app/admin/a-staff/a-s-view/a-s-view.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], A_S_ViewComponent);
     return A_S_ViewComponent;
 }());
@@ -2353,12 +2329,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var A_V_ViewComponent = /** @class */ (function () {
-    function A_V_ViewComponent(router, authService, adminService, pagesNum, outputVisitors) {
+    function A_V_ViewComponent(router, authService, adminService) {
         this.router = router;
         this.authService = authService;
         this.adminService = adminService;
-        this.pagesNum = pagesNum;
-        this.outputVisitors = outputVisitors;
     }
     A_V_ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -2529,18 +2503,14 @@ var A_V_ViewComponent = /** @class */ (function () {
     A_V_ViewComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _admin_service__WEBPACK_IMPORTED_MODULE_6__["AdminService"] }
     ]; };
     A_V_ViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-a-v-view',
             template: __webpack_require__(/*! raw-loader!./a-v-view.component.html */ "./node_modules/raw-loader/index.js!./src/app/admin/a-visitor/a-v-view/a-v-view.component.html"),
             styles: [__webpack_require__(/*! ./a-v-view.component.scss */ "./src/app/admin/a-visitor/a-v-view/a-v-view.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], A_V_ViewComponent);
     return A_V_ViewComponent;
 }());
@@ -3780,13 +3750,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var C_UpdateComponent = /** @class */ (function () {
-    function C_UpdateComponent(router, authService, contractorService, justCheckOut, cName, email) {
+    function C_UpdateComponent(router, authService, contractorService) {
         this.router = router;
         this.authService = authService;
         this.contractorService = contractorService;
-        this.justCheckOut = justCheckOut;
-        this.cName = cName;
-        this.email = email;
     }
     C_UpdateComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -3964,20 +3931,14 @@ var C_UpdateComponent = /** @class */ (function () {
     C_UpdateComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _auth_service__WEBPACK_IMPORTED_MODULE_6__["AuthService"] },
-        { type: _contractor_service__WEBPACK_IMPORTED_MODULE_7__["ContractorService"] },
-        { type: Boolean, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _contractor_service__WEBPACK_IMPORTED_MODULE_7__["ContractorService"] }
     ]; };
     C_UpdateComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-c-update',
             template: __webpack_require__(/*! raw-loader!./c-update.component.html */ "./node_modules/raw-loader/index.js!./src/app/contractor/c-update/c-update.component.html"),
             styles: [__webpack_require__(/*! ./c-update.component.scss */ "./src/app/contractor/c-update/c-update.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](5, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], C_UpdateComponent);
     return C_UpdateComponent;
 }());
@@ -4832,12 +4793,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var S_FeedbackComponent = /** @class */ (function () {
-    function S_FeedbackComponent(router, authService, staffService, pagesNum, outputfeedbacks) {
+    function S_FeedbackComponent(router, authService, staffService) {
         this.router = router;
         this.authService = authService;
         this.staffService = staffService;
-        this.pagesNum = pagesNum;
-        this.outputfeedbacks = outputfeedbacks;
     }
     S_FeedbackComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -4998,18 +4957,14 @@ var S_FeedbackComponent = /** @class */ (function () {
     S_FeedbackComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: src_app_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _staff_service__WEBPACK_IMPORTED_MODULE_6__["StaffService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _staff_service__WEBPACK_IMPORTED_MODULE_6__["StaffService"] }
     ]; };
     S_FeedbackComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-s-feedback',
             template: __webpack_require__(/*! raw-loader!./s-feedback.component.html */ "./node_modules/raw-loader/index.js!./src/app/staff/s-feedback/s-feedback.component.html"),
             styles: [__webpack_require__(/*! ./s-feedback.component.scss */ "./src/app/staff/s-feedback/s-feedback.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], S_FeedbackComponent);
     return S_FeedbackComponent;
 }());
@@ -5048,10 +5003,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var src_app_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/auth.service */ "./src/app/auth.service.ts");
 /* harmony import */ var _staff_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../staff.service */ "./src/app/staff/staff.service.ts");
-/* harmony import */ var _classes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../classes */ "./src/app/classes.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var src_app_functions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/functions */ "./src/app/functions.ts");
-
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var src_app_functions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/functions */ "./src/app/functions.ts");
 
 
 
@@ -5062,14 +5015,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var S_R_ScheduleComponent = /** @class */ (function () {
-    function S_R_ScheduleComponent(router, authService, staffService, initialClick, weeklySchedules, today, selectedSlots) {
+    function S_R_ScheduleComponent(router, authService, staffService) {
         this.router = router;
         this.authService = authService;
         this.staffService = staffService;
-        this.initialClick = initialClick;
-        this.weeklySchedules = weeklySchedules;
-        this.today = today;
-        this.selectedSlots = selectedSlots;
         this.jB = "section#list-booking ";
         this.jW = "section#list-weekly ";
     }
@@ -5079,15 +5028,15 @@ var S_R_ScheduleComponent = /** @class */ (function () {
         jquery__WEBPACK_IMPORTED_MODULE_3___default()('span#current-contractors').hide();
         this.validateUserType().then(function (res) {
             if (res) {
-                _this.staffService.residentId.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["mergeMap"])(function (id) {
+                _this.staffService.residentId.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["mergeMap"])(function (id) {
                     _this.id = id;
                     return _this.staffService.getResident(_this.id);
-                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["mergeMap"])(function (resident) {
+                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["mergeMap"])(function (resident) {
                     var rName = resident.rFirstName + " " + resident.rLastName;
                     _this.weeklySchedules = _this.staffService.convertWeeklySchedule(rName, resident.schedule);
                     _this.loadComponent();
                     return _this.staffService.getCurrentContractors();
-                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["mergeMap"])(function (cNumSnapshot) {
+                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["mergeMap"])(function (cNumSnapshot) {
                     jquery__WEBPACK_IMPORTED_MODULE_3___default()('strong#current-contractors-num').text(cNumSnapshot.size);
                     jquery__WEBPACK_IMPORTED_MODULE_3___default()('strong#current-contractors-num').css("user-select", "none");
                     return _this.staffService.getCurrentVisitors();
@@ -5347,7 +5296,7 @@ var S_R_ScheduleComponent = /** @class */ (function () {
     };
     S_R_ScheduleComponent.prototype.selectSlot = function (hour) {
         if (this.selectedSlots.includes(hour)) {
-            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["arrayConsecutive"])(this.selectedSlots, hour, false)) {
+            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["arrayConsecutive"])(this.selectedSlots, hour, false)) {
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.jB + 'p#task-' + hour).text("Available");
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.jB + 'div#task-div-' + hour + " > span").css({
                     'background-color': '#C4DBB3',
@@ -5364,14 +5313,14 @@ var S_R_ScheduleComponent = /** @class */ (function () {
             }
         }
         else {
-            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["arrayConsecutive"])(this.selectedSlots, hour, true)) {
+            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["arrayConsecutive"])(this.selectedSlots, hour, true)) {
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.jB + 'p#task-' + hour).text("Selected");
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.jB + 'div#task-div-' + hour + " > span").css({
                     'background-color': '#9BCCE7',
                     'cursor': 'pointer'
                 });
                 this.selectedSlots.push(hour);
-                Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["sortNumArray"])(this.selectedSlots);
+                Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["sortNumArray"])(this.selectedSlots);
             }
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
@@ -5517,22 +5466,14 @@ var S_R_ScheduleComponent = /** @class */ (function () {
     S_R_ScheduleComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: src_app_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _staff_service__WEBPACK_IMPORTED_MODULE_6__["StaffService"] },
-        { type: Boolean, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: _classes__WEBPACK_IMPORTED_MODULE_7__["WeeklySchedules"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Date, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _staff_service__WEBPACK_IMPORTED_MODULE_6__["StaffService"] }
     ]; };
     S_R_ScheduleComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-s-r-schedule',
             template: __webpack_require__(/*! raw-loader!./s-r-schedule.component.html */ "./node_modules/raw-loader/index.js!./src/app/staff/s-resident/s-r-schedule/s-r-schedule.component.html"),
             styles: [__webpack_require__(/*! ./s-r-schedule.component.scss */ "./src/app/staff/s-resident/s-r-schedule/s-r-schedule.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](5, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](6, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], S_R_ScheduleComponent);
     return S_R_ScheduleComponent;
 }());
@@ -5581,12 +5522,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var S_R_ViewComponent = /** @class */ (function () {
-    function S_R_ViewComponent(router, authService, staffService, pagesNum, outputResidents) {
+    function S_R_ViewComponent(router, authService, staffService) {
         this.router = router;
         this.authService = authService;
         this.staffService = staffService;
-        this.pagesNum = pagesNum;
-        this.outputResidents = outputResidents;
     }
     S_R_ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -5746,18 +5685,14 @@ var S_R_ViewComponent = /** @class */ (function () {
     S_R_ViewComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _staff_service__WEBPACK_IMPORTED_MODULE_6__["StaffService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _staff_service__WEBPACK_IMPORTED_MODULE_6__["StaffService"] }
     ]; };
     S_R_ViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-s-r-view',
             template: __webpack_require__(/*! raw-loader!./s-r-view.component.html */ "./node_modules/raw-loader/index.js!./src/app/staff/s-resident/s-r-view/s-r-view.component.html"),
             styles: [__webpack_require__(/*! ./s-r-view.component.scss */ "./src/app/staff/s-resident/s-r-view/s-r-view.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], S_R_ViewComponent);
     return S_R_ViewComponent;
 }());
@@ -5806,12 +5741,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var S_V_ViewComponent = /** @class */ (function () {
-    function S_V_ViewComponent(router, authService, staffService, pagesNum, outputVisitors) {
+    function S_V_ViewComponent(router, authService, staffService) {
         this.router = router;
         this.authService = authService;
         this.staffService = staffService;
-        this.pagesNum = pagesNum;
-        this.outputVisitors = outputVisitors;
     }
     S_V_ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -6025,18 +5958,14 @@ var S_V_ViewComponent = /** @class */ (function () {
     S_V_ViewComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _staff_service__WEBPACK_IMPORTED_MODULE_6__["StaffService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _staff_service__WEBPACK_IMPORTED_MODULE_6__["StaffService"] }
     ]; };
     S_V_ViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-s-v-view',
             template: __webpack_require__(/*! raw-loader!./s-v-view.component.html */ "./node_modules/raw-loader/index.js!./src/app/staff/s-visitor/s-v-view/s-v-view.component.html"),
             styles: [__webpack_require__(/*! ./s-v-view.component.scss */ "./src/app/staff/s-visitor/s-v-view/s-v-view.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], S_V_ViewComponent);
     return S_V_ViewComponent;
 }());
@@ -6251,10 +6180,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var src_app_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/auth.service */ "./src/app/auth.service.ts");
 /* harmony import */ var _visitor_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../visitor.service */ "./src/app/visitor/visitor.service.ts");
-/* harmony import */ var _classes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../classes */ "./src/app/classes.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var src_app_functions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/functions */ "./src/app/functions.ts");
-
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var src_app_functions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/functions */ "./src/app/functions.ts");
 
 
 
@@ -6265,14 +6192,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var V_B_AddComponent = /** @class */ (function () {
-    function V_B_AddComponent(router, authService, visitorService, initialClick, weeklySchedules, today, selectedSlots) {
+    function V_B_AddComponent(router, authService, visitorService) {
         this.router = router;
         this.authService = authService;
         this.visitorService = visitorService;
-        this.initialClick = initialClick;
-        this.weeklySchedules = weeklySchedules;
-        this.today = today;
-        this.selectedSlots = selectedSlots;
         this.lA = "table.list-add ";
     }
     V_B_AddComponent.prototype.ngOnInit = function () {
@@ -6280,7 +6203,7 @@ var V_B_AddComponent = /** @class */ (function () {
         this.router.navigate(['/visitor', 'booking-add']);
         this.validateUserType().then(function (res) {
             if (res) {
-                _this.visitorService.residentId.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["mergeMap"])(function (id) {
+                _this.visitorService.residentId.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["mergeMap"])(function (id) {
                     _this.id = id;
                     return _this.visitorService.getResident(_this.id);
                 }))
@@ -6491,7 +6414,7 @@ var V_B_AddComponent = /** @class */ (function () {
     };
     V_B_AddComponent.prototype.selectSlot = function (hour) {
         if (this.selectedSlots.includes(hour)) {
-            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["arrayConsecutive"])(this.selectedSlots, hour, false)) {
+            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["arrayConsecutive"])(this.selectedSlots, hour, false)) {
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.lA + 'p#task-' + hour).text("Available");
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.lA + 'div#task-div-' + hour + " > span").css({
                     'background-color': '#C4DBB3',
@@ -6508,14 +6431,14 @@ var V_B_AddComponent = /** @class */ (function () {
             }
         }
         else {
-            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["arrayConsecutive"])(this.selectedSlots, hour, true)) {
+            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["arrayConsecutive"])(this.selectedSlots, hour, true)) {
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.lA + 'p#task-' + hour).text("Selected");
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.lA + 'div#task-div-' + hour + " > span").css({
                     'background-color': '#9BCCE7',
                     'cursor': 'pointer'
                 });
                 this.selectedSlots.push(hour);
-                Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["sortNumArray"])(this.selectedSlots);
+                Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["sortNumArray"])(this.selectedSlots);
             }
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
@@ -6557,22 +6480,14 @@ var V_B_AddComponent = /** @class */ (function () {
     V_B_AddComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: src_app_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _visitor_service__WEBPACK_IMPORTED_MODULE_6__["VisitorService"] },
-        { type: Boolean, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: _classes__WEBPACK_IMPORTED_MODULE_7__["WeeklySchedules"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Date, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _visitor_service__WEBPACK_IMPORTED_MODULE_6__["VisitorService"] }
     ]; };
     V_B_AddComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-v-b-add',
             template: __webpack_require__(/*! raw-loader!./v-b-add.component.html */ "./node_modules/raw-loader/index.js!./src/app/visitor/v-booking/v-b-add/v-b-add.component.html"),
             styles: [__webpack_require__(/*! ./v-b-add.component.scss */ "./src/app/visitor/v-booking/v-b-add/v-b-add.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](5, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](6, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], V_B_AddComponent);
     return V_B_AddComponent;
 }());
@@ -6611,10 +6526,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var src_app_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/auth.service */ "./src/app/auth.service.ts");
 /* harmony import */ var _visitor_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../visitor.service */ "./src/app/visitor/visitor.service.ts");
-/* harmony import */ var _classes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../classes */ "./src/app/classes.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var src_app_functions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/functions */ "./src/app/functions.ts");
-
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var src_app_functions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/functions */ "./src/app/functions.ts");
 
 
 
@@ -6625,16 +6538,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var V_B_ModifyComponent = /** @class */ (function () {
-    function V_B_ModifyComponent(router, authService, visitorService, initialClick, weeklySchedules, selectedSlots, today, oldBookingDate, oldSelectedSlots) {
+    function V_B_ModifyComponent(router, authService, visitorService) {
         this.router = router;
         this.authService = authService;
         this.visitorService = visitorService;
-        this.initialClick = initialClick;
-        this.weeklySchedules = weeklySchedules;
-        this.selectedSlots = selectedSlots;
-        this.today = today;
-        this.oldBookingDate = oldBookingDate;
-        this.oldSelectedSlots = oldSelectedSlots;
         this.lM = "table.list-modify ";
     }
     V_B_ModifyComponent.prototype.ngOnInit = function () {
@@ -6642,13 +6549,13 @@ var V_B_ModifyComponent = /** @class */ (function () {
         this.router.navigate(['/visitor', 'booking-modify']);
         this.validateUserType().then(function (res) {
             if (res) {
-                _this.visitorService.residentId.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["mergeMap"])(function (id) {
+                _this.visitorService.residentId.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["mergeMap"])(function (id) {
                     _this.residentId = id;
                     return _this.visitorService.bookingId;
-                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["mergeMap"])(function (id) {
+                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["mergeMap"])(function (id) {
                     _this.bookingId = id;
                     return _this.visitorService.getResident(_this.residentId);
-                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["mergeMap"])(function (resident) {
+                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["mergeMap"])(function (resident) {
                     var rName = resident.rFirstName + " " + resident.rLastName;
                     _this.weeklySchedules = _this.visitorService.convertWeeklySchedule(rName, resident.schedule);
                     return _this.visitorService.getBooking(_this.bookingId);
@@ -6883,7 +6790,7 @@ var V_B_ModifyComponent = /** @class */ (function () {
     };
     V_B_ModifyComponent.prototype.selectSlot = function (hour) {
         if (this.selectedSlots.includes(hour)) {
-            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["arrayConsecutive"])(this.selectedSlots, hour, false)) {
+            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["arrayConsecutive"])(this.selectedSlots, hour, false)) {
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.lM + 'p#task-' + hour).text("Available");
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.lM + 'div#task-div-' + hour + " > span").css({
                     'background-color': '#C4DBB3',
@@ -6900,14 +6807,14 @@ var V_B_ModifyComponent = /** @class */ (function () {
             }
         }
         else {
-            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["arrayConsecutive"])(this.selectedSlots, hour, true)) {
+            if (Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["arrayConsecutive"])(this.selectedSlots, hour, true)) {
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.lM + 'p#task-' + hour).text("Selected");
                 jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.lM + 'div#task-div-' + hour + " > span").css({
                     'background-color': '#9BCCE7',
                     'cursor': 'pointer'
                 });
                 this.selectedSlots.push(hour);
-                Object(src_app_functions__WEBPACK_IMPORTED_MODULE_9__["sortNumArray"])(this.selectedSlots);
+                Object(src_app_functions__WEBPACK_IMPORTED_MODULE_8__["sortNumArray"])(this.selectedSlots);
             }
             else {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
@@ -6958,26 +6865,14 @@ var V_B_ModifyComponent = /** @class */ (function () {
     V_B_ModifyComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: src_app_auth_service__WEBPACK_IMPORTED_MODULE_5__["AuthService"] },
-        { type: _visitor_service__WEBPACK_IMPORTED_MODULE_6__["VisitorService"] },
-        { type: Boolean, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: _classes__WEBPACK_IMPORTED_MODULE_7__["WeeklySchedules"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Date, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _visitor_service__WEBPACK_IMPORTED_MODULE_6__["VisitorService"] }
     ]; };
     V_B_ModifyComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-v-b-modify',
             template: __webpack_require__(/*! raw-loader!./v-b-modify.component.html */ "./node_modules/raw-loader/index.js!./src/app/visitor/v-booking/v-b-modify/v-b-modify.component.html"),
             styles: [__webpack_require__(/*! ./v-b-modify.component.scss */ "./src/app/visitor/v-booking/v-b-modify/v-b-modify.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](5, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](6, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](7, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](8, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], V_B_ModifyComponent);
     return V_B_ModifyComponent;
 }());
@@ -7031,16 +6926,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var V_B_ViewComponent = /** @class */ (function () {
-    function V_B_ViewComponent(router, authService, visitorService, pagesNum, outputBookings, id, justCheckOut, vName, email) {
+    function V_B_ViewComponent(router, authService, visitorService) {
         this.router = router;
         this.authService = authService;
         this.visitorService = visitorService;
-        this.pagesNum = pagesNum;
-        this.outputBookings = outputBookings;
-        this.id = id;
-        this.justCheckOut = justCheckOut;
-        this.vName = vName;
-        this.email = email;
     }
     V_B_ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -7342,26 +7231,14 @@ var V_B_ViewComponent = /** @class */ (function () {
     V_B_ViewComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: src_app_auth_service__WEBPACK_IMPORTED_MODULE_6__["AuthService"] },
-        { type: _visitor_service__WEBPACK_IMPORTED_MODULE_7__["VisitorService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Boolean, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _visitor_service__WEBPACK_IMPORTED_MODULE_7__["VisitorService"] }
     ]; };
     V_B_ViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-v-b-view',
             template: __webpack_require__(/*! raw-loader!./v-b-view.component.html */ "./node_modules/raw-loader/index.js!./src/app/visitor/v-booking/v-b-view/v-b-view.component.html"),
             styles: [__webpack_require__(/*! ./v-b-view.component.scss */ "./src/app/visitor/v-booking/v-b-view/v-b-view.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](5, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](6, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](7, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](8, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], V_B_ViewComponent);
     return V_B_ViewComponent;
 }());
@@ -7634,16 +7511,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var V_R_ViewComponent = /** @class */ (function () {
-    function V_R_ViewComponent(router, authService, visitorService, pagesNum, outputResidents, id, justCheckOut, vName, email) {
+    function V_R_ViewComponent(router, authService, visitorService) {
         this.router = router;
         this.authService = authService;
         this.visitorService = visitorService;
-        this.pagesNum = pagesNum;
-        this.outputResidents = outputResidents;
-        this.id = id;
-        this.justCheckOut = justCheckOut;
-        this.vName = vName;
-        this.email = email;
     }
     V_R_ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -7914,26 +7785,14 @@ var V_R_ViewComponent = /** @class */ (function () {
     V_R_ViewComponent.ctorParameters = function () { return [
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: src_app_auth_service__WEBPACK_IMPORTED_MODULE_6__["AuthService"] },
-        { type: _visitor_service__WEBPACK_IMPORTED_MODULE_7__["VisitorService"] },
-        { type: Number, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Array, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: Boolean, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] },
-        { type: String, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }] }
+        { type: _visitor_service__WEBPACK_IMPORTED_MODULE_7__["VisitorService"] }
     ]; };
     V_R_ViewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-v-r-view',
             template: __webpack_require__(/*! raw-loader!./v-r-view.component.html */ "./node_modules/raw-loader/index.js!./src/app/visitor/v-resident/v-r-view/v-r-view.component.html"),
             styles: [__webpack_require__(/*! ./v-r-view.component.scss */ "./src/app/visitor/v-resident/v-r-view/v-r-view.component.scss")]
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](4, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](5, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](6, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](7, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])()),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](8, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"])())
+        })
     ], V_R_ViewComponent);
     return V_R_ViewComponent;
 }());

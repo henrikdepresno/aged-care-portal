@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
@@ -20,16 +20,17 @@ export class V_B_ModifyComponent implements OnInit {
 
   lM = "table.list-modify "
 
+  private initialClick: boolean;
+  private weeklySchedules: WeeklySchedules;
+  private selectedSlots: number[];
+  private today: Date;
+  private oldBookingDate: string;
+  private oldSelectedSlots: number[]
+
   constructor(
     private router: Router,
     private authService: AuthService,
-    private visitorService: VisitorService,
-    @Optional() private initialClick: boolean,
-    @Optional() private weeklySchedules: WeeklySchedules,
-    @Optional() private selectedSlots: number[],
-    @Optional() private today: Date,
-    @Optional() private oldBookingDate: string,
-    @Optional() private oldSelectedSlots: number[]
+    private visitorService: VisitorService
   ) { }
 
   ngOnInit() {

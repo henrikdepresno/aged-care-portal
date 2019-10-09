@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
@@ -16,16 +16,17 @@ import { of } from 'rxjs';
 })
 export class V_R_ViewComponent implements OnInit {
 
+  private pagesNum: number;
+  private outputResidents: Resident[][];
+  private id: string;
+  private justCheckOut: boolean;
+  private vName: string;
+  private email: string;
+
   constructor(
     private router: Router,
     private authService: AuthService,
-    private visitorService: VisitorService,
-    @Optional() private pagesNum: number,
-    @Optional() private outputResidents: Resident[][],
-    @Optional() private id: string,
-    @Optional() private justCheckOut: boolean,
-    @Optional() private vName: string,
-    @Optional() private email: string
+    private visitorService: VisitorService
   ) { }
 
   ngOnInit() {

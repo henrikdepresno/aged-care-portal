@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
@@ -14,12 +14,13 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class A_FeedbackComponent implements OnInit {
 
+  private pagesNum: number;
+  private outputfeedbacks: Feedback[][];
+
   constructor(
     private router: Router,
     private authService: AuthService,
-    private adminService: AdminService,
-    @Optional() private pagesNum: number,
-    @Optional() private outputfeedbacks: Feedback[][]
+    private adminService: AdminService
   ) { }
 
   ngOnInit() {
