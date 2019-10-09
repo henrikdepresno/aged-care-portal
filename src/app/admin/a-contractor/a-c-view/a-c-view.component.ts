@@ -14,6 +14,7 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class A_C_ViewComponent implements OnInit {
 
+  // Predefined properties
   private pagesNum: number;
   private outputContractors: Contractor[][];
 
@@ -32,15 +33,18 @@ export class A_C_ViewComponent implements OnInit {
       if(res) {
         this.adminService.getContractors().pipe(
           mergeMap(res => {
+            // Load the component with provided contractors
             this.loadComponent(res);
             return this.adminService.getCurrentContractors();
           }),
           mergeMap(cNumSnapshot => {
+            // Get number of current contractors
             $('strong#current-contractors-num').text(cNumSnapshot.size);
             $('strong#current-contractors-num').css("user-select", "none");
             return this.adminService.getCurrentVisitors();
           }))
           .subscribe(vNumSnapshot => {
+            // Get number of current visitors
             $('strong#current-visitors-num').text(vNumSnapshot.size);
             $('strong#current-visitors-num').css("user-select", "none");
           });
@@ -69,6 +73,7 @@ export class A_C_ViewComponent implements OnInit {
   loadComponent(contractors: Contractor[]) {
     $('div#pages').empty();
 
+    // Place provided contractors into paged sections
     let contractorsNum = contractors.length;
     this.pagesNum = ((contractorsNum / 8) == 0) ? 1 : Math.ceil(contractorsNum / 8);
     this.outputContractors = new Array(this.pagesNum);
@@ -82,6 +87,7 @@ export class A_C_ViewComponent implements OnInit {
       }
     }
 
+    // Pagination
     for(let iPage = 1; iPage <= this.pagesNum; iPage++) {
       $('div#pages').append('<span id="page-'+ iPage +'" class="page"><p>'+ iPage +'</p></span>');
       $('#page-'+ iPage).click(() => {
@@ -114,6 +120,7 @@ export class A_C_ViewComponent implements OnInit {
       }
     }
     
+    // Initial click on first page
     this.clickPage(1);
   }
 
@@ -121,6 +128,7 @@ export class A_C_ViewComponent implements OnInit {
     $('span.page').css('background-color', '#E9EBEC');
     $('span#page-'+ page).css('background-color', '#B0B5BA');
   
+    // First and last page number will always at the two ends
     if(this.pagesNum > 7) {
       for(let iPage = 2; iPage < this.pagesNum; iPage++) {
         $('span#page-'+ iPage).hide();
@@ -143,6 +151,7 @@ export class A_C_ViewComponent implements OnInit {
       }
     }
 
+    // Print out basic info and show the buttons only if there is a contractor exist in a particular paged section
     const output = this.outputContractors[page - 1];
     $('table#item-list-xs > tr.item').hide();
     for(let i = 1; i <= 8; i++) {
@@ -178,6 +187,7 @@ export class A_C_ViewComponent implements OnInit {
   }
 
   clickInfo(contractor: Contractor) {
+    // Return an info alert with details info
     Swal.fire({
       title: `Contractor: ${contractor.cFirstName} ${contractor.cLastName}`,
       html:
@@ -190,11 +200,13 @@ export class A_C_ViewComponent implements OnInit {
   }
 
   clickUpdate(id: string) {
+    // Pass the contractor's ID to contractor-update component
     this.adminService.passUpdateId(id);
     this.router.navigate(['/admin', 'contractor-update']);
   }
 
   clickDelete(id: string) {
+    // Return a confirmation alert
     Swal.fire({
       title: "Delete?",
       html: "Are you sure you want to delete this contractor?",
@@ -208,6 +220,7 @@ export class A_C_ViewComponent implements OnInit {
     .then((willDelete) => {
       if(willDelete.value) {
         this.adminService.deleteContractor(id);
+        // Return a success alert
         Swal.fire({
           title: "Success!",
           html: "Contractor deleted!",

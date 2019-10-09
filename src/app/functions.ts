@@ -28,15 +28,17 @@ export function randomUniqueID(idSnapshot: QuerySnapshot<any>) {
   for(let i = 0; i < idSnapshotArray.length; i++) {
     existedIDs.push(idSnapshotArray[i].id);
   }
+  // A character can be a digit (0-9) or a uppercase letter (A-Z)
   const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let newID = "";
   do {
     newID = "";
+    // Length of 5
     for(let i = 0; i < 5; i++) {
       var randomChar = chars.charAt(Math.floor(Math.random() * 36));
       newID += randomChar;
     }
-  } while (existedIDs.includes(newID));
+  } while (existedIDs.includes(newID)); // Find a new ID if there is a similar ID in the Firebase
   return newID;
 }
 
@@ -65,6 +67,7 @@ export function arrayConsecutive(arr: number[], num: number, adding: boolean) {
   let array: number[] = [];
   array = array.concat(arr);
   let isConsecutive = true;
+  // adding = true -> add to the array, adding = false -> remove from the array
   if(adding) {
     array.push(num);
     sortNumArray(array);

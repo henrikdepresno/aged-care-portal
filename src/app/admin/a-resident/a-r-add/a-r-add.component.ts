@@ -24,6 +24,7 @@ export class A_R_AddComponent implements OnInit {
 
     this.validateUserType();
 
+    // 'Enter' when selecting input fields will run
     $('#inputFirstName, #inputLastName, #inputPhone').keyup(e => {
       if(e.which == 13) {
         this.addResident();
@@ -38,11 +39,16 @@ export class A_R_AddComponent implements OnInit {
   }
 
   addResident(){
+    // Initialize temporary attributes which values taken from the input fields
+    // Capitalize some fields if needed
     const rFirstName = capitalize($('#inputFirstName').val());
     const rLastName = capitalize($('#inputLastName').val());
     const phone = $('#inputPhone').val();
+    // Check if there are any empty fields
     if(rFirstName != "" && rLastName != "" && phone != "") {
+      // Check if the provided phone number is numeric
       if(isNumeric(phone)) {
+        // Return a success alert
         Swal.fire({
           title: "Success!",
           html: "Resident added",
@@ -61,6 +67,7 @@ export class A_R_AddComponent implements OnInit {
     }
   }
 
+  // Return an error alert
   private swalError(errorText: string) {
     Swal.fire({
       title: "Error!",

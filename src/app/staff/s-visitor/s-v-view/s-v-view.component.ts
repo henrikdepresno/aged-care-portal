@@ -14,6 +14,7 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class S_V_ViewComponent implements OnInit {
 
+  // Predefined properties
   private pagesNum: number;
   private outputVisitors: Visitor[][];
 
@@ -32,15 +33,18 @@ export class S_V_ViewComponent implements OnInit {
       if(res) {
         this.staffService.getVisitors().pipe(
           mergeMap(res => {
+            // Load the component with provided visitors
             this.loadComponent(res);
             return this.staffService.getCurrentContractors();
           }),
           mergeMap(cNumSnapshot => {
+            // Get number of current contractors
             $('strong#current-contractors-num').text(cNumSnapshot.size);
             $('strong#current-contractors-num').css("user-select", "none");
             return this.staffService.getCurrentVisitors();
           }))
           .subscribe(vNumSnapshot => {
+            // Get number of current visitors
             $('strong#current-visitors-num').text(vNumSnapshot.size);
             $('strong#current-visitors-num').css("user-select", "none");
           });
@@ -69,6 +73,7 @@ export class S_V_ViewComponent implements OnInit {
   loadComponent(visitors: Visitor[]) {
     $('div#pages').empty();
 
+    // Place provided contractors into paged sections
     let visitorsNum = visitors.length;
     this.pagesNum = ((visitorsNum / 8) == 0) ? 1 : Math.ceil(visitorsNum / 8);
     this.outputVisitors = new Array(this.pagesNum);
@@ -82,6 +87,7 @@ export class S_V_ViewComponent implements OnInit {
       }
     }
 
+    // Pagination
     for(let iPage = 1; iPage <= this.pagesNum; iPage++) {
       $('div#pages').append('<span id="page-'+ iPage +'" class="page"><p>'+ iPage +'</p></span>');
       $('#page-'+ iPage).click(() => {
@@ -114,6 +120,7 @@ export class S_V_ViewComponent implements OnInit {
       }
     }
     
+    // Initial click on first page
     this.clickPage(1);
   }
 
@@ -121,6 +128,7 @@ export class S_V_ViewComponent implements OnInit {
     $('span.page').css('background-color', '#E9EBEC');
     $('span#page-'+ page).css('background-color', '#B0B5BA');
   
+    // First and last page number will always at the two ends
     if(this.pagesNum > 7) {
       for(let iPage = 2; iPage < this.pagesNum; iPage++) {
         $('span#page-'+ iPage).hide();
@@ -143,6 +151,7 @@ export class S_V_ViewComponent implements OnInit {
       }
     }
 
+    // Print out basic info and show the buttons only if there is a visitor exist in a particular paged section
     const output = this.outputVisitors[page - 1];
     $('table#item-list-xs > tr.item').hide();
     for(let i = 1; i <= 8; i++) {
@@ -183,6 +192,7 @@ export class S_V_ViewComponent implements OnInit {
   }
 
   clickInfo(visitor: Visitor) {
+    // Return an info alert with details info
     Swal.fire({
       title: `Visitor: ${visitor.vFirstName} ${visitor.vLastName}`,
       html:
@@ -194,6 +204,7 @@ export class S_V_ViewComponent implements OnInit {
   }
 
   clickFlag(id: string){
+    // Return a confirmation alert
     Swal.fire({
       title: "Flag?",
       html: "Are you sure you want to flag this visitor?",
@@ -206,6 +217,7 @@ export class S_V_ViewComponent implements OnInit {
     })
     .then((willFlag) => {
       if(willFlag.value) {
+        // Return an alert with an input text field: reason
         Swal.fire({
           input: 'text',
           inputPlaceholder: 'Reason',
@@ -213,6 +225,7 @@ export class S_V_ViewComponent implements OnInit {
         })
         .then((reason) => {
           if(reason.value != "") {
+            // Return a confirmation alert
             Swal.fire({
               html: `Reason: ${reason.value}`,
               type: 'warning',
@@ -228,7 +241,7 @@ export class S_V_ViewComponent implements OnInit {
               }
             });
           }
-          else {
+          else { // Return an alert if input field is empty
             Swal.fire({
               title: "Error!",
               html: "Please give a reason!",

@@ -14,6 +14,7 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class V_R_AddComponent implements OnInit {
 
+  // The logged contractor ID
   id: string
 
   constructor(
@@ -29,10 +30,14 @@ export class V_R_AddComponent implements OnInit {
       if(res) {
         this.visitorService.getAuthState().pipe(
           mergeMap(authState => {
+            // Get query snapshot to get logged visitor ID
             return this.visitorService.getQuerySnapshotByEmail(authState.email, 'visitor');
           }))
           .subscribe(querySnapshot => {
+            // Get the logged visitor ID
             this.id = this.visitorService.getIdFromEmailQuerySnapshot(querySnapshot);
+            
+            // 'Enter' when selecting input field will run
             $('#inputFirstName, #inputLastName').keyup(e => {
               if(e.which == 13) {
                 this.addResident();
@@ -50,13 +55,16 @@ export class V_R_AddComponent implements OnInit {
     })
   }
 
-  addResident(){
+  addResident() {
+    // Initialize temporary attribute which values taken from the input field
+    // Capitalize some fields if needed
     const rFirstName = capitalize($('#inputFirstName').val());
     const rLastName = capitalize($('#inputLastName').val());
+    // Check if there are any empty fields
     if(rFirstName != "" && rLastName != "") {
       this.visitorService.addResident(this.id, rFirstName, rLastName);
     }
-    else {
+    else { // Return an alert if there is an empty field
       Swal.fire({
         title: "Error!",
         html: "Some fields are left empty!",

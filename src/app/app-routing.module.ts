@@ -39,6 +39,8 @@ import { V_RegisterComponent } from './visitor/v-register/v-register.component';
 import { V_UpdateComponent } from './visitor/v-update/v-update.component';
 
 const routes: Routes = [
+  // Initial homepage will always navigate to the login component
+  // The main home page navigation will be handled by the login component itself later on
   { path: '', pathMatch: 'full', redirectTo: 'login'},
   {
     path: 'login', component: LoginComponent,
@@ -99,6 +101,7 @@ const routes: Routes = [
     ]
   },
   { path: '404', component: NotFoundComponent },
+  // All other undefined paths will navigate back to the 404 component
   { path: '**', redirectTo: '404' }
 ];
 

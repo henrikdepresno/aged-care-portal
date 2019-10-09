@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Component({
@@ -10,11 +9,12 @@ import { AuthService } from './auth.service';
 export class AppComponent {
 
   constructor(
-    private router: Router,
     private authService: AuthService
   ) { }
 
+  // Click the brand name to navigate back to the homepage
   clickHome() {
+    // 'false' is used - not initializing from the Login Component
     this.authService.navigateToHome(false);
   }
 }

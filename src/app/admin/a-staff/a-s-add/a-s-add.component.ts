@@ -24,6 +24,7 @@ export class A_S_AddComponent implements OnInit {
 
     this.validateUserType();
 
+    // 'Enter' when selecting input fields will run
     $('#inputFirstName, #inputLastName, #inputPhone, #inputEmail, #inputRole').keyup(e => {
       if(e.which == 13) {
         this.addStaff();
@@ -38,13 +39,18 @@ export class A_S_AddComponent implements OnInit {
   }
 
   addStaff(){
+    // Initialize temporary attributes which values taken from the input fields
+    // Capitalize some fields if needed
     const sFirstName = capitalize($('#inputFirstName').val());
     const sLastName = capitalize($('#inputLastName').val());
     const email = $('#inputEmail').val();
     const phone = $('#inputPhone').val();
     const role = capitalize($('#inputRole').val());
+    // Check if there are any empty fields
     if(sFirstName != "" && sLastName != "" && email != "" && phone != "" && role != "") {
+      // Check if the provided phone number is numeric
       if(isNumeric(phone)) {
+        // Check if the provided email is in the right format
         if(isEmail(email)) {
           this.adminService.addStaff(sFirstName, sLastName, email, phone, role);
         }
@@ -61,6 +67,7 @@ export class A_S_AddComponent implements OnInit {
     }
   }
 
+  // Return an error alert
   private swalError(errorText: string) {
     Swal.fire({
       title: "Error!",

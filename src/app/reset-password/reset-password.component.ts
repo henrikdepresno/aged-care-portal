@@ -20,6 +20,7 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/reset-password']);
 
+    // 'Enter' when selecting input fields will run
     $('#inputEmail, #inputConfirmEmail')
     .keyup(e => {
       if(e.which == 13) {
@@ -29,9 +30,12 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   submitResetEmail(){
+    // Initialize temporary attributes which values taken from the input fields
     const email = $('#inputEmail').val();
     const confirmEmail = $('#inputConfirmEmail').val();
+    // Check if the input email is in the right format
     if(isEmail(email)) {
+      // Check if the confirmation email matches the input email
       if(email == confirmEmail) {
         this.emailService.emailResetPassword(email);
       }
@@ -44,6 +48,7 @@ export class ResetPasswordComponent implements OnInit {
     }
   }
 
+  // Return an error alert
   private swalError(errorText: string) {
     Swal.fire({
       title: "Error!",

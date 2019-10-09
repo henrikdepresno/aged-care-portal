@@ -14,6 +14,7 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class A_FeedbackComponent implements OnInit {
 
+  // Predefined properties
   private pagesNum: number;
   private outputfeedbacks: Feedback[][];
 
@@ -32,11 +33,13 @@ export class A_FeedbackComponent implements OnInit {
       if(res) { 
         this.adminService.getFeedbacks().pipe(
           mergeMap(res => {
+            // Load the component with provided feedbacks (reversed)
             res = res.reverse();
             this.loadComponent(res);
             return this.adminService.getRatings();
           }),
           mergeMap(res => {
+            // Load the ratings
             $('#rating-num-1').text(res.one);
             $('#rating-num-2').text(res.two);
             $('#rating-num-3').text(res.three);
@@ -45,11 +48,13 @@ export class A_FeedbackComponent implements OnInit {
             return this.adminService.getCurrentContractors();
           }),
           mergeMap(cNumSnapshot => {
+            // Get number of current contractors
             $('strong#current-contractors-num').text(cNumSnapshot.size);
             $('strong#current-contractors-num').css("user-select", "none");
             return this.adminService.getCurrentVisitors();
           }))
           .subscribe(vNumSnapshot => {
+            // Get number of current visitors
             $('strong#current-visitors-num').text(vNumSnapshot.size);
             $('strong#current-visitors-num').css("user-select", "none");
           });
@@ -76,6 +81,9 @@ export class A_FeedbackComponent implements OnInit {
   }
 
   loadComponent(feedbacks: Feedback[]) {
+    $('div#pages').empty();
+
+    // Place provided feedbacks into paged sections
     let feedbacksNum = feedbacks.length;
     this.pagesNum = ((feedbacksNum / 8) == 0) ? 1 : Math.ceil(feedbacksNum / 8);
     this.outputfeedbacks = new Array(this.pagesNum);
@@ -89,6 +97,7 @@ export class A_FeedbackComponent implements OnInit {
       }
     }
 
+    // Pagination
     for(let iPage = 1; iPage <= this.pagesNum; iPage++) {
       $('div#pages').append('<span id="page-'+ iPage +'" class="page"><p>'+ iPage +'</p></span>');
       $('#page-'+ iPage).click(() => {
@@ -121,6 +130,7 @@ export class A_FeedbackComponent implements OnInit {
       }
     }
     
+    // Initial click on first page
     this.clickPage(1);
   }
 
@@ -128,6 +138,7 @@ export class A_FeedbackComponent implements OnInit {
     $('span.page').css('background-color', '#E9EBEC');
     $('span#page-'+ page).css('background-color', '#B0B5BA');
   
+    // First and last page number will always at the two ends
     if(this.pagesNum > 7) {
       for(let iPage = 2; iPage < this.pagesNum; iPage++) {
         $('span#page-'+ iPage).hide();
@@ -150,6 +161,7 @@ export class A_FeedbackComponent implements OnInit {
       }
     }
 
+    // Print out basic info and show the buttons only if there is a feedback exist in a particular paged section
     const output = this.outputfeedbacks[page - 1];
     $('table#item-list-xs > tr.item').hide();
     for(let i = 1; i <= 8; i++) {
@@ -179,6 +191,7 @@ export class A_FeedbackComponent implements OnInit {
   }
 
   clickView(feedback: Feedback) {
+    // Return an info alert with details info
     Swal.fire({
       title: feedback.title,
       html:

@@ -13,6 +13,7 @@ import { capitalize, isNumeric } from 'src/app/functions';
 })
 export class A_C_UpdateComponent implements OnInit {
 
+  // The selected contractor ID
   id: string;
 
   constructor(
@@ -25,7 +26,8 @@ export class A_C_UpdateComponent implements OnInit {
     this.router.navigate(['/admin', 'contractor-update']);
 
     this.validateUserType().then(res => {
-      if(res) { 
+      if(res) {
+        // Get the passed contractor ID
         this.adminService.updateId.subscribe(id => {
           this.id = id
           $('#contractorID').val(id);
@@ -33,6 +35,7 @@ export class A_C_UpdateComponent implements OnInit {
       }
     });
 
+    // 'Enter' when selecting input fields will run
     $('#inputFirstName, #inputLastName, #inputPhone, #inputCompanyName, #inputField').keyup(e => {
       if(e.which == 13) {
         this.updateContractor();
@@ -48,6 +51,8 @@ export class A_C_UpdateComponent implements OnInit {
   }
 
   updateContractor() {
+    // Initialize temporary attributes which values taken from the input fields
+    // Capitalize some fields if needed
     const cFirstName = capitalize($('#inputFirstName').val());
     const cLastName = capitalize($('#inputLastName').val());
     const phone = $('#inputPhone').val();
@@ -55,8 +60,11 @@ export class A_C_UpdateComponent implements OnInit {
     const field = capitalize($('#inputField').val());
     
     const updates = this.showUpdates(cFirstName, cLastName, phone, companyName, field)
+    // Check if there is any updates
     if(updates != "") {
+      // Check if provided phone number is numeric
       if(isNumeric(phone) || phone == "") {
+        // Return a confirmation alert
         Swal.fire({
           title: "New updates:",
           html: updates,
@@ -70,6 +78,7 @@ export class A_C_UpdateComponent implements OnInit {
         .then((willUpdate) => {
           if(willUpdate.value) {
             this.adminService.updateContractor(this.id, cFirstName, cLastName, phone, companyName, field);
+            // Return a success alert
             Swal.fire({
               title: "Success!",
               html: "Details updated!",
@@ -78,7 +87,7 @@ export class A_C_UpdateComponent implements OnInit {
           }
         })
       }
-      else {
+      else { // Return an alert if the provided phone number is not numeric
         Swal.fire({
           title: "Error!",
           html: "The phone number can only be digits!",
@@ -86,7 +95,7 @@ export class A_C_UpdateComponent implements OnInit {
         })
       }
     }
-    else {
+    else { // Return an alert if all fields are empty
       Swal.fire({
         title: "Error!",
         html: "Please update at least one field!",
@@ -95,6 +104,7 @@ export class A_C_UpdateComponent implements OnInit {
     }
   }
 
+  // Generate a string with all input updates
   private showUpdates(cFirstName, cLastName, phone, companyName, field) {
     let updates = "";
     updates += (cFirstName == "") ? "" : "First Name: " + cFirstName + "<br>";

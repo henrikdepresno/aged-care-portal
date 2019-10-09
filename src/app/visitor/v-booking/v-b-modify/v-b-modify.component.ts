@@ -15,11 +15,14 @@ import { arrayConsecutive, sortNumArray } from 'src/app/functions';
 })
 export class V_B_ModifyComponent implements OnInit {
 
+  // The selected booking ID and resident ID
   bookingId: string
   residentId: string
 
+  // Section's id for jQuery selectors
   lM = "table.list-modify "
 
+  // Predefined properties
   private initialClick: boolean;
   private weeklySchedules: WeeklySchedules;
   private selectedSlots: number[];
@@ -40,19 +43,23 @@ export class V_B_ModifyComponent implements OnInit {
       if(res) {
         this.visitorService.residentId.pipe(
           mergeMap(id => {
+            // Get the passed resident ID
             this.residentId = id;
             return this.visitorService.bookingId;
           }),
           mergeMap(id => {
+            // Get the passed booking ID
             this.bookingId = id;
             return this.visitorService.getResident(this.residentId);
           }),
           mergeMap(resident => {
+            // Convert resident's schedule
             const rName = resident.rFirstName + " " + resident.rLastName;
             this.weeklySchedules = this.visitorService.convertWeeklySchedule(rName, resident.schedule);
             return this.visitorService.getBooking(this.bookingId);
           }))
           .subscribe(booking => {
+            // Pre-select previous slots of the selected booking
             this.loadComponent(booking);
           });
       }
@@ -69,13 +76,15 @@ export class V_B_ModifyComponent implements OnInit {
   loadComponent(booking: Booking) {
     $('div#list-main > h1').text("SCHEDULE: " + this.weeklySchedules.rName);
 
+    // Initialize default values
     this.selectedSlots = [];
     this.initialClick = true;
     this.today = new Date();
     this.oldBookingDate = booking.date;
     const bookingDate = `${booking.id.substring(0, 4)}-${booking.id.substring(4, 6)}-${booking.id.substring(6, 8)}`;
+    
+    // Create a date picker (Calender to select date)
     this.datePicker(new Date(bookingDate));
-
     $('span#calendar-icon').click(() => {
       $('div#dp').show();
     });
@@ -87,6 +96,7 @@ export class V_B_ModifyComponent implements OnInit {
     this.oldSelectedSlots = booking.timeSlots;
   }
 
+  // Custom date picker generation
   datePicker(date: Date) {
     const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
     $('span#dp-prev').click(() => {
@@ -164,7 +174,7 @@ export class V_B_ModifyComponent implements OnInit {
       cellInRow++;
     }
 
-    //Calendar styling
+    // Calendar styling
     $("table#dp-body td").css({
       "padding": "5px",
       "border": "none",
@@ -188,6 +198,7 @@ export class V_B_ModifyComponent implements OnInit {
         for(let i = 7; i <= 22; i++) {
           if(daySchedule[i - 7].hour == i){
             $(this.lM + 'div#task-div-'+ i +" > span").off('click');
+            // If slot is already been booked
             if(bookedSlots.includes(i)) {
               $(this.lM + 'p#task-'+ i).text("Meeting booked");
               $(this.lM + 'div#task-div-'+ i +" > span").css({
@@ -195,6 +206,7 @@ export class V_B_ModifyComponent implements OnInit {
                 'cursor': 'not-allowed'
               });
             }
+            // If slot is not available
             else if(!daySchedule[i - 7].available){
               $(this.lM + 'p#task-'+ i).text(daySchedule[i - 7].activity);
               $(this.lM + 'div#task-div-'+ i +" > span").css({
@@ -202,6 +214,7 @@ export class V_B_ModifyComponent implements OnInit {
                 'cursor': 'not-allowed'
               });
             }
+            // If slot is available
             else {
               $(this.lM + 'p#task-'+ i).text("Available");
               $(this.lM + 'div#task-div-'+ i +" > span").css({
@@ -214,6 +227,7 @@ export class V_B_ModifyComponent implements OnInit {
             }
           }
         }
+        // If the slots are the previous selected slots of the booking
         if(dateStr == this.oldBookingDate) {
           for(let hour of this.oldSelectedSlots) {
             this.selectSlot(hour);
@@ -226,7 +240,7 @@ export class V_B_ModifyComponent implements OnInit {
   }
 
   selectSlot(hour: number) {
-    if(this.selectedSlots.includes(hour)){
+    if(this.selectedSlots.includes(hour)) { // If remove an already selected slot
       if(arrayConsecutive(this.selectedSlots, hour, false)) {
         $(this.lM + 'p#task-'+ hour).text("Available");
         $(this.lM + 'div#task-div-'+ hour +" > span").css({
@@ -235,7 +249,7 @@ export class V_B_ModifyComponent implements OnInit {
         });
         this.selectedSlots = this.selectedSlots.filter((value) => {return value != hour});
       }
-      else {
+      else { // Return an alert if the selected time slots are not consecutive to each other
         Swal.fire({
           title: "Error!",
           html: "Time slots must be next to each other!",
@@ -243,7 +257,7 @@ export class V_B_ModifyComponent implements OnInit {
         })
       }
     }
-    else {
+    else { // If select a new slot to add in
       if(arrayConsecutive(this.selectedSlots, hour, true)) {
         $(this.lM + 'p#task-'+ hour).text("Selected");
         $(this.lM + 'div#task-div-'+ hour +" > span").css({
@@ -253,7 +267,7 @@ export class V_B_ModifyComponent implements OnInit {
         this.selectedSlots.push(hour);
         sortNumArray(this.selectedSlots);
       }
-      else {
+      else { // Return an alert if the selected time slots are not consecutive to each other
         Swal.fire({
           title: "Error!",
           html: "Time slots must be next to each other!",
@@ -267,6 +281,7 @@ export class V_B_ModifyComponent implements OnInit {
     const dateStr = $('p.p-date').text();
     if(this.oldBookingDate != dateStr || (this.oldBookingDate == dateStr && JSON.stringify(this.oldSelectedSlots) != JSON.stringify(this.selectedSlots))) {
       if(this.selectedSlots.length != 0) {
+        // Return a confirmation alert
         Swal.fire({
           title: "Modify?",
           html: `Are you sure you want to modify this booking?<br>
@@ -284,7 +299,7 @@ export class V_B_ModifyComponent implements OnInit {
           }
         })
       }
-      else {
+      else { // Return an alert if no time slots are selected
         Swal.fire({
           title: "Error!",
           html: "Please select at least one booking slot!",
@@ -292,7 +307,7 @@ export class V_B_ModifyComponent implements OnInit {
         })
       }
     }
-    else {
+    else { // Return an alert if the input booking matches the old one
       Swal.fire({
         title: "Error!",
         html: "No changes made!",

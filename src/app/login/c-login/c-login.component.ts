@@ -20,6 +20,7 @@ export class C_LoginComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/login', 'login-c']);
     this.loginComponent.spanLogin('c');
+    // 'Enter' when selecting input fields will run
     $('#inputContractorID, #inputContractorPassword').keyup(e => {
       if(e.which == 13) {
         this.loginContractor();
@@ -28,8 +29,10 @@ export class C_LoginComponent implements OnInit {
   }
 
   loginContractor() {
+    // Initialize temporary attributes which values taken from the input fields
     const id = $('#inputContractorID').val().toUpperCase();
     const password = $('#inputContractorPassword').val();
+    // Login with input ID and password as a contractor
     this.authService.login(id, password, "contractor");
   }
 

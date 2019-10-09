@@ -13,9 +13,10 @@ export class EmailService {
     private router: Router
   ) { }
 
+  // Create a new account email instance for send-email POST requests
   emailNewAccount(email: string, id: string, firstName: string, userType: string, password?: string) {
     let text = "";
-    if(userType == 'visitor') {
+    if(userType == 'visitor') { // If the new user is a visitor, do not include the input password
       text = `
       Hello ${firstName},
 
@@ -23,16 +24,16 @@ export class EmailService {
       ID: ${id}
 
       You can log in to your account here:
-      http://localhost:4200/login/login-${userType.charAt(0)}
+      http://aged-care.herokuapp.com/login/login-${userType.charAt(0)}
 
       You can also reset your password here if you forget:
-      http://localhost:4200/reset-password
+      http://aged-care.herokuapp.com/reset-password
       
       Welcome to ACP,
       Your ACP team
       `
     }
-    else {
+    else { // Must include the generated password with other user types
       text = `
       Hello ${firstName},
 
@@ -41,10 +42,10 @@ export class EmailService {
       Password: ${password}
 
       You can log in to your account here:
-      http://localhost:4200/login/login-${userType.charAt(0)}
+      http://aged-care.herokuapp.com/login/login-${userType.charAt(0)}
 
       You can also reset your password here:
-      http://localhost:4200/reset-password
+      http://aged-care.herokuapp.com/reset-password
       
       Welcome to ACP,
       Your ACP team
@@ -58,6 +59,7 @@ export class EmailService {
     return data;
   }
 
+  // Return an appropriate alert to check if the input email exists in Firebase
   emailResetPassword(email: string) {
     this.afAuth.auth.sendPasswordResetEmail(email)
       .then(() => {

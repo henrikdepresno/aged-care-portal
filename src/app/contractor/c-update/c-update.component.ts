@@ -15,8 +15,10 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class C_UpdateComponent implements OnInit {
 
+  // The logged contractor ID
   id: string;
 
+  // Predefined properties
   private justCheckOut: boolean;
   private cName: string;
   private email: string;
@@ -34,14 +36,18 @@ export class C_UpdateComponent implements OnInit {
       if(res) {
         this.contractorService.getAuthState().pipe(
           mergeMap(authState => {
+            // Get query snapshot to get logged contractor ID
             return this.contractorService.getQuerySnapshotByEmail(authState.email, 'contractor');
           }),
           mergeMap(querySnapshot => {
+            // Get the logged contractor ID
             this.id = this.contractorService.getIdFromEmailQuerySnapshot(querySnapshot);
+            // Generate QR code to canvas
             QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
             return this.contractorService.getContractorById(this.id)
           }))
           .subscribe(contractor => {
+            // Get certain info from contractor to ask for feedback
             this.justCheckOut = contractor.justCheckOut;
             this.cName = contractor.cFirstName + ' ' + contractor.cLastName
             this.email = contractor.email
@@ -52,6 +58,7 @@ export class C_UpdateComponent implements OnInit {
       }
     });
 
+    // 'Enter' when selecting input field will run
     $('#inputPhone').keyup(e => {
       if(e.which == 13) {
         this.updateDetails();
@@ -67,6 +74,7 @@ export class C_UpdateComponent implements OnInit {
   }
 
   toggleQRCode(toggle: boolean) {
+    // Lock user from scrolling the webpage when QR canvas is shown
     if(toggle) {
       $('div#qr-container').show();
       $('body').addClass('stop-scrolling');
@@ -85,11 +93,15 @@ export class C_UpdateComponent implements OnInit {
   }
 
   updateDetails(){
+    // Initialize temporary attribute which values taken from the input field
     const phone = $('#inputPhone').val();
     
     const updates = this.showUpdates(phone)
+    // Check if there is any updates
     if(updates != "") {
+      // Check if provided phone number is numeric
       if(isNumeric(phone) || phone == "") {
+        // Return a confirmation alert
         Swal.fire({
           title: "New updates:",
           html: updates,
@@ -103,6 +115,7 @@ export class C_UpdateComponent implements OnInit {
         .then((willUpdate) => {
           if(willUpdate.value) {
             this.contractorService.updateDetails(this.id, phone);
+            // Return a success alert
             Swal.fire({
               title: "Success!",
               html: "Details updated!",
@@ -111,7 +124,7 @@ export class C_UpdateComponent implements OnInit {
           }
         });
       }
-      else {
+      else { // Return an alert if the provided phone number is not numeric
         Swal.fire({
           title: "Error!",
           html: "The phone number can only be digits!",
@@ -119,7 +132,7 @@ export class C_UpdateComponent implements OnInit {
         })
       }
     }
-    else {
+    else { // Return an alert if all fields are empty
       Swal.fire({
         title: "Error!",
         html: "Please update at least one field!",
@@ -128,12 +141,15 @@ export class C_UpdateComponent implements OnInit {
     }
   }
 
+  // Generate a string with all input updates
   private showUpdates(phone) {
     let updates = (phone == "") ? "" : "Phone: " + phone;
     return updates;
   }
 
+  // Only run if justCheckOut = true
   provideFeedback() {
+    // Return an alert asking for feedback
     Swal.fire({
       title: "Hi!",
       html: `Since you recently visited our facility,<br>
@@ -145,10 +161,10 @@ export class C_UpdateComponent implements OnInit {
       confirmButtonText: "Yes"
     })
     .then((willProvide) => {
-      if(willProvide.value) {
+      if(willProvide.value) { // If willing to provide
         this.provideContext();
       }
-      else {
+      else { // If not, stop the asking loop
         this.contractorService.provideFeedback(this.id, false)
       }
     });
@@ -157,6 +173,7 @@ export class C_UpdateComponent implements OnInit {
   private provideContext(inputTitle?: string, inputContext?: string) {
     inputTitle = (inputTitle == undefined) ? '' : inputTitle;
     inputContext = (inputContext == undefined)? '' : inputContext;
+    // Return an alert with two input text fields: title & context
     Swal.fire({
       title: 'Please provide details of your visit',
       html:
@@ -174,6 +191,7 @@ export class C_UpdateComponent implements OnInit {
       const title = values.value.title;
       const context = values.value.context;
       if(title != '' && context != '') {
+        // Return a confirmation alert
         Swal.fire({
           html: `Feedback: ${title}<br>
           Details: ${context}`,
@@ -185,20 +203,23 @@ export class C_UpdateComponent implements OnInit {
         })
         .then((confirmFeedback) => {
           if(confirmFeedback.value) {
+            // Add the feedback to the collection and stop the asking loop
             this.contractorService.provideFeedback(this.id, true, this.cName, this.email, title, context)
           }
           else {
+            // Loop back to ask if the contractor want to provide a feedback
             this.provideFeedback();
           }
         })
       }
-      else {
+      else { // Return an alert if both fields are empty
         Swal.fire({
           title: "Error!",
           html: "Please do not leave the fields empty!",
           type: "error"
         })
         .then(() => {
+          // Loop back to two fields with the previous inputs
           this.provideContext(title, context);
         })
       }

@@ -15,6 +15,7 @@ import { Flag } from 'src/app/classes';
 })
 export class A_V_UpdateComponent implements OnInit {
 
+  // The selected visitor ID
   id: string;
 
   constructor(
@@ -30,17 +31,20 @@ export class A_V_UpdateComponent implements OnInit {
       if(res) { 
         this.adminService.updateId.pipe(
           mergeMap(id => {
+            // Get the passed visitor ID
             this.id = id
             $('#visitorID').val(id);
             return this.adminService.getVisitor(id);
-          })
-        ).subscribe(res => {
-          let flags = res.flags;
-          this.loadFlagTable(flags);
-        });
+          }))
+          .subscribe(res => {
+            // Get the visitor's flags array
+            let flags = res.flags;
+            this.loadFlagTable(flags);
+          });
       }
     });
 
+    // 'Enter' when selecting input fields will run
     $('#inputFirstName, #inputLastName, #inputPhone').keyup(e => {
       if(e.which == 13) {
         this.updateVisitor();
@@ -68,6 +72,7 @@ export class A_V_UpdateComponent implements OnInit {
   }
 
   viewFlag(flag: Flag, flags: Flag[], index: number, visitorId: string) {
+    // Return flag's info with a clear flag button
     Swal.fire({
       html: `Date flagged: ${flag.date}<br>
       Flagged by: ${flag.staff}<br>
@@ -80,7 +85,8 @@ export class A_V_UpdateComponent implements OnInit {
       confirmButtonText: "OK"
     })
     .then((pressOk) => {
-      if(pressOk.dismiss) {
+      if(pressOk.dismiss) { // If click clear flag
+        // Return a confirmation alert
         Swal.fire({
           title: "Clear flag?",
           html: "Are you sure you want to clear this flag?",
@@ -101,13 +107,18 @@ export class A_V_UpdateComponent implements OnInit {
   }
 
   updateVisitor(){
+    // Initialize temporary attributes which values taken from the input fields
+    // Capitalize some fields if needed
     const vFirstName = capitalize($('#inputFirstName').val());
     const vLastName = capitalize($('#inputLastName').val());
     const phone = $('#inputPhone').val();
     
     const updates = this.showUpdates(vFirstName, vLastName, phone)
+    // Check if there is any updates
     if(updates != "") {
+      // Check if provided phone number is numeric
       if(isNumeric(phone) || phone == "") {
+        // Return a confirmation alert
         Swal.fire({
           title: "New updates:",
           html: updates,
@@ -121,6 +132,7 @@ export class A_V_UpdateComponent implements OnInit {
         .then((willUpdate) => {
           if(willUpdate.value) {
             this.adminService.updateVisitor(this.id, vFirstName, vLastName, phone);
+            // Return a success alert
             Swal.fire({
               title: "Success!",
               html: "Details updated!",
@@ -130,7 +142,7 @@ export class A_V_UpdateComponent implements OnInit {
         });
       }
       else {
-        Swal.fire({
+        Swal.fire({ // Return an alert if the provided phone number is not numeric
           title: "Error!",
           html: "The phone number can only be digits!",
           type: "error"
@@ -138,7 +150,7 @@ export class A_V_UpdateComponent implements OnInit {
       }
     }
     else {
-      Swal.fire({
+      Swal.fire({ // Return an alert if all fields are empty
         title: "Error!",
         html: "Please update at least one field!",
         type: 'error'
@@ -146,6 +158,7 @@ export class A_V_UpdateComponent implements OnInit {
     }
   }
 
+  // Generate a string with all input updates
   private showUpdates(sFirstName, sLastName, phone) {
     let updates = "";
     updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "<br>";

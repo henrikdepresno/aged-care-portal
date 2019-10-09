@@ -15,10 +15,13 @@ import { arrayConsecutive, sortNumArray } from 'src/app/functions';
 })
 export class V_B_AddComponent implements OnInit {
 
+  // The selected resident ID
   id: string
 
+  // Section's id for jQuery selectors
   lA = "table.list-add "
 
+  // Predefined properties
   private initialClick: boolean;
   private weeklySchedules: WeeklySchedules;
   private today: Date;
@@ -37,10 +40,12 @@ export class V_B_AddComponent implements OnInit {
       if(res) {
         this.visitorService.residentId.pipe(
           mergeMap(id => {
+            // Get the passed resident ID
             this.id = id;
             return this.visitorService.getResident(this.id);
           }))
           .subscribe(resident => {
+            // Convert resident's schedule
             const rName = resident.rFirstName + " " + resident.rLastName;
             this.weeklySchedules = this.visitorService.convertWeeklySchedule(rName, resident.schedule);
             this.loadComponent();
@@ -59,10 +64,12 @@ export class V_B_AddComponent implements OnInit {
   loadComponent() {
     $('div#list-main > h1').text("SCHEDULE: " + this.weeklySchedules.rName);
 
+    // Initialize default values
     this.selectedSlots = [];
     this.initialClick = true;
     this.today = new Date();
 
+    // Create a date picker (Calender to select date)
     this.datePicker(this.today);
     $('span#calendar-icon').click(() => {
       $('div#dp').show();
@@ -73,6 +80,7 @@ export class V_B_AddComponent implements OnInit {
     });
   }
 
+  // Custom date picker generation
   datePicker(date: Date) {
     const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
     $('span#dp-prev').click(() => {
@@ -150,7 +158,7 @@ export class V_B_AddComponent implements OnInit {
       cellInRow++;
     }
 
-    //Calendar styling
+    // Calendar styling
     $("table#dp-body td").css({
       "padding": "5px",
       "border": "none",
@@ -173,6 +181,7 @@ export class V_B_AddComponent implements OnInit {
         for(let i = 7; i <= 22; i++) {
           if(daySchedule[i - 7].hour == i){
             $(this.lA + 'div#task-div-'+ i +" > span").off('click');
+            // If slot is already been booked
             if(bookedSlots.includes(i)) {
               $(this.lA + 'p#task-'+ i).text("Meeting booked");
               $(this.lA + 'div#task-div-'+ i +" > span").css({
@@ -180,6 +189,7 @@ export class V_B_AddComponent implements OnInit {
                 'cursor': 'not-allowed'
               });
             }
+            // If slot is not available
             else if(!daySchedule[i - 7].available){
               $(this.lA + 'p#task-'+ i).text(daySchedule[i - 7].activity);
               $(this.lA + 'div#task-div-'+ i +" > span").css({
@@ -187,6 +197,7 @@ export class V_B_AddComponent implements OnInit {
                 'cursor': 'not-allowed'
               });
             }
+            // If slot is available
             else {
               $(this.lA + 'p#task-'+ i).text("Available");
               $(this.lA + 'div#task-div-'+ i +" > span").css({
@@ -203,7 +214,7 @@ export class V_B_AddComponent implements OnInit {
   }
 
   selectSlot(hour: number) {
-    if(this.selectedSlots.includes(hour)){
+    if(this.selectedSlots.includes(hour)) { // If remove an already selected slot
       if(arrayConsecutive(this.selectedSlots, hour, false)) {
         $(this.lA + 'p#task-'+ hour).text("Available");
         $(this.lA + 'div#task-div-'+ hour +" > span").css({
@@ -212,7 +223,7 @@ export class V_B_AddComponent implements OnInit {
         });
         this.selectedSlots = this.selectedSlots.filter((value) => {return value != hour});
       }
-      else {
+      else { // Return an alert if the selected time slots are not consecutive to each other
         Swal.fire({
           title: "Error!",
           html: "Time slots must be next to each other!",
@@ -220,7 +231,7 @@ export class V_B_AddComponent implements OnInit {
         })
       }
     }
-    else {
+    else { // If select a new slot to add in
       if(arrayConsecutive(this.selectedSlots, hour, true)) {
         $(this.lA + 'p#task-'+ hour).text("Selected");
         $(this.lA + 'div#task-div-'+ hour +" > span").css({
@@ -230,7 +241,7 @@ export class V_B_AddComponent implements OnInit {
         this.selectedSlots.push(hour);
         sortNumArray(this.selectedSlots);
       }
-      else {
+      else { // Return an alert if the selected time slots are not consecutive to each other
         Swal.fire({
           title: "Error!",
           html: "Time slots must be next to each other!",
@@ -243,6 +254,7 @@ export class V_B_AddComponent implements OnInit {
   addBooking() {
     const dateStr = $('p.p-date').text();
     if(this.selectedSlots.length != 0) {
+      // Return a confirmation alert
       Swal.fire({
         title: "Add?",
         html: `Are you sure you want to add this booking?<br>
@@ -260,7 +272,7 @@ export class V_B_AddComponent implements OnInit {
         }
       })
     }
-    else {
+    else { // Return an alert if no time slots are selected
       Swal.fire({
         title: "Error!",
         html: "Please select at least one booking slot!",

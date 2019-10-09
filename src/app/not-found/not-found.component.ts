@@ -18,7 +18,9 @@ export class NotFoundComponent implements OnInit {
     this.router.navigate(['/404']);
   }
   
+  // Click on the go to homepage button
   clickHome() {
+    // 'false' is used - not initializing from the Login Component
     this.authService.navigateToHome(false);
   }
 

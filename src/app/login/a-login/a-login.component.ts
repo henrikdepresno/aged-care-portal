@@ -20,6 +20,7 @@ export class A_LoginComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/login', 'login-a']);
     this.loginComponent.spanLogin('a');
+    // 'Enter' when selecting input fields will run
     $('#inputAdminID, #inputAdminPassword').keyup(e => {
       if(e.which == 13) {
         this.loginAdmin();
@@ -28,8 +29,10 @@ export class A_LoginComponent implements OnInit {
   }
 
   loginAdmin() {
+    // Initialize temporary attributes which values taken from the input fields
     const id = $('#inputAdminID').val().toUpperCase();
     const password = $('#inputAdminPassword').val();
+    // Login with input ID and password as an admin
     this.authService.login(id, password, "admin");
   }
 

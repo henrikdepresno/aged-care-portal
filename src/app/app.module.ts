@@ -57,10 +57,13 @@ import { AdminService } from './admin/admin.service';
 
 @NgModule({
   declarations: [
+    // Main application component
     AppComponent,
     
+    // 404 component
     NotFoundComponent,
 
+    // All login components
     LoginComponent,
     A_LoginComponent,
     C_LoginComponent,
@@ -68,6 +71,7 @@ import { AdminService } from './admin/admin.service';
     V_LoginComponent,
     ResetPasswordComponent,
 
+    // All components for admins
     A_C_AddComponent,
     A_C_UpdateComponent,
     A_C_ViewComponent,
@@ -81,13 +85,16 @@ import { AdminService } from './admin/admin.service';
     A_V_UpdateComponent,
     A_V_ViewComponent,
 
+    // All components for contractors
     C_UpdateComponent,
 
+    // All components for staffs
     S_FeedbackComponent,
     S_R_ScheduleComponent,
     S_R_ViewComponent,
     S_V_ViewComponent,
 
+    // All components for visitors
     V_B_AddComponent,
     V_B_ModifyComponent,
     V_B_ViewComponent,
@@ -99,13 +106,18 @@ import { AdminService } from './admin/admin.service';
   ],
   imports: [
     BrowserModule,
+    // Used to navigate through the Angular components
     AppRoutingModule,
+    // Used to manage the Firebase Authentication and Firestore 
+    // Initialize the Firebase using the Web API Key in environment.ts
     AngularFireModule.initializeApp(environment.firebase, 'aged-care-portal'),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    // Used to make POST requests to the Express server
     HttpClientModule
   ],
   providers: [
+    // All the main Angular services
     AuthService,
     VisitorService,
     ContractorService,

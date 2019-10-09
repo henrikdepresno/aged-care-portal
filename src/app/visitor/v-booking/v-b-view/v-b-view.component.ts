@@ -16,6 +16,7 @@ import { of } from 'rxjs'
 })
 export class V_B_ViewComponent implements OnInit {
 
+  // Predefined properties
   private pagesNum: number;
   private outputBookings: Booking[][];
   private id: string;
@@ -36,26 +37,34 @@ export class V_B_ViewComponent implements OnInit {
       if(res) {
         this.visitorService.getAuthState().pipe(
           mergeMap(authState => {
+            // Get query snapshot to get logged visitor ID
             return this.visitorService.getQuerySnapshotByEmail(authState.email, 'visitor');
           }),
           mergeMap(querySnapshot => {
+            // Get the logged visitor ID
             this.id = this.visitorService.getIdFromEmailQuerySnapshot(querySnapshot);
+            // Generate QR code to canvas
             QRCode.toCanvas(document.getElementById('qrcode'), this.id, {scale: 9});
             return this.visitorService.getVisitorById(this.id);
           }),
           mergeMap(visitor => {
+            // Get certain info from visitor to ask for feedback
             this.justCheckOut = visitor.justCheckOut;
             this.vName = visitor.vFirstName + ' ' + visitor.vLastName
             this.email = visitor.email
             if(visitor.bookingIds.length != 0) {
               return this.visitorService.getBookings(visitor.bookingIds);
             }
-            else {
+            else { // Prevent 'undefined' instead of an empty array
               return of([]);
             }
           }))
           .subscribe(bookings => {
+            // Load the component with provided bookings
             this.loadComponent(bookings);
+            if(this.justCheckOut) {
+              this.provideFeedback();
+            }
           });
       }
     });
@@ -69,6 +78,7 @@ export class V_B_ViewComponent implements OnInit {
   }
 
   toggleQRCode(toggle: boolean) {
+    // Lock user from scrolling the webpage when QR canvas is shown
     if(toggle) {
       $('div#qr-container').show();
       $('body').addClass('stop-scrolling');
@@ -89,6 +99,7 @@ export class V_B_ViewComponent implements OnInit {
   loadComponent(bookings: Booking[]) {
     $('div#pages').empty();
 
+    // Place provided bookings into paged sections
     let booksNum = bookings.length;
     this.pagesNum = ((booksNum / 8) == 0) ? 1 : Math.ceil(booksNum / 8);
     this.outputBookings = new Array(this.pagesNum);
@@ -102,6 +113,7 @@ export class V_B_ViewComponent implements OnInit {
       }
     }
 
+    // Pagination
     for(let iPage = 1; iPage <= this.pagesNum; iPage++) {
       $('div#pages').append('<span id="page-'+ iPage +'" class="page"><p>'+ iPage +'</p></span>');
       $('#page-'+ iPage).click(() => {
@@ -133,17 +145,15 @@ export class V_B_ViewComponent implements OnInit {
       }
     }
     
+    // Initial click on first page
     this.clickPage(1);
-    
-    if(this.justCheckOut) {
-      this.provideFeedback();
-    }
   }
 
   clickPage(page: number) {
     $('span.page').css('background-color', '#E9EBEC');
     $('span#page-'+ page).css('background-color', '#B0B5BA');
   
+    // First and last page number will always at the two ends
     if(this.pagesNum > 7) {
       for(let iPage = 2; iPage < this.pagesNum; iPage++) {
         $('span#page-'+ iPage).hide();
@@ -166,6 +176,7 @@ export class V_B_ViewComponent implements OnInit {
       }
     }
 
+    // Print out basic info and show the buttons only if there is a booking exist in a particular paged section
     const output = this.outputBookings[page - 1];
     $('table#item-list-xs > tr.item').hide();
     for(let i = 1; i <= 8; i++) {
@@ -232,6 +243,7 @@ export class V_B_ViewComponent implements OnInit {
   }
 
   clickInfo(booking: Booking, status: string) {
+    // Return an info alert with details info
     Swal.fire({
       title: `Booking for: ${booking.rName}`,
       html: `Time: ${booking.timeSlots[0]}:00 ${booking.date}<br>
@@ -241,12 +253,14 @@ export class V_B_ViewComponent implements OnInit {
   }
 
   clickModify(residentId, bookingId) {
+    // Pass the resident's ID and booking's ID to booking-modify component
     this.visitorService.passResidentId(residentId);
     this.visitorService.passBookingId(bookingId);
     this.router.navigate(['/visitor', 'booking-modify']);
   }
 
   clickCancel(id: string) {
+    // Return a confirmation alert
     Swal.fire({
       title: "Cancel?",
       html: "Are you sure you want to cancel this booking?",
@@ -264,7 +278,9 @@ export class V_B_ViewComponent implements OnInit {
     })
   }
 
+  // Only run if justCheckOut = true
   provideFeedback() {
+    // Return an alert asking for feedback
     Swal.fire({
       title: "Hi!",
       html: `Since you recently visited our facility,<br>
@@ -276,10 +292,10 @@ export class V_B_ViewComponent implements OnInit {
       confirmButtonText: "Yes"
     })
     .then((willProvide) => {
-      if(willProvide.value) {
+      if(willProvide.value) { // If willing to provide
         this.provideContext();
       }
-      else {
+      else { // If not, stop the asking loop
         this.visitorService.provideFeedback(this.id, false)
       }
     });
@@ -288,6 +304,7 @@ export class V_B_ViewComponent implements OnInit {
   private provideContext(inputTitle?: string, inputContext?: string) {
     inputTitle = (inputTitle == undefined) ? '' : inputTitle;
     inputContext = (inputContext == undefined)? '' : inputContext;
+    // Return an alert with two input text fields: title & context
     Swal.fire({
       title: 'Please provide details of your visit',
       html:
@@ -305,6 +322,7 @@ export class V_B_ViewComponent implements OnInit {
       const title = values.value.title;
       const context = values.value.context;
       if(title != '' && context != '') {
+        // Return a confirmation alert
         Swal.fire({
           html: `Feedback: ${title}<br>
           Details: ${context}`,
@@ -316,20 +334,23 @@ export class V_B_ViewComponent implements OnInit {
         })
         .then((confirmFeedback) => {
           if(confirmFeedback.value) {
+            // Add the feedback to the collection and stop the asking loop
             this.visitorService.provideFeedback(this.id, true, this.vName, this.email, title, context)
           }
           else {
+            // Loop back to ask if the contractor want to provide a feedback
             this.provideFeedback();
           }
         })
       }
-      else {
+      else { // Return an alert if both fields are empty
         Swal.fire({
           title: "Error!",
           html: "Please do not leave the fields empty!",
           type: "error"
         })
         .then(() => {
+          // Loop back to two fields with the previous inputs
           this.provideContext(title, context);
         })
       }

@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit {
 
   navigateLoggedUser() {
     return new Promise((resolve, reject) => {
+      // 'true' is used - initializing from the Login Component
+      // Stop the site from login navigation loop
       this.authService.navigateToHome(true);
       resolve(this.router.url.includes("/login"));
     })

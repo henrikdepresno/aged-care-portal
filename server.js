@@ -1,6 +1,7 @@
+// Disable certificate check
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-// import modules
+// Import modules
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -8,33 +9,33 @@ const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const admin = require('firebase-admin')
 
-// create a new Express app instance 
+// Create a new Express app instance 
 const app = express();
 
-// initialize the Firebase Admin SDK using private key
+// Initialize the Firebase Admin SDK using private key
 const serviceAccount = require('./serviceAccountKey.json')
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-// accept CORS requests and parse request body into JSON
+// Accept CORS requests and parse request body into JSON
 app.use(cors({origin: "*"}));
 app.use(bodyParser.json());
 
-// serve only the static files form the dist directory
+// Serve only the static files form the dist directory
 app.use(express.static(__dirname + '/dist/aged-care-portal'));
 
-// define angular application endpoint
+// Define angular application endpoint
 app.get('/*', (req, res) => {   
   res.sendFile(path.join(__dirname +'/dist/aged-care-portal/index.html'));
 });
 
-// start application server on port 8080 (default Heroku port)
+// Start application server on port 8080 (default Heroku port)
 app.listen(process.env.PORT || 8080, () => {
   console.log("The server started on port 8080");
 });
 
-// define a sendmail endpoint
+// Define a sendmail endpoint
 app.post("/send-email", (req, res) => {
   console.log("email request came");
   let data = req.body;
@@ -51,11 +52,11 @@ app.post("/send-email", (req, res) => {
   });
 });
 
-// sendmail function
+// Sendmail function
 async function sendEmail(data, callback) {
   const emailSender = require('./emailPasswordACP.json');
 
-  // send email
+  // Send email
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -67,7 +68,7 @@ async function sendEmail(data, callback) {
     }
   });
 
-  // context of the email
+  // Context of the email
   const mailOptions = {
     from: `"Onshoring ACP" <${emailSender.email}>`,
     to: data.email,
@@ -78,7 +79,7 @@ async function sendEmail(data, callback) {
   transporter.sendMail(mailOptions, callback);
 }
 
-// define a add auth user endpoint
+// Define a add auth user endpoint
 app.post("/add-auth-user-fb", (req, res) => {
   console.log("add request came");
   let data = req.body;
@@ -95,7 +96,7 @@ app.post("/add-auth-user-fb", (req, res) => {
   });
 });
 
-// add auth user function by email
+// Add auth user function by email
 async function addAuthUser(email, password) {
   admin.auth().createUser({
     email: email,
@@ -109,7 +110,7 @@ async function addAuthUser(email, password) {
   });
 }
 
-// define a delete auth user endpoint
+// Define a delete auth user endpoint
 app.post("/delete-auth-user-fb", (req, res) => {
   console.log("delete request came");
   let data = req.body;
@@ -126,7 +127,7 @@ app.post("/delete-auth-user-fb", (req, res) => {
   });
 });
 
-// delete auth user function by email
+// Delete auth user function by email
 async function deleteAuthUser(email) {
   admin.auth().getUserByEmail(email).then((userRecord) => {
     admin.auth().deleteUser(userRecord.uid).then(function() {

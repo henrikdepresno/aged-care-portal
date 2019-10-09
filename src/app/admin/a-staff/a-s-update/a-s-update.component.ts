@@ -13,6 +13,7 @@ import { capitalize, isNumeric } from 'src/app/functions';
 })
 export class A_S_UpdateComponent implements OnInit {
 
+  // The selected staff ID
   id: string;
 
   constructor(
@@ -26,6 +27,7 @@ export class A_S_UpdateComponent implements OnInit {
 
     this.validateUserType().then(res => {
       if(res) { 
+        // Get the passed staff ID
         this.adminService.updateId.subscribe(id => {
           this.id = id
           $('#staffID').val(id);
@@ -33,6 +35,7 @@ export class A_S_UpdateComponent implements OnInit {
       }
     });
 
+    // 'Enter' when selecting input fields will run
     $('#inputFirstName, #inputLastName, #inputPhone, #inputRole').keyup(e => {
       if(e.which == 13) {
         this.updateStaff();
@@ -48,14 +51,19 @@ export class A_S_UpdateComponent implements OnInit {
   }
 
   updateStaff() {
+    // Initialize temporary attributes which values taken from the input fields
+    // Capitalize some fields if needed
     const sFirstName = capitalize($('#inputFirstName').val());
     const sLastName = capitalize($('#inputLastName').val());
     const phone = $('#inputPhone').val();
     const role = capitalize($('#inputRole').val());
     
     const updates = this.showUpdates(sFirstName, sLastName, phone, role)
+    // Check if there is any updates
     if(updates != "") {
+      // Check if provided phone number is numeric
       if(isNumeric(phone) || phone == "") {
+        // Return a confirmation alert
         Swal.fire({
           title: "New updates:",
           html: updates,
@@ -69,6 +77,7 @@ export class A_S_UpdateComponent implements OnInit {
         .then((willUpdate) => {
           if(willUpdate.value) {
             this.adminService.updateStaff(this.id, sFirstName, sLastName, phone, role);
+            // Return a success alert
             Swal.fire({
               title: "Success!",
               html: "Details updated!",
@@ -78,7 +87,7 @@ export class A_S_UpdateComponent implements OnInit {
         })
       }
       else {
-        Swal.fire({
+        Swal.fire({ // Return an alert if the provided phone number is not numeric
           title: "Error!",
           html: "The phone number can only be digits!",
           type: 'error'
@@ -86,7 +95,7 @@ export class A_S_UpdateComponent implements OnInit {
       }
     }
     else {
-      Swal.fire({
+      Swal.fire({ // Return an alert if all fields are empty
         title: "Error!",
         html: "Please update at least one field!",
         type: 'error'
@@ -94,6 +103,7 @@ export class A_S_UpdateComponent implements OnInit {
     }
   }
 
+  // Generate a string with all input updates
   private showUpdates(sFirstName, sLastName, phone, role) {
     let updates = "";
     updates += (sFirstName == "") ? "" : "First Name: " + sFirstName + "<br>";
