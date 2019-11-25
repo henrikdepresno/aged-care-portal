@@ -1,6 +1,6 @@
 # AgedCarePortal
 
-To run the portal, head to http://aged-care.herokuapp.com/ and wait a minuto for the app to exit sleep mode. 
+To run the portal, head to http://aged-care.herokuapp.com/ and wait a minute for the app to exit sleep mode. 
 
 Documentation for the app can be found here:
 
